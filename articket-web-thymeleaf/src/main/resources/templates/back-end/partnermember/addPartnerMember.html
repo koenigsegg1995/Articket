@@ -1,0 +1,132 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>廠商註冊 - addEmp.html</title>
+
+<head th:insert="~{/back-end/partnermember/included-fragment}"></head>
+<style type="text/css">
+	
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 5px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 5px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>員工資料新增 - addEmp.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/partnermember/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
+
+	<div align="center">
+		<h3><b>所有欄位皆為必填欄位</b></h3>
+		<form th:action="@{insert}" method="post" th:object="${partnerMember}" >
+			
+
+			
+			<div>
+			<label>統一編號:</label>
+			<input type="text" th:field="*{taxID}" onclick="hideContent('taxID.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('taxID')}" th:errors="*{taxID}" class="error" id="taxID.errors"></span>
+			</div>
+			
+			<div>
+			<label>密碼:</label>
+			<input type="password" th:field="*{partnerPassword}" onclick="hideContent('partnerPassword.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerPassword')}" th:errors="*{partnerPassword}" class="error" id="partnerPassword.errors"></span>
+			</div>
+			
+			<div>
+			<label>公司名稱:</label>
+			<input type="text" th:field="*{partnerName}" onclick="hideContent('partnerName.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerName')}" th:errors="*{partnerName}" class="error" id="partnerName.errors"></span>
+			</div>
+			
+			<div>
+			<label>抬頭:</label>
+			<input type="text" th:field="*{partnerHeading}" onclick="hideContent('partnerHeading.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerHeading')}" th:errors="*{partnerHeading}" class="error" id="partnerHeading.errors"></span>
+			</div>
+
+			<div>
+			<label>地址:</label>
+			<input type="text" th:field="*{partnerAddress}" onclick="hideContent('partnerAddress.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}" class="error" id="partnerAddress.errors"></span>
+			</div>
+			
+			<div>
+			<label>電話:</label>
+			<input type="text" th:field="*{partnerPhone}" onclick="hideContent('partnerPhone.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerPhone')}" th:errors="*{partnerPhone}" class="error" id="partnerPhone.errors"></span>
+			</div>
+			
+			<div>
+			<label>聯絡人:</label>
+			<input type="text" th:field="*{partnerContactPerson}" onclick="hideContent('partnerContactPerson.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerContactPerson')}" th:errors="*{partnerContactPerson}" class="error" id="partnerContactPerson.errors"></span>
+			</div>
+			
+			<div>
+			<label>電子信箱:</label>
+			<input type="email" th:field="*{partnerEmail}" onclick="hideContent('partnerEmail.errors');" /><br/>
+			<span  th:if="${#fields.hasErrors('partnerEmail')}" th:errors="*{partnerEmail}" class="error" id="partnerEmail.errors"></span>
+			</div>
+				
+			
+			
+<!-- 			<div> -->
+<!-- 			<label>照片:</label> -->
+<!-- 			<input type="file" th:field="*{upFiles}" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" /> -->
+<!-- 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
+<!-- 			<span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span> -->
+<!-- 			<h2 id="errorMessage">${errorMessage}</h2>  -->
+<!-- 			<div id="blob_holder"></div> -->
+<!-- 			</div> -->
+			
+			<div>
+				<div></div>
+				<div><button type="submit" id="submit"> 送出新增 </button></div>
+				<div></div>
+			</div>		
+		</form>
+	
+	</div>
+
+
+
+
+</body>
+</html>

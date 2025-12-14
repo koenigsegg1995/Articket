@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活動商品管理</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="/css/partner.css"> */-->
+  <link rel="stylesheet" href="/css/partner_sidebar.css">
+  <link rel="icon" href="/images/icon.ico">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 250px; /* 與側邊欄寬度相同 */
+      box-sizing: border-box;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    select,
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4a69bd;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3c56a5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4a69bd;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .action-buttons button {
+      padding: 5px 10px;
+      font-size: 0.9em;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+    }
+    
+    
+    select, button, input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a69bd;
+    color: white;
+    cursor: pointer;
+}
+  </style>
+</head>
+
+<body>
+<div id="sidebar-placeholder"></div>
+    <!-- 側邊欄內容 -->
+
+
+  <div class="content">
+
+    <div id="dynamic-content">
+        <div class="container">
+          <h1>商品管理</h1>
+
+          <table th:if="${not #lists.isEmpty(activities)}">
+            <thead>
+            <tr>
+              <th>編號</th>
+              <th>活動名稱</th>
+              <th>活動日期</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="activity : ${activities}">
+              <td th:text="${activity.activityID}"></td>
+              <td th:text="${activity.activityName}"></td>
+              <td th:text="${#dates.format(activity.activityPostTime, 'yyyy-MM-dd')}"></td>
+              
+ <!--             
+              <td>
+               使用這個 <a th:href="@{'/commodity/listByActivity/' + ${activity.activityID}}">查看商品</a>
+                <a th:href="@{/commodity/listAllCommodity}">查看商品</a>
+               <a type="submit" th:value="${activity.activityID}">t86</a>
+
+              </td>
+ -->             
+              <td class="action-cell">
+					<form method="get"
+						th:action="@{/commodity/listAllCommodity}"
+						class="action-form">
+						<input type="submit" value="查看商品" class="action-button">
+						<input type="hidden" name="activityID"
+							th:value="${activity.activityID}">
+					</form>
+				</td>
+
+<!--                <td>-->
+<!--                    <form method="post" th:action="@{/commodity/listAllCommodity}"-->
+<!--                          style="margin-bottom: 0px;">-->
+<!--                        <input type="submit" value="查看商品">-->
+<!--                        <input type="hidden"-->
+<!--                               name="activityID" th:value="${activity.activityID}">-->
+<!--                    </form>-->
+
+<!--                </td>-->
+            </tr>
+            </tbody>
+          </table>
+
+<!--          <table>-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <th>編號</th>-->
+<!--                <th>活動名稱</th>-->
+<!--                <th>活動日期</th>-->
+<!--                <th>操作</th>-->
+<!--              </tr>-->
+<!--            </thead>-->
+<!--&lt;!&ndash;            <tbody id="activityTable">&ndash;&gt;-->
+<!--&lt;!&ndash;              &lt;!&ndash; 活動資料將由 JavaScript 動態添加 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr th:each="activity : ${activities}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <td th:text="${activity.activityID}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td th:text="${activity.activityName}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td th:text="${#temporals.format(activity.activityDate, 'yyyy-MM-dd')}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <a th:href="@{'/commodity/listByActivity/' + ${activity.activityID}}">查看商品</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                </td>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            </tbody>&ndash;&gt;-->
+<!--            <tbody>-->
+<!--            <tr th:each="activity : ${activities}">-->
+<!--              <td th:text="${activity.activityID}"></td>-->
+<!--              <td th:text="${activity.activityName}"></td>-->
+<!--              <td th:text="${#dates.format(activity.activityPostTime, 'yyyy-MM-dd')}"></td>-->
+<!--              <td>-->
+<!--                <a th:href="@{'/commodity/listByActivity/' + ${activity.activityID}}">查看商品</a>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--          <div class="pagination">-->
+<!--            <button id="prevBtn" onclick="changePage(-1)">上一頁</button>-->
+<!--            <span id="pageInfo">第 1 頁，共 1 頁</span>-->
+<!--            <button id="nextBtn" onclick="changePage(1)">下一頁</button>-->
+<!--          </div>-->
+<!--          <div class="pagination" th:if="${totalPages > 1}">-->
+<!--            <a th:if="${currentPage > 1}" th:href="@{'/commodity/activityList?page=' + ${currentPage - 1}}">上一頁</a>-->
+<!--            <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>-->
+<!--            <a th:if="${currentPage < totalPages}" th:href="@{'/commodity/activityList?page=' + ${currentPage + 1}}">下一頁</a>-->
+<!--          </div>-->
+        </div>
+      </section>
+    </div>
+  </div>
+
+<!--  <script>-->
+<!--    // 模擬的活動資料-->
+<!--    const activities = [-->
+<!--      { id: 1, name: "IVE MAGAZINE", date: "2024/04/15 - 2024/04/21" },-->
+<!--      { id: 2, name: "IVE SHOW WHAT I HAVE", date: "2024/04/01 - 2024/04/07" }-->
+<!--    ];-->
+
+<!--    function renderActivities() {-->
+<!--      const tableBody = document.getElementById('activityTable');-->
+<!--      tableBody.innerHTML = '';-->
+<!--      activities.forEach(activity => {-->
+<!--        const row = `-->
+<!--                    <tr>-->
+<!--                        <td>${activity.id}</td>-->
+<!--                        <td>${activity.name}</td>-->
+<!--                        <td>${activity.date}</td>-->
+<!--                        <td>-->
+<!--                            <div class="action-buttons">-->
+<!--                                <button onclick="manageProducts(${activity.id})">商品管理</button>-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                `;-->
+<!--        tableBody.innerHTML += row;-->
+<!--      });-->
+<!--    }-->
+
+<!--    function manageProducts(activityId) {-->
+<!--      alert(`前往活動 ID ${activityId} 的商品管理頁面`);-->
+<!--      window.location.href = 'listAllCommodity.html';-->
+<!--    }-->
+
+<!--    function changePage(delta) {-->
+<!--      // 分頁邏輯-->
+<!--    }-->
+
+<!--    window.onload = renderActivities;-->
+<!--  </script>-->
+
+  <script src="/js/partner.js"></script>
+  <script src="/js/partner_sidebar.js"></script>
+</body>
+
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>活動商品管理</title>-->
+<!--  &lt;!&ndash; 您的CSS引用 &ndash;&gt;-->
+<!--    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="/css/partner.css">-->
+<!--    <link rel="stylesheet" href="/css/partner_sidebar.css">-->
+<!--  <style>-->
+<!--    /* 確保dynamic-content可見 */-->
+<!--    #dynamic-content {-->
+<!--      display: block !important;-->
+<!--      visibility: visible !important;-->
+<!--    }-->
+<!--    body {-->
+<!--      font-family: 'Arial', sans-serif;-->
+<!--      background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);-->
+<!--      margin: 0;-->
+<!--      padding: 20px;-->
+<!--      min-height: 100vh;-->
+<!--    }-->
+
+<!--    .content {-->
+<!--      flex-grow: 1;-->
+<!--      padding: 20px;-->
+<!--      margin-left: 250px; /* 與側邊欄寬度相同 */-->
+<!--      box-sizing: border-box;-->
+<!--    }-->
+
+<!--    .container {-->
+<!--      background-color: rgba(255, 255, 255, 0.9);-->
+<!--      border-radius: 10px;-->
+<!--      padding: 20px;-->
+<!--      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--    }-->
+
+<!--    h1 {-->
+<!--      color: #333;-->
+<!--      text-align: center;-->
+<!--      margin-bottom: 20px;-->
+<!--    }-->
+
+<!--    .controls {-->
+<!--      display: flex;-->
+<!--      justify-content: space-between;-->
+<!--      align-items: center;-->
+<!--      margin-bottom: 20px;-->
+<!--    }-->
+
+<!--    select,-->
+<!--    button {-->
+<!--      padding: 10px;-->
+<!--      border: none;-->
+<!--      border-radius: 5px;-->
+<!--      background-color: #4a69bd;-->
+<!--      color: white;-->
+<!--      cursor: pointer;-->
+<!--    }-->
+
+<!--    button:hover {-->
+<!--      background-color: #3c56a5;-->
+<!--    }-->
+
+<!--    table {-->
+<!--      width: 100%;-->
+<!--      border-collapse: collapse;-->
+<!--    }-->
+
+<!--    th,-->
+<!--    td {-->
+<!--      padding: 12px;-->
+<!--      text-align: center;-->
+<!--      border-bottom: 1px solid #ddd;-->
+<!--    }-->
+
+<!--    th {-->
+<!--      background-color: #4a69bd;-->
+<!--      color: white;-->
+<!--    }-->
+
+<!--    tr:hover {-->
+<!--      background-color: #f5f5f5;-->
+<!--    }-->
+
+<!--    .action-buttons {-->
+<!--      display: flex;-->
+<!--      gap: 5px;-->
+<!--      justify-content: center;-->
+<!--    }-->
+
+<!--    .action-buttons button {-->
+<!--      padding: 5px 10px;-->
+<!--      font-size: 0.9em;-->
+<!--    }-->
+
+<!--    .pagination {-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      margin-top: 20px;-->
+<!--    }-->
+
+<!--    .pagination button {-->
+<!--      margin: 0 5px;-->
+<!--    }-->
+
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="sidebar-placeholder">-->
+<!--  &lt;!&ndash; 側邊欄內容 &ndash;&gt;-->
+<!--</div>-->
+
+<!--<div class="content">-->
+<!--  <h1>測試內容</h1>-->
+<!--  <p>如果您看到這個，說明內容區域正在正確顯示。</p>-->
+
+<!--  <div id="dynamic-content">-->
+<!--    <h2>動態內容開始</h2>-->
+<!--    <p th:text="'Activities size (from Thymeleaf): ' + ${activities.size()}"></p>-->
+
+<!--    <section id="product-management1" class="section">-->
+<!--      <div class="container">-->
+<!--        <h1>商品管理</h1>-->
+
+<!--        <table th:if="${not #lists.isEmpty(activities)}">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th>編號</th>-->
+<!--            <th>活動名稱</th>-->
+<!--            <th>活動日期</th>-->
+<!--            <th>操作</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr th:each="activity : ${activities}">-->
+<!--            <td th:text="${activity.activityID}"></td>-->
+<!--            <td th:text="${activity.activityName}"></td>-->
+<!--            <td th:text="${#dates.format(activity.activityPostTime, 'yyyy-MM-dd')}"></td>-->
+<!--            <td>-->
+<!--              <a th:href="@{'/commodity/listByActivity/' + ${activity.activityID}}">查看商品</a>-->
+<!--            </td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+
+<!--        <p th:if="${#lists.isEmpty(activities)}">目前沒有活動數據</p>-->
+<!--      </div>-->
+<!--    </section>-->
+<!--    <h2>動態內容結束</h2>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  // 簡單的JavaScript來檢查動態內容-->
+<!--  window.onload = function() {-->
+<!--    console.log("Dynamic content visibility check:");-->
+<!--    console.log(document.getElementById('dynamic-content').innerHTML);-->
+<!--  }-->
+<!--</script>-->
+<!--<script src="/js/partner.js"></script>-->
+<!--<script src="/js/partner_sidebar.js"></script>-->
+<!--</body>-->
+<!--</html>-->

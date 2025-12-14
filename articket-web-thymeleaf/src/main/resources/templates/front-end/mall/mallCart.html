@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/images/icon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>購物車 - 藝票人商城</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+body {
+	font-family: 'Noto Sans TC', sans-serif;
+	background-color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+	color: #333;
+}
+
+.container {
+	/* max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px; */
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* .cart-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .cart-step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #ddd;
+            color: #666;
+        }
+
+        .cart-step.active {
+            background-color: #d8515a;
+            color: white;
+        } */
+.cart-steps {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px;
+}
+
+.cart-step {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	background-color: #e0e0e0;
+	color: #666;
+}
+
+.cart-step.active {
+	background-color: #d8515a;
+	color: #fff;
+}
+
+.cart-table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: white;
+}
+
+.cart-table th, .cart-table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+.cart-table th {
+	background-color: #f2f2f2;
+}
+
+h3 {
+	text-align: center;
+}
+
+.quantity-input {
+	width: 50px;
+	text-align: center;
+}
+
+.remove-item {
+	color: #d16b7b;
+	cursor: pointer;
+}
+
+.cart-summary {
+	text-align: right;
+	margin-top: 20px;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.btn {
+	padding: 10px 20px;
+	background-color: #d8515a;
+	color: white;
+	border: none;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+.btn:hover {
+	background-color: #e57373;
+}
+
+.cart-notice {
+	margin-top: 20px;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+}
+</style>
+</head>
+
+<body>
+	<div id="header"></div>
+
+	<div class="container">
+		<div class="cart-steps">
+			<div class="cart-step active">購物車</div>
+			<div class="cart-step">填寫資料</div>
+			<!--<div class="cart-step">確認結帳</div>-->
+			<div class="cart-step">訂單成立</div>
+		</div>
+
+
+
+		<table class="cart-table">
+			<thead>
+				<tr>
+					<th>商品編號</th>
+					<th>商品名稱</th>
+					<th>商品金額</th>
+					<th>數量</th>
+					<th>小計</th>
+					<th>移除</th>
+				</tr>
+			</thead>
+
+
+			<tbody>
+				<tr th:each="item : ${cart.cartItems}">
+					<td th:text="${item.commodity.commodityID}"></td>
+					<td th:text="${item.commodity.commodityName}"></td>
+					<td th:text="${item.commodity.commodityPrice}"></td>
+					<td>
+						<form
+							th:action="@{/cart/update/{cartItemId}(cartItemId=${item.cartItemID})}"
+							method="post" style="display: inline;">
+							<input type="hidden" name="change" value="-1">
+							<button type="submit">-</button>
+						</form> <input type="number" class="quantity-input"
+						th:value="${item.checkedQuantity}" min="1"
+						th:onchange="'updateQuantity(' + ${item.cartItemID} + ', this.value)'">
+						<form
+							th:action="@{/cart/update/{cartItemId}(cartItemId=${item.cartItemID})}"
+							method="post" style="display: inline;">
+							<input type="hidden" name="change" value="1">
+							<button type="submit">+</button>
+						</form>
+					</td>
+					<td
+						th:text="${item.commodity.commodityPrice * item.checkedQuantity}"></td>
+					<td>
+						<form
+							th:action="@{/cart/remove/{cartItemId}(cartItemId=${item.cartItemID})}"
+							method="post">
+							<button type="submit" class="remove-item">×</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</table>
+
+
+		<div class="cart-summary">
+<p>共 <span th:text="${#aggregates.sum(cart.cartItems.![checkedQuantity])}">0</span> 件商品</p>
+    <p>商品小計: $<span th:text="${#numbers.formatDecimal(cart.cartTotalPrice, 1, 2)}">0.00</span></p>
+    <div class="btn-group">
+    <a th:href="@{/cart/continue-shopping}" class="btn btn-back">繼續購物</a>
+    <a th:href="@{/cart/checkout}" class="btn btn-next">前往結帳</a>
+</div>
+</div>
+
+		<div class="cart-notice">
+			<h3>購物須知</h3>
+			<ul>
+				<li>您可以點選首頁繼續選購商品，全部選購完畢後再按上方的結帳按鈕。</li>
+				<li>預購商品依照發行日寄出,請單獨下單,如與其他商品併購,將與預購商品發行日同時寄出,不另分次寄送。</li>
+				<li>訂單如因個人因素需取消,限定於訂單成立後48小時內聯繫客服信箱或致電服務專線。</li>
+				<li>請留意您的訂購是否有未發行商品。</li>
+				<li>我愛安兪真愛我。</li>
+				<li>本公司保有接受訂單與否的權利。</li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="footer"></div>
+
+	<script th:inline="javascript">
+/*<![CDATA[*/
+async function fetchCartItems() {
+    const response = await fetch(`/cart/view`);
+    const cartData = await response.json();
+    renderCart(cartData);
+}
+
+function renderCart(cart) {
+    const cartItemsElement = document.getElementById('cartItems');
+    cartItemsElement.innerHTML = '';
+
+    let subtotal = 0;
+    let totalQuantity = 0;
+
+    cart.cartItems.forEach(item => {
+        const row = `
+            <tr>
+                <td>${item.commodity.commodityID}</td>
+                <td>${item.commodity.commodityName}</td>
+                <td>$${item.commodity.commodityPrice}</td>
+                <td>
+                    <form action="/cart/update/${item.cartItemID}" method="post" style="display: inline;">
+                        <input type="hidden" name="change" value="-1">
+                        <button type="submit">-</button>
+                    </form>
+                    <input type="number" class="quantity-input" value="${item.checkedQuantity}" min="1" 
+                           onchange="updateQuantity(${item.cartItemID}, this.value)">
+                    <form action="/cart/update/${item.cartItemID}" method="post" style="display: inline;">
+                        <input type="hidden" name="change" value="1">
+                        <button type="submit">+</button>
+                    </form>
+                </td>
+                <td>$${(item.commodity.commodityPrice * item.checkedQuantity).toFixed(2)}</td>
+                <td>
+                    <form action="/cart/remove/${item.cartItemID}" method="post">
+                        <button type="submit" class="remove-item">×</button>
+                    </form>
+                </td>
+            </tr>
+        `;
+        cartItemsElement.innerHTML += row;
+        subtotal += item.commodity.commodityPrice * item.checkedQuantity;
+        totalQuantity += item.checkedQuantity;
+    });
+
+    document.getElementById('totalItems').textContent = totalQuantity;
+    document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+}
+
+function updateQuantity(cartItemId, newQuantity) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = `/cart/update/${cartItemId}`;
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'quantity';
+    input.value = newQuantity;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
+/*
+function continueShopping() {
+    window.location.href = '/mall/commodities';
+}
+
+function proceedToCheckout() {
+    window.location.href = '/mall/checkout';
+}
+*/
+
+// 初始載入購物車項目
+document.addEventListener('DOMContentLoaded', function() {
+    const cartItemsElement = document.getElementById('cartItems');
+    if (cartItemsElement) {
+        fetchCartItems();
+    }
+});
+/*]]>*/
+</script>
+
+
+
+
+	<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化所有的 tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // 動態載入 header
+        if (!document.getElementById('header').innerHTML.trim()) {
+            fetch('/header')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading header:', error);
+                    document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+                });
+        }
+
+        // 動態載入 footer
+        if (!document.getElementById('footer').innerHTML.trim()) {
+            fetch('/footer')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+                });
+        }
+
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廠商後臺管理系統</title>
+</head>
+<body>
+	<div class="sidebar">
+	    <div class="menu-content">
+			<h2>廠商後臺管理</h2>
+			
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="vendor-submenu">廠商中心</a>
+            <div id="vendor-submenu" class="submenu">
+                <a href="/partnermember/partnerCenter" class="nav-link" data-section="vendor1">廠商資料</a>
+            </div>
+            
+			<a class="nav-link" href="/announcement/allAnnouncement" data-toggle="submenu" data-target="news-submenu">最新消息</a>
+
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="venue-submenu">場地租借</a>
+            <div id="venue-submenu" class="submenu">
+                <a href="/venueRentalPage" class="nav-link" data-section="vendor1">場館申請</a>
+                <a href="/venueRentalPage/partnerVenueRentalList" class="nav-link" data-section="venue2">場地審核狀態/取消申請</a>
+            </div>
+			
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="event-management-submenu">活動管理</a>
+            <div id="event-management-submenu" class="submenu">
+                <a href="/activity/activityDisplay" class="nav-link" data-section="event-management1">活動資訊</a>
+                <a href="/activity/activityUnadd" class="nav-link" data-section="event-management1">活動待新增</a>
+                
+            </div>
+            
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="ticket-management-submenu">售票管理</a>
+            <div id="ticket-management-submenu" class="submenu">
+                <a href="/ticket/ticketDisplay" class="nav-link" data-section="ticket-management1">售票資訊</a>
+            </div>
+            
+			<a class="nav-link" href="/commodity/activityCommodityList" data-toggle="submenu" data-target="product-management-submenu">商品管理</a>
+          
+
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="orderTicket-management-submenu">票券訂單管理</a>
+            <div id="orderTicket-management-submenu" class="submenu">
+                <a href="#" class="nav-link" data-section="orderTicket-management1">票券訂單</a>
+            </div>
+
+			<a class="nav-link main-menu" data-toggle="submenu" data-target="order-management-submenu">商品訂單管理</a>
+
+	    </div>
+
+	    <a th:href="@{/partnermember/logout}" class="text-center text-danger py-20">登出</a>
+	</div>
+</body>
+</html>

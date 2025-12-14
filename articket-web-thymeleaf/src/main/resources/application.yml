@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: Articket
+
+  # 資料庫連線
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/articket?serverTimezone=Asia/Taipei&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+
+    # JPA 設定
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+    # Thymeleaf 設定
+    thymeleaf:
+      cache: false
+
+    # 檔案上傳限制
+    servlet:
+      multipart:
+        max-file-size: 30MB
+        max-request-size: 30MB
+
+    # Jackson 時間格式
+    jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
+
+  # MyBatis 設定
+  mybatis:
+    mapper-locations: classpath:mapper/**/*.xml # mapper.xml 位置
+    type-aliases-package: com.maddog.articket.entity # entity 套件路徑
+    configuration:
+      map-underscore-to-camel-case: true # 開啟駝峰命名轉換
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 開啟 SQL LOG
+
+  # Server 設定
+  server:
+    port: 8080

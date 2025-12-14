@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>對廠商公告</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<!--  
+<link rel="stylesheet" href="/css/admin.css">-->
+<link rel="stylesheet" href="/css/admin_sidebar.css">
+<link rel="icon" href="/images/icon.ico">
+
+<style>
+body {
+	font-family: 'Arial', sans-serif;
+	background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+	margin: 0;
+	padding: 20px;
+	min-height: 100vh;
+}
+
+.content {
+	margin-left: 250px; /* 調整這個值使其與側邊欄寬度匹配 */
+	padding: 20px;
+}
+
+.container {
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+	color: #333;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+select, button, input {
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: #4a69bd;
+	color: white;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #3c56a5;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+th {
+	background-color: #4a69bd;
+	color: white;
+}
+
+#operate {
+	text-align: center;
+}
+
+tr:hover {
+	background-color: #f5f5f5;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	border-radius: 10px;
+}
+
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* 新增搜尋和刪除按鈕 */
+.search-bar {
+	margin-bottom: 20px;
+	display: flex;
+	gap: 10px;
+}
+
+.search-bar input {
+	flex-grow: 1;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.search-bar button {
+	padding: 10px 20px;
+}
+
+.action-buttons {
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+	/* 將按鈕靠右對齊 */
+}
+
+.action-buttons button {
+	padding: 5px 10px;
+	font-size: 0.9em;
+}
+
+.delete-btn {
+	background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+	background-color: #c0392b;
+}
+
+/*	分頁*/
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	font-family: Arial, sans-serif;
+}
+
+.pagination a, .pagination span {
+	color: #333;
+	padding: 8px 16px;
+	text-decoration: none;
+	transition: background-color 0.3s, color 0.3s;
+	border: 1px solid #ddd;
+	margin: 0 4px;
+	border-radius: 5px;
+}
+
+.pagination a:hover:not(.disabled) {
+	background-color: #4a69bd;
+	color: white;
+}
+
+.pagination .active {
+	background-color: #4a69bd;
+	color: white;
+	border: 1px solid #4a69bd;
+}
+
+.pagination .disabled {
+	color: #ddd;
+	pointer-events: none;
+	background-color: #f8f8f8;
+}
+</style>
+</head>
+
+<body>
+	<!--	<div class="sidebar"></div>-->
+	<div id="sidebar-placeholder"></div>
+
+
+	<div class="content">
+		<div id="dynamic-content">
+			<div id="announcement-management" class="section">
+				<div class="container">
+					<h1>公告管理</h1>
+
+					<div class="controls">
+						<a th:href="@{/announcement/addAnnouncement}"
+							class="btn btn-primary">+ 新增公告</a>
+					</div>
+
+					<table>
+						<thead>
+							<tr>
+								<th>編號</th>
+								<th>標題</th>
+								<th>內容</th>
+								<th>狀態</th>
+								<th>發布時間</th>
+								<th>修改</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="announcement : ${announcements}">
+								<td th:text="${announcement.announcementID}"></td>
+								<td th:text="${announcement.announcementTitle}"></td>
+								<td th:text="${announcement.announcementContent}"></td>
+								<td
+									th:text="${announcement.announcementStatus == 0 ? '隱藏' : (announcement.announcementStatus == 1 ? '正常顯示' : '置頂')}"></td>
+								<td
+									th:text="${#dates.format(announcement.announcementCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+								<!--							<td>-->
+								<!--								<a th:href="@{/announcement/getOne_For_Update(announcementID=${announcement.announcementID})}" class="btn btn-secondary">修改</a>-->
+								<!--							</td>-->
+								<td>
+									<form method="post"
+										th:action="@{/announcement/getOne_For_Update}"
+										style="margin-bottom: 0px;">
+										<input type="submit" value="修改"> <input type="hidden"
+											name="announcementID"
+											th:value="${announcement.announcementID}">
+									</form>
+
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="pagination" th:if="${totalPages > 1}">
+						<span
+							th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+						<a th:if="${currentPage > 1}"
+							th:href="@{'/announcement/listAllAnnouncement?page=' + ${currentPage - 1}}">上一頁</a>
+						<a th:if="${currentPage < totalPages}"
+							th:href="@{'/announcement/listAllAnnouncement?page=' + ${currentPage + 1}}">下一頁</a>
+					</div>
+					<!--					<div class="pagination" th:if="${totalPages > 1}">-->
+					<!--						<a th:href="@{'/announcement/listAllAnnouncement?page=' + ${currentPage - 1}}"-->
+					<!--						   th:class="${currentPage <= 1} ? 'disabled' : ''"-->
+					<!--						   th:classappend="${currentPage <= 1} ? 'disabled' : ''"-->
+					<!--						   th:text="上一頁"></a>-->
+
+					<!--						<span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">-->
+					<!--        <a th:href="@{'/announcement/listAllAnnouncement?page=' + ${pageNumber}}"-->
+					<!--		   th:text="${pageNumber}"-->
+					<!--		   th:class="${pageNumber == currentPage} ? 'active' : ''"-->
+					<!--		   th:classappend="${pageNumber == currentPage} ? 'active' : ''"></a>-->
+					<!--    </span>-->
+
+					<!--						<a th:href="@{'/announcement/listAllAnnouncement?page=' + ${currentPage + 1}}"-->
+					<!--						   th:class="${currentPage >= totalPages} ? 'disabled' : ''"-->
+					<!--						   th:classappend="${currentPage >= totalPages} ? 'disabled' : ''"-->
+					<!--						   th:text="下一頁"></a>-->
+					<!--					</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--	<div class="content">-->
+	<!--		<div id="dynamic-content">-->
+
+
+	<!--			-->
+	<!--			<section id="news-approval2" class="section">-->
+	<!--				<div class="container">-->
+	<!--					<h1>公告一覽</h1>-->
+	<!--					<div class="controls">-->
+	<!--						&lt;!&ndash; <select id="memberType">-->
+	<!--							<option value="all">全部會員</option>-->
+	<!--							<option value="general">一般會員</option>-->
+	<!--							<option value="vendor">廠商會員</option>-->
+	<!--						</select> &ndash;&gt;-->
+	<!--						<button onclick="location.href='addAnnouncement.html'">+ 新增公告</button>-->
+	<!--					</div>-->
+	<!--					<div class="search-bar">-->
+	<!--						<input type="text" id="searchInput" placeholder="搜索公告...">-->
+	<!--						<input type="date" id="searchDate">-->
+	<!--						<button onclick="searchAnnouncements()">搜索</button>-->
+	<!--					</div>-->
+	<!--					<table>-->
+	<!--						<thead>-->
+	<!--							<tr>-->
+	<!--								<th>標題</th>-->
+	<!--								<th>日期</th>-->
+	<!--								<th>狀態</th>-->
+	<!--								<th id="operate">操作</th>-->
+	<!--							</tr>-->
+	<!--						</thead>-->
+	<!--						<tbody id="announcementList">-->
+	<!--							&lt;!&ndash; 公告列表將由JavaScript動態生成 &ndash;&gt;-->
+	<!--						</tbody>-->
+	<!--					</table>-->
+	<!--				</div>-->
+
+	<!--				<div id="announcementModal" class="modal">-->
+	<!--					<div class="modal-content">-->
+	<!--						<span class="close">&times;</span>-->
+	<!--						<h2 id="modalTitle"></h2>-->
+	<!--						<p id="modalContent"></p>-->
+	<!--					</div>-->
+	<!--				</div>-->
+
+	<!--				<script>-->
+	<!--					const announcements = [-->
+	<!--						{ id: 1, title: "系統維護通知", date: "2024-09-15", status: "置頂", content: "系統將於9月20日進行維護,請提前做好準備。" },-->
+	<!--						{ id: 2, title: "新功能上線", date: "2024-08-10", status: "正常", content: "我們新增了商品圖片功能,歡迎試用並提供意見。" },-->
+	<!--						{ id: 3, title: "商城系統更新", date: "2024-08-05", status: "隱藏", content: "因應升級系統,商城功能將暫停兩周。" }-->
+	<!--					];-->
+
+	<!--					function renderAnnouncements(announcementsToRender = announcements) {-->
+	<!--						const list = document.getElementById('announcementList');-->
+	<!--						list.innerHTML = '';-->
+	<!--						announcementsToRender.forEach(ann => {-->
+	<!--							list.innerHTML += `-->
+	<!--            <tr>-->
+	<!--                <td><a href="#" onclick="showModal(${ann.id})">${ann.title}</a></td>-->
+	<!--                <td>${ann.date}</td>-->
+	<!--                <td>${ann.status}</td>-->
+	<!--                <td>-->
+	<!--                    <div class="action-buttons">-->
+	<!--                        <button onclick="editAnnouncement(${ann.id})">修改</button>-->
+	<!--                        <button class="delete-btn" onclick="deleteAnnouncement(${ann.id})">刪除</button>-->
+	<!--                    </div>-->
+	<!--                </td>-->
+	<!--            </tr>-->
+	<!--        `;-->
+	<!--						});-->
+	<!--					}-->
+	<!--					function showModal(id) {-->
+	<!--						const ann = announcements.find(a => a.id === id);-->
+	<!--						document.getElementById('modalTitle').textContent = ann.title;-->
+	<!--						document.getElementById('modalContent').textContent = ann.content;-->
+	<!--						document.getElementById('announcementModal').style.display = "block";-->
+	<!--					}-->
+
+	<!--					function editAnnouncement(id) {-->
+	<!--						// 這裡可以添加修改公告的邏輯-->
+	<!--						alert(`修改公告 ID: ${id}`);-->
+	<!--						window.location.href = 'updateAnnouncement.html';-->
+	<!--					}-->
+
+	<!--					function deleteAnnouncement(id) {-->
+	<!--						if (confirm('確定要刪除這條公告嗎？')) {-->
+	<!--							const index = announcements.findIndex(a => a.id === id);-->
+	<!--							if (index > -1) {-->
+	<!--								announcements.splice(index, 1);-->
+	<!--								renderAnnouncements();-->
+	<!--							}-->
+	<!--						}-->
+	<!--					}-->
+
+	<!--					function searchAnnouncements() {-->
+	<!--						const searchTerm = document.getElementById('searchInput').value.toLowerCase();-->
+	<!--						const searchDate = document.getElementById('searchDate').value;-->
+	<!--						const filteredAnnouncements = announcements.filter(ann =>-->
+	<!--							(ann.title.toLowerCase().includes(searchTerm) ||-->
+	<!--								ann.content.toLowerCase().includes(searchTerm)) &&-->
+	<!--							(!searchDate || ann.date === searchDate)-->
+	<!--						);-->
+	<!--						renderAnnouncements(filteredAnnouncements);-->
+	<!--					}-->
+
+	<!--					// 關閉模態框-->
+	<!--					document.querySelector('.close').onclick = function () {-->
+	<!--						document.getElementById('announcementModal').style.display = "none";-->
+	<!--					}-->
+
+	<!--					window.onclick = function (event) {-->
+	<!--						if (event.target == document.getElementById('announcementModal')) {-->
+	<!--							document.getElementById('announcementModal').style.display = "none";-->
+	<!--						}-->
+	<!--					}-->
+
+	<!--					// 初始化頁面-->
+	<!--					renderAnnouncements();-->
+	<!--				</script>-->
+	<!--			</section>-->
+	<!--		</div>-->
+	<!--	</div>-->
+	<script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function() {
+            var error = /*[[${error}]]*/ null;
+            if (error) {
+                alert(error);
+            }
+        }
+        /*]]>*/
+    </script>
+	<script src="/js/admin.js"></script>
+	<script src="/js/admin_sidebar.js"></script>
+
+</body>
+
+</html>

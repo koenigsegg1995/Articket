@@ -1,0 +1,97 @@
+body {
+    margin: 0; 
+    font-family: Arial, sans-serif;
+}
+/* 側邊欄基本樣式 */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #E18D96 ;
+    color: #FFFFFF ;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.menu-content {
+    width: 100%;
+    padding-top: 30px;
+    flex-grow: 1;
+}
+/* 標題樣式 */
+.menu-content h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 10px;
+    text-align: center;
+}
+/* 主菜單項目樣式 */
+.nav-link {
+    display: block;
+    padding: 12px 20px;
+    color: #FFFFFF      ;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 1.2rem;
+    text-align: left;
+    cursor: pointer;
+    text-align: center;
+}
+.nav-link:hover {
+    background-color: #C77A82      ;
+    color: #FFFFFF ;
+}
+/* 子菜單樣式 */
+.submenu {
+    display: none;
+    background-color: #C77A82       ;
+}
+.submenu.active {
+    display: block;
+}
+.submenu .nav-link {
+    padding-left: 20px;
+    font-size: 0.9rem;
+
+}
+/* 登出按鈕樣式 */
+.logout-btn {
+    display: block;
+    text-align: center;
+    padding: 12px 20px;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: auto;
+    background-color: #C76D77;
+}
+
+/* 為活動項添加特殊樣式 */
+.nav-link.active {
+    background-color: #C77A82 ;
+    border-left: 3px solid #2C3E50;
+}
+
+.logout-btn:hover {
+    background-color: #B35E67; 
+}
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .menu-content {
+        padding: 10px;
+    }
+}
+/* 主要內容區域樣式 */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}

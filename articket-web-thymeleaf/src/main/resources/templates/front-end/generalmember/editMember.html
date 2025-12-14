@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改會員資料</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+    <h1>修改會員資料</h1>
+    <form th:action="@{/generalmember/updateMember}" th:object="${generalMember}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{memberID}" />
+        
+        <div class="form-group">
+            <label for="memberName"><strong>姓名:</strong></label>
+            <input type="text" id="memberName" class="form-control" th:field="*{memberName}" required/>
+        </div>
+        
+        <div class="form-group">
+            <label for="memberPhone"><strong>電話:</strong></label>
+            <input type="text" id="memberPhone" class="form-control" th:field="*{memberPhone}" required/>
+        </div>
+        
+        <div class="form-group">
+            <label for="memberAddress"><strong>地址:</strong></label>
+            <input type="text" id="memberAddress" class="form-control" th:field="*{memberAddress}" required/>
+        </div>
+        
+        <div class="form-group">
+            <label for="memberAccount"><strong>帳號:</strong></label>
+            <input type="text" id="memberAccount" class="form-control" th:field="*{memberAccount}" required disabled/>
+        </div>
+        
+        <div class="form-group">
+            <label for="memberPassword"><strong>密碼:</strong></label>
+            <input type="password" id="memberPassword" class="form-control" th:field="*{memberPassword}" required disabled/>
+        </div>
+        
+        <div class="form-group">
+            <label for="nationalID"><strong>身分證字號</strong></label>
+            <input type="text" id="memberIDNumber" class="form-control" th:field="*{nationalID}" required disabled/>
+        </div>
+        
+        <div class="form-group">
+            <label for="memberNickname"><strong>暱稱:</strong></label>
+            <input type="text" id="memberNickname" class="form-control" th:field="*{memberNickName}"/>
+        </div>
+        
+        <div class="form-group">
+            <label for="birthday"><strong>生日:</strong></label>
+            <input type="date" id="birthday" class="form-control" th:field="*{birthday}"disabled/>
+        </div>
+        
+        <div class="form-group">
+            <label><strong>性別:</strong></label>
+            <div class="form-check">
+                <input type="radio" id="male" class="form-check-input" th:field="*{gender}" value="男" required/>
+                <label class="form-check-label" for="male">男</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="female" class="form-check-input" th:field="*{gender}" value="女" required/>
+                <label class="form-check-label" for="female">女</label>
+            </div>
+            
+            <div class="form-group">
+            <label for="memberPicture"><strong>大頭貼:</strong></label>
+            <input type="file" id="memberPicture" class="form-control" th:field="*{memberPictureFile}" onclick="previewImage()" multiple="multiple"/>
+            <div id="blob_holder"></div>
+        </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">保存修改</button>
+        <a th:href="@{/generalmember/memberCenter}" class="btn btn-secondary">取消</a>
+    </form>
+</div>
+
+	<!-- JavaScript part -->
+<script type="text/javascript">
+//清除提示信息
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+
+//照片上傳-預覽用
+var filereader_support = typeof FileReader != 'undefined';
+if (!filereader_support) {
+	alert("No FileReader support");
+}
+acceptedTypes = {
+		'image/png' : true,
+		'image/jpeg' : true,
+		'image/gif' : true
+};
+function previewImage() {
+	var upfile1 = document.getElementById("memberPicture");
+	upfile1.addEventListener("change", function(event) {
+		var files = event.target.files || event.dataTransfer.files;
+		for (var i = 0; i < files.length; i++) {
+			previewfile(files[i])
+		}
+	}, false);
+}
+function previewfile(file) {
+	if (filereader_support === true && acceptedTypes[file.type] === true) {
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			var image = new Image();
+			image.src = event.target.result;
+			image.width = 100;
+			image.height = 75;
+			image.border = 2;
+			if (blob_holder.hasChildNodes()) {
+				blob_holder.removeChild(blob_holder.childNodes[0]);
+			}
+			blob_holder.appendChild(image);
+		};
+		reader.readAsDataURL(file);
+		document.getElementById('submit').disabled = false;
+	} else {
+		blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+				+ "<br>" + "● ContentTyp: " + file.type
+				+ "<br>" + "● size: " + file.size + "bytes"
+				+ "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+		document.getElementById('submit').disabled = true;
+	}
+}
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

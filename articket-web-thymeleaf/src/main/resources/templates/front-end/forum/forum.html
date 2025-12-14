@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="/css/forum.css" rel="stylesheet">
+    <title>社群空間</title>
+</head>
+<body>
+    <div id="header"></div>
+   
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 側邊欄 -->
+                   
+			       <div class="col-md-2" style="height: 100%; background-color: #F8F9FA;">
+			    <div class="button-container d-flex flex-column" style="min-height: 96%; background-color: #fff3f5; margin: 15px; padding: 15px;">
+			        <div class="sidebar-title text-center mb-3 d-flex align-items-stretch">
+			            <a class="w-100 d-flex align-items-center justify-content-center text-black text-decoration-none">
+			                <span class="fs-5">討論版分類</span>
+			            </a>
+			        </div>
+			        <hr style="margin-top: 0;">
+						<div class="list-group">
+						    <a th:each="board : ${boardList}" 
+						       th:href="@{/forum(boardID=${board.boardID})}" 
+						       class="list-group-item list-group-item-action" 
+						       th:classappend="${board.boardID == selectedBoardID} ? 'active' : ''"
+						       th:text="${board.boardName}"
+						       th:attr="data-board-id=${board.boardID}, data-board-name=${board.boardName}">
+						    </a>
+						</div>
+			    </div>
+			</div>
+            
+            <!-- 主內容 -->
+            <div id="mainContent" class="col-md-10">
+
+            <!-- 麵包屑 -->
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent">
+                        <li class="breadcrumb-item"><a href="/article/forum" style="color: black;">Home</a></li>
+                        <li id="currentBoard" class="breadcrumb-item active" aria-current="page"></li>
+                    </ol>
+                </nav>
+                <!-- 文章導覽列 -->
+                <nav class="navbar navbar-light bg-light d-flex justify-content-between align-items-center">
+					<div class="btn-group flex-grow-1 me-2" role="group">
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1 active" data-category="全部">全部</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="公告">公告</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="情報">情報</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="活動">活動</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="圖片">圖片</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="影音">影音</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="周邊">周邊</button>
+					    <button type="button" class="btn btn-outline-secondary flex-grow-1" data-category="閒聊">閒聊</button>
+					</div>
+                   
+                    <!-- 搜尋欄 -->
+					<div class="d-flex me-3">
+					    <form th:action="@{search}" method="get" class="d-flex me-2">
+					        <input class="form-control me-2" type="search" placeholder="輸入文章標題" aria-label="Search" name="title">
+					        <button class="btn btn-outline-primary" type="submit">Search</button>
+					    </form>
+					    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#advancedSearchModal">
+					        進階搜索
+					    </button>
+					</div>
+					
+					<!-- 進階搜索的模態框 -->
+					<div class="modal fade" id="advancedSearchModal" tabindex="-1" aria-labelledby="advancedSearchModalLabel" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <h5 class="modal-title" id="advancedSearchModalLabel">進階搜索</h5>
+					                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					            </div>
+					            <div class="modal-body">
+					                <form th:action="@{/article/listArticles_ByCompositeQuery}" method="post">
+					                    <div class="mb-3">
+					                        <label for="articleTitle" class="form-label">文章標題</label>
+					                        <input type="text" class="form-control" id="articleTitle" name="articleTitle">
+					                    </div>
+					                    <div class="mb-3">
+					                        <label for="articleCategory" class="form-label">文章類別</label>
+											<select class="form-select" id="articleCategory" name="articleCategory">
+											    <option value="">所有類別</option>
+											    <option value="公告" th:selected="${searchCategory == '公告'}">公告</option>
+											    <option value="情報" th:selected="${searchCategory == '情報'}">情報</option>
+											    <option value="活動" th:selected="${searchCategory == '活動'}">活動</option>
+											    <option value="圖片" th:selected="${searchCategory == '圖片'}">圖片</option>
+											    <option value="影音" th:selected="${searchCategory == '影音'}">影音</option>
+											    <option value="周邊" th:selected="${searchCategory == '情報'}">周邊</option>
+											    <option value="閒聊" th:selected="${searchCategory == '情報'}">閒聊</option>
+											   
+											</select>
+					                    </div>
+					                    <div class="mb-3">
+					                        <label for="boardID" class="form-label">討論板</label>
+											<select class="form-select" id="boardID" name="boardID">
+											    <option value="">所有討論板</option>
+											    <option th:each="board : ${boardList}" 
+											            th:value="${board.boardID}" 
+											            th:text="${board.boardName}"
+											            th:selected="${board.boardID == searchBoardID}">
+											    </option>
+											</select>
+					                    </div>
+					                    <!-- 可以根據需要添加更多搜索條件 -->
+					                    <button type="reset" class="btn btn-secondary me-2">重置</button>
+										<button type="submit" class="btn btn-primary">搜索</button>
+					                </form>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+                    <!-- 發文按鈕 -->
+					<button id="postButton" class="btn btn-outline-primary btn-hover-shadow" onclick="goToAddArticle()">
+					  <i class="fa-regular fa-pen-to-square"></i>
+					</button>
+                </nav>
+                <!-- 文章列表  -->
+ 
+                <div id="articles">
+				    <table class="table table-hover">
+					    <thead>
+					        <tr>
+					           <th scope="col" class="col-index">#</th>
+					            <th scope="col" class="col-board">專區</th>
+					            <th scope="col" class="col-title">文章標題</th>
+					            <th scope="col" class="col-author">發文者</th>
+					            <th class="col-like">
+						            <i class="fa-regular fa-heart" style="color: #333333;"></i>
+						        </th>
+						        <th class="col-favorite">
+						            <i class="fa-regular fa-bookmark" style="color: #333333;"></i>
+						        </th>
+					            <th scope="col" class="col-time">文章更新時間</th>
+
+					        </tr>
+					    </thead>
+					    <tbody class="list">
+							<tr th:each="article, articleStat : ${articleList}" th:attr="data-category=${article.articleCategory}, data-board-id=${article.board.boardID}">
+							    <th scope="row" class="index" th:text="${articleStat.count}"></th>
+							    <td class="board" th:text="${article.board.boardName}"></td>
+								<td class="title">
+								    <a th:href="@{/article/OneArticle/{id}(id=${article.articleID})}">
+								        <span th:text="'[' + ${article.articleCategory} + '] '"></span>
+								        <span th:text="${article.articleTitle}"></span>
+								    </a>
+								</td>
+							    <td class="author" th:text="${article.generalMember.memberNickName}"></td>
+							    <td class="like-count" th:attr="data-article-id=${article.articleID}">載入中...</td>
+    							<td class="favorite-count" th:attr="data-article-id=${article.articleID}">載入中...</td>
+							    <td class="time" style="font-size: 0.9em;" th:text="${#dates.format(article.articleCreateTime, 'yyyy-MM-dd HH:mm')}"></td>
+
+							</tr>
+					    </tbody>
+					</table>									
+				    <nav aria-label="Page navigation">
+				        <ul id="paginationContainer" class="pagination justify-content-center"></ul>
+				    </nav>
+				</div>
+                
+            </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/forum.js"></script>
+</body>
+</html>

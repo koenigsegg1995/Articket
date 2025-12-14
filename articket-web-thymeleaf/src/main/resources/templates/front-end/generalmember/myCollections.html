@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>所有文章</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">所有文章</h1>
+        
+        <div th:if="${collections.empty}" class="alert alert-info">
+            你還沒有收藏任何文章。
+        </div>
+        
+        <div th:unless="${collections.empty}">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+
+                        <th>文章編號</th>
+                        <th>文章分類</th>
+                        <th>文章標題</th>
+                        <th>發文者</th>
+                        <th>討論版</th>
+                        <th>收藏時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="collection : ${collections}">
+
+                        <td th:text="${collection.article.articleID}">文章編號</td>
+                        <td th:text="${collection.article.articleCategory}">文章分類</td>
+                        <td>
+                            <a th:href="@{'/article/OneArticle/' + ${collection.article.articleID}}" 
+   								th:text="${collection.article.articleTitle}">文章標題</a>
+                        </td>
+                        <td th:text="${collection.article.generalMember.memberName}">發文者</td>
+                        <td th:text="${collection.article.board.boardName}">討論版</td>
+
+                       
+
+                        <td th:text="${#dates.format(collection.collectionCreateTime, 'yyyy-MM-dd HH:mm')}">收藏時間</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <a th:href="@{/generalmember/memberCenter}" class="btn btn-secondary">返回會員中心</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

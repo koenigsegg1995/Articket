@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理員後臺系統</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="menu-content">
+            <h2>管理員後臺系統</h2>
+            <a class="nav-link main-menu" data-toggle="submenu" data-target="member-management-submenu">會員管理</a>
+            <div id="member-management-submenu" class="submenu">
+                <a href="/generalmember/listAllGeneralMember" class="nav-link sub-menu" data-section="general-members">會員列表</a>
+                <a href="/partnermember/listAllPartnerMember" class="nav-link sub-menu" data-section="vendor-members">廠商列表</a>
+                <a href="#vendor-approval" class="nav-link sub-menu" data-section="vendor-approval">廠商審核</a>
+                <a href="#blacklist" class="nav-link sub-menu" data-section="blacklist">黑名單</a>
+            </div>
+            <a class="nav-link main-menu" data-toggle="submenu" data-target="venue-management-submenu">場地管理</a>
+            <div id="venue-management-submenu" class="submenu">
+                <a href="/venueRentalAdmin" class="nav-link sub-menu" data-section="venue-management1">場地審核</a>
+<!--                 <a href="#venue-management2" class="nav-link sub-menu" data-section="venue-management2">場地管理2</a> -->
+<!--                 <a href="#venue-management3" class="nav-link sub-menu" data-section="venue-management3">場地管理3</a> -->
+            </div>
+            <a class="nav-link main-menu" data-toggle="submenu" data-target="product-management-submenu">商品管理</a>
+            <div id="product-management-submenu" class="submenu">
+                <a href="#product-management1" class="nav-link sub-menu" data-section="product-management1">商品管理1</a>
+                <a href="#product-management2" class="nav-link sub-menu" data-section="product-management2">商品管理2</a>
+                <a href="#product-management3" class="nav-link sub-menu" data-section="product-management3">商品管理3</a>
+            </div>
+            <a class="nav-link" href="/adminProsecute" data-toggle="submenu" data-target="report-approval-submenu">檢舉審核</a>
+            
+            <a class="nav-link main-menu" data-toggle="submenu" data-target="news-submenu">消息公告</a>
+            <div id="news-submenu" class="submenu"> 
+                 <a href="/news/listAllNews" class="nav-link sub-menu" data-section="news">首頁消息</a> 
+                 <a href="/announcement/listAllAnnouncement" class="nav-link sub-menu" data-section="announcement">廠商公告</a>       
+            </div> 
+        </div>
+        <a href="/logout" class="logout-btn">登出</a>
+    </div>
+
+</body>
+</html>

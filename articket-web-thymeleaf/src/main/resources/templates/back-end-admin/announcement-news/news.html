@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁消息</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+ <!--  	   	<link rel="stylesheet" href="/css/admin.css">-->
+    	<link rel="stylesheet" href="/css/admin_sidebar.css">
+<link rel="icon" href="/images/icon.ico">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .content {
+    margin-left: 250px; /* 調整這個值使其與側邊欄寬度匹配 */
+    padding: 20px;
+}
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+/*justify-content: flex-end;*/
+justify-content: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        select,
+        button,
+        input{
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4a69bd;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3c56a5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4a69bd;
+            color: white;
+        }
+
+        #operate{
+            text-align: center;
+        }
+
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 新增搜尋和刪除按鈕 */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            /* 將按鈕靠右對齊 */
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /*	分頁*/
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .pagination a, .pagination span {
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover:not(.disabled) {
+            background-color: #4a69bd;
+            color: white;
+        }
+
+        .pagination .active {
+            background-color: #4a69bd;
+            color: white;
+            border: 1px solid #4a69bd;
+        }
+
+        .pagination .disabled {
+            color: #ddd;
+            pointer-events: none;
+            background-color: #f8f8f8;
+        }
+        
+         .search-form {
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .search-form input[type="text"],
+        .search-form input[type="date"] {
+            margin-right: 10px;
+            padding: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .search-form input[type="submit"] {
+            background-color: #4a69bd;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-form input[type="submit"]:hover {
+            background-color: #3c56a5;
+        }
+    </style>
+</head>
+
+<body>
+<!--	<div class="sidebar"></div>-->
+<div id="sidebar-placeholder"></div>
+
+
+<div class="content">
+    <div id="dynamic-content">
+        <div id="news-management" class="section">
+            <div class="container">
+                <h1>消息管理</h1>
+                
+     <!--            <form class="search-form" th:action="@{/news/listAllNews}" method="get">
+                        <label for="newsTitle">輸入公告標題:</label>
+                        <input type="text" id="newsTitle" name="newsTitle" th:value="${param.newsTitle}">
+                        
+                        <label for="newsCreateTime">公告日期:</label>
+                        <input type="date" id="newsCreateTime" name="newsCreateTime" th:value="${param.newsCreateTime}">
+                        
+                        <input type="submit" value="搜尋">
+                    </form>
+-->
+                    <div class="controls">
+                        <a th:href="@{/news/addNews}" class="btn btn-primary">+ 新增消息</a>
+                    </div>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>編號</th>
+                        <th>標題</th>
+                        <th>內容</th>
+                        <th>狀態</th>
+                        <th>發布時間</th>
+                        <th>修改</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="news : ${newsListData}">
+                        <td th:text="${news.newsID}"></td>
+                        <td th:text="${news.newsTitle}"></td>
+                        <td th:text="${news.newsContent}"></td>
+                        <td th:text="${news.newsStatus == 0 ? '隱藏' : (news.newsStatus == 1 ? '正常顯示' : '置頂')}"></td>
+                        <td th:text="${#dates.format(news.newsCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <!--							<td>-->
+                        <!--								<a th:href="@{/news/getOne_For_Update(newsID=${news.newsID})}" class="btn btn-secondary">修改</a>-->
+                        <!--							</td>-->
+                        <td>
+                            <form method="post" th:action="@{/news/getOne_For_Update}"
+                                  style="margin-bottom: 0px;">
+                                <input type="submit" value="修改">
+                                <input type="hidden"
+                                       name="newsID" th:value="${news.newsID}">
+                            </form>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination" th:if="${totalPages > 1}">
+                    <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+                    <a th:if="${currentPage > 1}" th:href="@{'/news/listAllNews?page=' + ${currentPage - 1}}">上一頁</a>
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/news/listAllNews?page=' + ${currentPage + 1}}">下一頁</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function() {
+            var error = /*[[${error}]]*/ null;
+            if (error) {
+                alert(error);
+            }
+        }
+        /*]]>*/
+    </script>
+	<script src="/js/admin.js"></script>
+	<script src="/js/admin_sidebar.js"></script>
+
+</body>
+
+</html>

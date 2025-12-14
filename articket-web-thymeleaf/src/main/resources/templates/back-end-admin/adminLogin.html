@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>管理員登入</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px;
+            background-color: #E18D96;
+            color: white;
+        }
+
+        .login-box {
+            width: 500px;
+            margin: 7% auto;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .login-logo h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .login-box-msg {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<div class="header">
+    <h1>管理員登入</h1>
+</div>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+        </div>
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">輸入您帳號密碼登入系統</p>
+                <form method="post" th:action="@{/adminLogin}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name = "administratorAccount" placeholder="請輸入帳號" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" name = "administratorPassword" placeholder="請輸入密碼" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

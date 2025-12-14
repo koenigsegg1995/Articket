@@ -1,0 +1,192 @@
+
+   /* 整體字型 */
+    body {
+	  font-family: 'Noto Sans TC', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	}
+    
+    /*返回文章列表按鈕*/
+    .btn-return {
+    background-color: #F8F9FA; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+	}
+	.btn-return:hover {
+	    background-color: #ebebeb;
+	    color: white;
+	}
+    
+    /* 文章容器 */
+    .article-container {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 添加陰影效果 */
+        border-radius: 8px; /* 圓角效果 */
+        padding: 20px; /* 內部填充 */
+        background-color: #fff; /* 白色背景 */
+    }
+
+    /* 文章標題 */
+    .article-header {
+        border-bottom: 1px solid #e0e0e0; /* 底部邊框 */
+        padding-bottom: 15px; /* 底部內邊距 */
+        margin-bottom: 20px; /* 底部外邊距 */
+    }
+
+    /* 文章內容 */
+    .article-content {
+        padding: 20px; /* 內部填充 */
+        background-color: #f9f9f9; /* 淺灰色背景 */
+        border-radius: 8px; /* 圓角效果 */
+    }
+
+    /* 按讚和收藏按鈕 */
+    .action-btn {
+        font-size: 1.5rem; /* 圖標大小 */
+        color: #6c757d; /* 按鈕顏色 */
+        background: none; /* 無背景 */
+        border: none; /* 無邊框 */
+        cursor: pointer; /* 鼠標指針樣式 */
+        transition: color 0.3s ease; /* 顏色變化過渡效果 */
+        display: inline-flex; /* 內聯彈性布局 */
+        align-items: center; /* 垂直居中對齊 */
+        margin-left: 15px; /* 左側外邊距 */
+    }
+
+    /* 按鈕懸停效果 */
+    .action-btn:hover {
+        color: #0056b3; /* 懸停時的顏色 */
+    }
+
+    /* 按讚和收藏數量 */
+    .action-btn .count {
+        font-size: 1rem;
+        margin-left: 5px; /* 左側外邊距 */
+    }
+
+    /* 分類版名稱 */
+    .category-badge {
+	    background-color: #FDBCB4; /* 改為藍色背景 */
+	    color: #ffffff; /* 文字顏色改為白色,以增加對比度 */
+        padding: 0.25em 0.6em; /* 內部填充 */
+        border-radius: 0.25rem; /* 圓角效果 */
+        font-size: 0.875em; /* 字體大小 */
+        font-weight: 600; /* 字體粗細 */
+        margin-right: 10px; /* 右側外邊距 */
+    }
+    
+    /* 文章作者 */
+	.text-muted {
+		font-weight: bold;
+    }
+    
+    
+    
+    
+	/* 留言區域 */
+	.comments-section {
+	    background-color: #f8f9fa;
+	    border-radius: 8px;
+	    padding: 20px;
+	    margin-top: 30px;
+	}
+	
+	
+	/* 留言標題圖標 */
+	.comments-section h3::before {
+	    content: "\f075"; /* FontAwesome的評論圖標Unicode */
+	    font-family: "Font Awesome 5 Free";
+	    font-weight: 400; /* Regular樣式 */
+	    margin-right: 10px; /* 圖標和文字之間的間距 */
+	    font-size: 1.1em; /* 調整圖標大小 */
+	}
+	
+	/* 留言標題 */
+	.comments-section h3 {
+		color: #343a40;
+	    border-bottom: 2px solid #dee2e6;
+	    padding-bottom: 10px;
+	    display: flex;
+	    align-items: center;
+	    font-size: 1.5rem;
+	    color: #333;
+	}
+	
+	/* 留言數量外框 */
+	.comment-count-wrapper {
+	    margin-left: 10px;
+	    font-size: 0.8em;
+	    color: #666;
+	    font-weight: normal;
+	}
+	
+	/* 留言數量的數字 */
+	#comment-count {
+	    font-weight: bold;
+	    color: #333;
+	}
+	
+	
+	.avatar-container {
+	    width: 50px;
+	    height: 50px;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	}
+	
+	/* 會員頭像 */
+	.member-picture {
+	    width: 100%;
+	    height: 100%;
+	    border-radius: 50%;
+	    object-fit: cover;
+	}
+	
+	/* 會員默認頭像 */
+	.comment-avatar-icon {
+	    font-size: 50px;
+	    color: #ccc;
+	}
+	
+	/* 個別留言 */
+	#comments-list .card {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+	}
+	
+	#comments-list .card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+	
+	/* 留言內容 */
+	#comments-list .card-body {
+	    padding: 15px;
+	}
+	
+	#comments-list .text-muted {
+    font-size: 0.85rem;
+}
+	
+	/* 留言者 */
+	#comments-list .card-title {
+	    font-size: 1rem;
+	    font-weight: bold;
+	    color: #333;
+	    margin-bottom: 0;
+	    margin-left: 10px;
+	}
+	
+	/* 留言內容 */
+	#comments-list .card-text {
+	    margin-top: 10px;
+	}
+	
+	/* 留言表單 */
+	#comment-form {
+	    background-color: #ffffff;
+	    border-radius: 8px;
+	    padding: 20px;
+	    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	}

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新增消息</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="/css/admin.css">-->
+  <link rel="stylesheet" href="/css/admin_sidebar.css">
+<link rel="icon" href="/images/icon.ico">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+      
+        .content {
+    margin-left: 250px; /* 調整這個值使其與側邊欄寬度匹配 */
+    padding: 20px;
+}
+
+    .container {
+      /* background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      /* margin-bottom: 20px; */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      height: 150px;
+    }
+
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    /* select,
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4a69bd;
+      color: white;
+      cursor: pointer;
+    } */
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+
+    a.btn-secondary{
+      
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #3c56a5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4a69bd;
+      color: white;
+    }
+
+    #operate {
+      text-align: center;
+    }
+
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      border-radius: 10px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-primary {
+      background-color: #4a69bd;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .button-group {
+      display: flow;
+      justify-content: flex-end;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #4a69bd;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3c56a5;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    @media (max-width: 768px) {
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+<div id="sidebar-placeholder"></div>
+
+
+
+<div class="content">
+  <div id="dynamic-content">
+    <div class="container">
+      <h1>新增消息</h1>
+
+      <form th:action="@{/news/insert}" th:object="${news}" method="post">
+        <div class="form-group">
+          <label for="newsTitle">標題:</label>
+          <input type="text" id="newsTitle" th:field="*{newsTitle}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="newsContent">內容:</label>
+          <textarea id="newsContent" th:field="*{newsContent}" required></textarea>
+        </div>
+
+<!-- 選項2：只顯示當前ID的固定欄位 -->
+<div class="form-group">
+    <label for="administrator">管理員ID:</label>
+    <input type="text" id="administrator" th:value="*{administrator.administratorID}" 
+           class="form-control" readonly>
+    <input type="hidden" th:field="*{administrator.administratorID}">
+</div>
+
+        <div class="form-group">
+          <label>狀態:</label>
+          <input type="radio" id="status1" th:field="*{newsStatus}" value="1">
+          <label for="status1">啟用</label>
+          <input type="radio" id="status0" th:field="*{newsStatus}" value="0">
+          <label for="status0">隱藏</label>
+          <input type="radio" id="status2" th:field="*{newsStatus}" value="2">
+          <label for="status2">置頂</label>
+        </div>
+
+        <!--        <button type="submit" class="btn-primary">新增</button>-->
+
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">新增</button>
+          <a class="btn btn-secondary" th:href="@{/news/listAllNews}">取消</a>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--      <script>-->
+<!--        document.getElementById('addAnnouncementForm').addEventListener('submit', function (e) {-->
+<!--          e.preventDefault();-->
+<!--          // 這裡可以添加表單提交的邏輯，例如發送 AJAX 請求到後端-->
+<!--          alert('公告新增成功！');-->
+<!--          // 重置表單-->
+<!--          this.reset();-->
+<!--        });-->
+<!--      </script>-->
+</div>
+</div>
+  <script src="/js/admin.js"></script>
+  <script src="/js/admin_sidebar.js"></script>
+
+<!--  <script type="text/javascript">-->
+<!--    //清除提示信息-->
+<!--    function hideContent(d) {-->
+<!--      document.getElementById(d).style.display = "none";-->
+<!--    }-->
+<!--  </script>-->
+</body>
+
+</html>

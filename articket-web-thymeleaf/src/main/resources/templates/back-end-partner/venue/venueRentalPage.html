@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>場地申請</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/venueRentalPage.css">
+<link rel="stylesheet" href="/css/partner_sidebar.css">
+</head>
+<body>
+	<div id="sidebar-placeholder"></div>
+
+	<div class="title-container">
+		<!-- 標題的容器 -->
+		<div style="text-align: center;">
+			<h2 class="h2 text-primary font-weight-bold"
+				style="font-size: 2.25rem;">場館申請</h2>
+		</div>
+	</div>
+
+	<div class="form-container">
+		<!-- 新增 form-container 類別的 div -->
+		<div class="form-content">
+			<!-- 新增 form-content 類別的 div -->
+
+			<div align="center">
+				<h3>
+					<b>所有欄位皆為必填欄位</b>
+				</h3>
+				<form th:action="@{/venueRentalPage/insert}" method="post"
+					th:object="${venueRental}" enctype="multipart/form-data">
+					<div class="form-group col-md-6">
+						<label>場館：</label> <select class="form-control"
+							th:field="*{venue.venueID}">
+<!-- 							<option value="">請選擇場館</option> -->
+							<!-- 動態生成選項 -->
+							<option th:each="venue : ${venueList}"
+								th:value="${venue.venueID}" th:text="${venue.venueName}"></option>
+						</select>
+					</div>
+
+
+
+					<div>
+						<label style="display: none;">廠商會員ID：</label> <input type="hidden"
+							th:value="${session.partnerID}" readonly />
+					</div>
+
+					<div>
+						<label>活動名稱：</label> <input type="text" th:field="*{activityName}"
+							onclick="hideContent('activityName.errors');" /><br /> <span
+							th:if="${#fields.hasErrors('activityName')}"
+							th:errors="*{activityName}" class="error"
+							id="activityName.errors"></span>
+					</div>
+
+					<div>
+						<input type="hidden" th:field="*{venueRentalStatus}"
+							onclick="hideContent('venueRentalStatus.errors');" /><br /> <span
+							th:if="${#fields.hasErrors('venueRentalStatus')}"
+							th:errors="*{venueRentalStatus}" class="error"
+							id="venueRentalStatus.errors"></span>
+					</div>
+
+					<div>
+						<label>租用開始日期：</label> <input type="date"
+							th:field="*{venueRentalStartDate}" id="venueRentalStartDate"
+							onclick="hideContent('venueRentalStartDate.errors');" /><br />
+						<span th:if="${#fields.hasErrors('venueRentalStartDate')}"
+							th:errors="*{venueRentalStartDate}" class="error"
+							id="venueRentalStartDate.errors"></span>
+					</div>
+
+					<div>
+						<label>租用結束日期：</label> <input type="date"
+							th:field="*{venueRentalEndDate}" id="venueRentalEndDate"
+							onclick="hideContent('venueRentalEndDate.errors');" /><br /> <br />
+						<span th:if="${#fields.hasErrors('venueRentalEndDate')}"
+							th:errors="*{venueRentalEndDate}" class="error"
+							id="venueRentalEndDate.errors"></span>
+					</div>
+
+					<div class="form-group">
+						<label for="proposalFile">上傳活動提案(PDF)</label> <input type="file"
+							name="proposalFile" id="proposalFile" accept="application/pdf"
+							class="form-control"> <span
+							th:if="${#fields.hasErrors('proposal')}" th:errors="*{proposal}"
+							class="error text-danger"></span>
+					</div>
+
+					<!-- 					<div> -->
+					<!-- 						<label>場地申請編號：</label> <input type="text" -->
+					<!-- 							th:field="*{venueRentalCode}" -->
+					<!-- 							onclick="hideContent('venueRentalCode.errors');" /><br /> <span -->
+					<!-- 							th:if="${#fields.hasErrors('venueRentalCode')}" -->
+					<!-- 							th:errors="*{venueRentalCode}" class="error" -->
+					<!-- 							id="venueRentalCode.errors"></span> -->
+					<!-- 					</div> -->
+
+					<div class="text-right">
+						<button type="submit" id="submit" class="btn btn-primary">送出申請</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- form-content div 結束 -->
+	</div>
+	<!-- form-container div 結束 -->
+	<script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const startDateInput = document.getElementById('venueRentalStartDate');
+            const endDateInput = document.getElementById('venueRentalEndDate');
+
+            const today = new Date();
+            const minDate = new Date(today.setDate(today.getDate() + 30));
+            const minDateString = minDate.toISOString().split('T')[0];
+
+            startDateInput.min = minDateString;
+            endDateInput.min = minDateString;
+
+            startDateInput.addEventListener('change', function() {
+                const selectedStartDate = new Date(this.value);
+                endDateInput.min = this.value; // Allow same day selection
+
+                if (endDateInput.value && new Date(endDateInput.value) < selectedStartDate) {
+                    endDateInput.value = this.value; // Set end date to start date if it's earlier
+                }
+            });
+        });
+    </script>
+
+	<script src="/js/venueRentalPage.js"></script>
+	<script src="/js/partner_sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+}
+
+#header, #footer {
+  flex-shrink: 0;
+}
+
+
+ .main-content {
+   flex-grow: 1;
+   padding: 20px;
+ }
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 300;
+}
+
+.board-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+input[type="text"], input[type="file"], textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="file"]:focus, textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.editor-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.toolbar {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.toolbar button {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.toolbar button:hover {
+    color: #3498db;
+    background-color: #f0f0f0;
+}
+
+.color-picker-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.color-picker-button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.color-picker-button:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/*.save-button {
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 20px auto;
+    width: 200px;
+}
+
+.save-button:hover {
+    background-color: #27ae60;
+}*/
+
+.file-input-wrapper {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+}
+
+.btn-file-input {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-file-input:hover {
+    opacity: 0.8;
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-preview-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.image-preview {
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.remove-image-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-image-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.form-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.form-container select,
+.form-container input,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* 調整 Summernote 編輯器內容的樣式 */
+.note-editable p {
+    margin-bottom: 0.5em !important;
+    line-height: 1.5 !important;
+}
+
+/* 調整輸出內容的樣式 */
+.summernote-content p {
+    margin-bottom: 0.5em !important;
+    line-height: 1.5 !important;
+}
+
+/* 移除最後一個段落的下邊距 */
+.note-editable p:last-child,
+.summernote-content p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/*送出文章按鈕*/
+.btn.btn-secondary {
+    background-color: #e0e0e0 !important;  /* 淡灰色 */
+    border-color: #d0d0d0 !important;
+    color: #333333 !important;  /* 深灰色文字，確保可讀性 */
+}
+
+.btn.btn-secondary:hover {
+    background-color: #d0d0d0 !important;  /* 稍深一點的灰色 */
+    border-color: #c0c0c0 !important;
+}
+
+.btn.btn-secondary:focus,
+.btn.btn-secondary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(208, 208, 208, 0.5) !important;  /* 焦點效果 */
+}
+
+.btn.btn-secondary:active,
+.btn.btn-secondary.active {
+    background-color: #c0c0c0 !important;  /* 更深的灰色，用於點擊狀態 */
+    border-color: #b0b0b0 !important;
+}

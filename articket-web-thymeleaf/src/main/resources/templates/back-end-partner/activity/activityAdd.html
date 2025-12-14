@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動新增</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/partner_sidebar.css">
+    <link rel="icon" href="/images/icon.ico">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            overflow: hidden;
+        }
+
+        #sidebar-placeholder {
+            width: 250px;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        #main-container {
+            flex-grow: 1;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        #main {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        #title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #inputBlock {
+            width: 95%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .form-group > strong,
+        .form-group > label > strong {
+            width: 100px;
+            text-align: right;
+            padding-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .form-input {
+            flex-grow: 1;
+            max-width: calc(100% - 100px);
+        }
+
+        .form-input input[type="text"],
+        .form-input input[type="date"] {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: none;
+        }
+
+        #blob_holder {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+
+        #blob_holder img {
+            margin: 5px;
+            object-fit: cover;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .button-container button {
+            margin: 0 10px;
+            padding: 5px 15px;
+            width: 100px;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        .error {
+            display: block;
+            margin-top: 5px;
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-placeholder"></div>
+    
+    <div id="main-container">
+        <h1 id="title"><strong>活動新增</strong></h1>
+        <div id="inputBlock">
+            <form th:action="@{/activity/add}" method="post" th:object="${activity}" enctype="multipart/form-data">
+                <input type="hidden" name="venueRentalID" th:value="${venueRental.venueRentalID}">
+
+                <div class="form-group">
+                    <strong>名稱:</strong>
+                    <div class="form-input">
+                        <input type="text" name="activityName" th:value="${venueRental.activityName}" onclick="hideContent('activityName.errors');"/>
+                        <span  th:if="${#fields.hasErrors('activityName')}" th:errors="*{activityName}" class="error" id="activityName.errors"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <strong>類型:</strong>
+                    <div class="form-input">
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="演唱會" onclick="hideContent('activityTag.errors');" th:checked="*{activityTag == null or activityTag == '演唱會'}"/>
+                            演唱會
+                        </label>
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="音樂劇" onclick="hideContent('activityTag.errors');" />
+                            音樂劇
+                        </label>
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="戲劇" onclick="hideContent('activityTag.errors');" />
+                            戲劇
+                        </label>
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="舞蹈" onclick="hideContent('activityTag.errors');" />
+                            舞蹈
+                        </label>
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="講座" onclick="hideContent('activityTag.errors');" />
+                            講座
+                        </label>
+                        <label>
+                            <input type="radio" th:field="*{activityTag}" value="其他" onclick="hideContent('activityTag.errors');" />
+                            其他
+                        </label>
+                        <span th:if="${#fields.hasErrors('activityTag')}" th:errors="*{activityTag}" class="error" id="activityTag.errors"></span>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <strong>圖片:</strong>
+                    <div class="form-input">
+                        <input type="file" th:field="*{activityPictures}" onclick="previewImage(); hideContent('activityTag.errors');" multiple="multiple" />
+                        <span th:if="${#fields.hasErrors('activityPictures')}" th:errors="*{activityPictures}" class="error" id="activityPictures.errors"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <strong>介紹:</strong>
+                    <div class="form-input">
+                        <textarea th:field="*{activityContent}" onclick="hideContent('activityContent.errors');"></textarea>
+                        <span th:if="${#fields.hasErrors('activityContent')}"
+                               th:errors="*{activityContent}" 
+                               class="error" 
+                               id="activityContent.errors">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" id="submit">送出修改</button>
+                    <a href="activityUnadd">
+                        <button type="button" id="back">回上頁</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/partner.js"></script>
+    <script src="/js/partner_sidebar.js"></script>
+    <script type="text/javascript">
+        function hideContent(d) {
+             document.getElementById(d).style.display = "none";
+        }
+        
+        var filereader_support = typeof FileReader != 'undefined';
+        if (!filereader_support) {
+            alert("No FileReader support");
+        }
+
+        acceptedTypes = {
+                'image/png' : true,
+                'image/jpeg' : true,
+                'image/gif' : true
+        };
+
+        function previewImage() {
+            var upfile1 = document.getElementById("activityPictures");
+            upfile1.addEventListener("change", function(event) {
+                var files = event.target.files || event.dataTransfer.files;
+                for (var i = 0; i < files.length; i++) {
+                    previewfile(files[i])
+                }
+            }, false);
+        }
+
+        function previewfile(file) {
+            if (filereader_support === true && acceptedTypes[file.type] === true) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var image = new Image();
+                    image.src = event.target.result;
+                    image.width = 100;
+                    image.height = 75;
+                    image.style.objectFit = 'cover';
+                    image.style.margin = '5px';
+                    blob_holder.appendChild(image);
+                };
+                reader.readAsDataURL(file);
+                document.getElementById('submit').disabled = false;
+            } else {
+                // 錯誤處理邏輯
+            }
+        }
+    </script>
+</body>
+</html>

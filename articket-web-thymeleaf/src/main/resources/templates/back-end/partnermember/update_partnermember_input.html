@@ -1,0 +1,181 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>廠商資料修改</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/admin_sidebar.css">
+<style>
+body {
+	background-color: #f8f9fa;
+}
+
+.content {
+	margin-left: 250px; /* 與側邊欄寬度相同 */
+	padding: 20px;
+}
+
+.form-container {
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+}
+
+.form-group label {
+	font-weight: bold;
+}
+
+.error {
+	color: red;
+	font-size: 0.9em;
+}
+
+@media ( max-width : 768px) {
+	.content {
+		margin-left: 0;
+	}
+}
+
+.btn-container {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.btn-container .btn {
+	min-width: 120px;
+}
+</style>
+
+</head>
+<body>
+	<div id="sidebar-placeholder"></div>
+
+	<div class="content">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<div class="form-container">
+						<h2 class="text-center mb-4">廠商資料修改</h2>
+						<p class="text-center text-muted mb-4">所有欄位皆為必填欄位</p>
+
+						<form th:action="@{update}" method="post"
+							th:object="${partnerMember}">
+							<div class="form-group">
+								<label>廠商編號:</label> <input type="text" th:field="*{partnerID}"
+									class="form-control-plaintext font-weight-bold" readonly />
+							</div>
+
+							<input type="hidden" th:field="*{taxID}" />
+
+							<div class="form-group">
+								<label>公司名稱:</label> <input type="text"
+									th:field="*{partnerName}" class="form-control"
+									onclick="hideContent('partnerName.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerName')}"
+									th:errors="*{partnerName}" class="error"
+									id="partnerName.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>抬頭:</label> <input type="text"
+									th:field="*{partnerHeading}" class="form-control"
+									onclick="hideContent('partnerHeading.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerHeading')}"
+									th:errors="*{partnerHeading}" class="error"
+									id="partnerHeading.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>地址:</label> <input type="text"
+									th:field="*{partnerAddress}" class="form-control"
+									onclick="hideContent('partnerAddress.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerAddress')}"
+									th:errors="*{partnerAddress}" class="error"
+									id="partnerAddress.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>連絡電話:</label> <input type="text"
+									th:field="*{partnerPhone}" class="form-control"
+									onclick="hideContent('partnerPhone.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerPhone')}"
+									th:errors="*{partnerPhone}" class="error"
+									id="partnerPhone.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>連絡人:</label> <input type="text"
+									th:field="*{partnerContactPerson}" class="form-control"
+									onclick="hideContent('partnerContactPerson.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerContactPerson')}"
+									th:errors="*{partnerContactPerson}" class="error"
+									id="partnerContactPerson.errors"></span>
+							</div>
+
+							<input type="hidden" th:field="*{partnerPassword}" />
+
+							<div class="form-group">
+								<label>電子信箱:</label> <input type="email"
+									th:field="*{partnerEmail}" class="form-control"
+									onclick="hideContent('partnerEmail.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerEmail')}"
+									th:errors="*{partnerEmail}" class="error"
+									id="partnerEmail.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>狀態:</label> <input type="text"
+									th:field="*{partnerAccountStatus}" class="form-control"
+									onclick="hideContent('partnerAccountStatus.errors');" /> <span
+									th:if="${#fields.hasErrors('partnerAccountStatus')}"
+									th:errors="*{partnerAccountStatus}" class="error"
+									id="partnerAccountStatus.errors"></span>
+							</div>
+
+							<div class="btn-container">
+								<button type="button" class="btn btn-secondary"
+									onclick="goBack()">回上頁</button>
+								<button type="submit" id="submit" class="btn btn-primary">送出修改</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//清除提示信息
+		function hideContent(d) {
+			document.getElementById(d).style.display = "none";
+		}
+
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/memberListAll.js"></script>
+	<script src="/js/admin_sidebar.js"></script>
+</body>
+</html>

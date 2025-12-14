@@ -1,0 +1,230 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員資料修改</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/admin_sidebar.css">
+
+<style>
+body {
+	background-color: #f8f9fa;
+}
+
+.content {
+	margin-left: 250px; /* 與側邊欄寬度相同 */
+	padding: 20px;
+}
+
+.form-container {
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+}
+
+.form-group label {
+	font-weight: bold;
+}
+
+.error {
+	color: red;
+	font-size: 0.9em;
+}
+
+@media ( max-width : 768px) {
+	.content {
+		margin-left: 0;
+	}
+}
+
+.btn-container {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.btn-container .btn {
+	min-width: 120px;
+}
+</style>
+</head>
+<body>
+	<div id="sidebar-placeholder"></div>
+
+	<div class="content">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<div class="form-container">
+						<h3 class="text-center mb-4">
+							<b>會員資料修改</b>
+						</h3>
+						<p class="text-center text-muted mb-4">所有欄位皆為必填欄位</p>
+
+						<form th:action="@{update}" method="post"
+							th:object="${generalMember}" enctype="multipart/form-data">
+							<div class="form-group">
+								<label>會員編號:</label> <input type="text" th:field="*{memberID}"
+									class="form-control-plaintext font-weight-bold" readonly />
+							</div>
+
+							<div class="form-group">
+								<label>帳號:</label> <input type="text"
+									th:field="*{memberAccount}" class="form-control"
+									onclick="hideContent('memberAccount.errors');" /> <span
+									th:if="${#fields.hasErrors('memberAccount')}"
+									th:errors="*{memberAccount}" class="error"
+									id="memberAccount.errors"></span>
+							</div>
+
+							<input type="hidden" th:field="*{memberPassword}" />
+
+							<div class="form-group">
+								<label>姓名:</label> <input type="text" th:field="*{memberName}"
+									class="form-control"
+									onclick="hideContent('memberName.errors');" /> <span
+									th:if="${#fields.hasErrors('memberName')}"
+									th:errors="*{memberName}" class="error" id="memberName.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>電話:</label> <input type="text" th:field="*{memberPhone}"
+									class="form-control"
+									onclick="hideContent('memberPhone.errors');" /> <span
+									th:if="${#fields.hasErrors('memberPhone')}"
+									th:errors="*{memberPhone}" class="error"
+									id="memberPhone.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>暱稱:</label> <input type="text"
+									th:field="*{memberNickName}" class="form-control"
+									onclick="hideContent('memberNickName.errors');" /> <span
+									th:if="${#fields.hasErrors('memberNickName')}"
+									th:errors="*{memberNickName}" class="error"
+									id="memberNickName.errors"></span>
+							</div>
+
+							<div class="form-group">
+								<label>地址:</label> <input type="text"
+									th:field="*{memberAddress}" class="form-control"
+									onclick="hideContent('memberAddress.errors');" /> <span
+									th:if="${#fields.hasErrors('memberAddress')}"
+									th:errors="*{memberAddress}" class="error"
+									id="memberAddress.errors"></span>
+							</div>
+
+							<input type="hidden" th:field="*{nationalID}" /> <input
+								type="hidden" th:field="*{gender}" /> <input type="hidden"
+								th:field="*{birthday}" />
+
+							<div class="form-group">
+								<label>照片:</label> <input type="file"
+									th:field="*{memberPicture}" class="form-control-file"
+									onclick="previewImage()" multiple="multiple"
+									onchange="hideContent('memberPicture.errors');" /> <span
+									class="error" th:utext="${errorMessage}"
+									id="memberPicture.errors"></span>
+								<div id="blob_holder" class="mt-2"></div>
+							</div>
+
+							<div class="btn-container mt-4">
+                                <button type="button" class="btn btn-secondary" onclick="goBack()">回上頁</button>
+                                <button type="submit" id="submit" class="btn btn-primary">確認送出</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- JavaScript part -->
+	<script type="text/javascript">
+		//清除提示信息
+		function hideContent(d) {
+			document.getElementById(d).style.display = "none";
+		}
+
+		//照片上傳-預覽用
+		var filereader_support = typeof FileReader != 'undefined';
+		if (!filereader_support) {
+			alert("No FileReader support");
+		}
+		acceptedTypes = {
+			'image/png' : true,
+			'image/jpeg' : true,
+			'image/gif' : true
+		};
+		function previewImage() {
+			var upfile1 = document.getElementById("memberPicture");
+			upfile1.addEventListener("change", function(event) {
+				var files = event.target.files || event.dataTransfer.files;
+				for (var i = 0; i < files.length; i++) {
+					previewfile(files[i])
+				}
+			}, false);
+		}
+		function previewfile(file) {
+			if (filereader_support === true
+					&& acceptedTypes[file.type] === true) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					var image = new Image();
+					image.src = event.target.result;
+					image.width = 100;
+					image.height = 75;
+					image.border = 2;
+					if (blob_holder.hasChildNodes()) {
+						blob_holder.removeChild(blob_holder.childNodes[0]);
+					}
+					blob_holder.appendChild(image);
+				};
+				reader.readAsDataURL(file);
+				document.getElementById('submit').disabled = false;
+			} else {
+				blob_holder.innerHTML = "<div  style='text-align: left;'>"
+						+ "● filename: "
+						+ file.name
+						+ "<br>"
+						+ "● ContentTyp: "
+						+ file.type
+						+ "<br>"
+						+ "● size: "
+						+ file.size
+						+ "bytes"
+						+ "<br>"
+						+ "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+				document.getElementById('submit').disabled = true;
+			}
+		}
+		function goBack() {
+            window.history.back();
+        }
+	</script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/memberListAll.js"></script>
+	<script src="/js/admin_sidebar.js"></script>
+
+</body>
+</html>

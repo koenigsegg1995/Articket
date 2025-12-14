@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/header_footer.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+</head>
+<body>
+    <div class="header">
+        <div class="top-bar">
+            <div class="logo">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/logo.png}" alt="Logo">
+                </a>
+            </div>
+            <div class="search-container">
+                <div class="icons">                
+                    <a href="/cart/view"><i class="fas fa-shopping-cart"></i> 購物車</a>
+	<nav>
+    <div class="nav-container">
+        <!-- 檢查用戶是否已登入 -->
+        <span th:if="${session.memberName == null}">
+            <a th:href="@{/generalmember/login}">登入</a>
+        </span>
+        <span th:if="${session.memberName == null}">
+            <a th:href="@{/generalmember/register}">註冊</a>
+        </span>
+        <!-- 用戶已登入的選單 -->
+        <span th:if="${session.memberName != null}">
+            <a th:href="@{/generalmember/memberCenter}">會員中心</a>
+        </span>
+        <span th:if="${session.memberName != null}">
+            <a th:href="@{/generalmember/logout}">登出</a>
+        </span>
+    </div>
+</nav>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg bg-transparent">        
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/news/allNews">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/activity/activityInfoAll}">活動資訊</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="/ticketInfo">票務須知</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/venue/venueIntroduction">場館介紹</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/article/forum">社群空間</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/commodity/mall_activity" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            購物商城
+                        </a>
+                        
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="/qa">常見問題</a>
+
+                    </li>
+                </ul>            
+        </nav>
+    </div>
+    </header>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

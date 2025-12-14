@@ -1,0 +1,95 @@
+/* 主要內容區域樣式 */
+.content {
+    padding: 20px;
+}
+
+/* 表格樣式 */
+.report-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.report-table th {
+    background-color: #E18D96;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-bottom-color: #ff9999;
+}
+
+/* 如果只想修改第一行標題的底部邊框顏色 */
+.report-table thead th {
+    border-bottom-color: #ff9999;
+}
+
+/* 如果表格使用了 Bootstrap 的類，你可能需要增加特異性 */
+.table-bordered > thead > tr > th {
+    border-bottom-color: #ff9999 !important;
+}
+
+
+.report-table td {
+    text-align: center;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.report-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.report-table .btn {
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+/* 頁面標題樣式 */
+.page-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 響應式調整 */
+/* 大螢幕設備（≥992px） */
+@media (min-width: 992px) {
+    main {
+        padding-left: 40px;
+    }
+}
+
+/* 中等螢幕設備（≥768px 到 <992px） */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #sidebar-placeholder {
+        width: 200px;
+    }
+    main {
+        margin-left: 200px;
+    }
+}
+
+/* 小螢幕設備（<768px） */
+@media (max-width: 767.98px) {
+    #sidebar-placeholder {
+        position: static;
+        height: auto;
+        width: 100%;
+        padding-top: 0;
+    }
+    main {
+        margin-left: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .page-title {
+        font-size: 24px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+    }
+}

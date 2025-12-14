@@ -1,0 +1,162 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>廠商資料管理 - select_page.html</title>
+
+<head th:insert="~{/back-end/partnermember/included-fragment}"></head>
+<style type="text/css">
+
+	button {
+		padding: 5px;
+	}
+	form {
+		display: table;
+	}
+	form div {
+		display: table-row;
+	}
+	label, input, span, select {
+		display: table-cell;
+		margin: 2px;
+		text-align: left;		
+	}
+	input[type=text], input[type=password], select, textarea {
+		width: 200px;
+		margin: 2px;
+	}
+	form div div {
+		display: table-cell;
+	}
+	.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    span {
+		display: inline-block;
+		width: 150px;
+		text-align: left;
+		font-weight: bold;
+	}
+	div.a {
+        display: inline-block;
+        width: 50%;
+        height: auto;
+        padding: 5px;
+        border: 0px solid blue;    
+        background-color: white; 
+    }
+    div.b {
+        position: absolute; 
+        bottom: 1%; 
+        right: 2%; 
+        width: 45%;
+        padding: 5px; 
+        border: 1px solid blue;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>廠商資料管理 - select_page.html</h2>
+		 <h3><a class="navbar-brand" th:href="@{/}"><img th:src="@{/images/back1.gif}">回index.html</a></h3></div>
+</nav>
+
+	<h4><span>資料查詢:</span></h4>
+	<!-- 錯誤表列 -->
+	<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
+	<div class="a">
+	  <ul>
+		<li><h5><a href='listAllPartnerMember'>List</a> 所有廠商列表. <br><br></h5></li>
+
+		<li>
+			<form method="post" th:action="@{getOne_For_Display}">
+				輸入廠商編號:
+				<input type="text" name="partnerID" th:value="${param.partnerID}" > 
+				<input type="submit" value="送出"> (輸入如1)
+			</form><br>
+		</li>
+
+		
+		
+		
+		<li><form method="post" th:action="@{getOne_For_Display}">
+				選擇統一編號:
+				<select name="partnerID">
+				     <option th:each="partnerMember : ${partnerMemberListData}" th:value="${partnerMember.partnerID}" th:text="${partnerMember.taxID}" />
+			    </select>
+				<input type="submit" value="送出">
+			</form><br>
+		</li>
+
+		
+		
+		
+		<li><form method="post" th:action="@{getOne_For_Display}">
+				選擇員工姓名:
+				<select name="partnerID">
+				     <option th:each="partnerMember : ${partnerMemberListData}" th:value="${partnerMember.partnerID}" th:text="${partnerMember.partnerName}" />
+			    </select>
+				<input type="submit" value="送出">
+			</form><br>
+		</li>
+		
+		
+		
+		
+<!--  萬用複合查詢-以下欄位-可隨意增減 -->
+  
+  <li>   
+    <form method="post" th:action="@{listpartnerMember_ByCompositeQuery}">
+        <font color=blue>萬用複合查詢:</font><br>
+        輸入廠商編號: 
+        <input type="text" name="partnerID" value="1"><br>
+           
+        輸入地址: 
+        <input type="text" name="partnerAddress" value="台北市"><br>
+       
+        輸入統一編號: 
+        <input type="text" name="taxID" value="12345678"><br>
+    
+<!--         選擇活動:  -->
+<!--   		<select th:field="*{activity.activityID}"> -->
+<!-- 			<option value="請選擇"> -->
+<!-- 			<option th:each="deptVO : ${deptListData}" th:value="${deptVO.deptno}" th:text="${deptVO.dname}" /> -->
+<!-- 		</select><br> -->
+
+           
+        
+<!--         雇用日期: -->
+<!-- 	    <input name="hiredate" type="date"> -->
+	    
+        <input type="submit" value="送出">
+     
+     </form>
+  </li>
+</ul>	
+	
+      <h4><span>廠商管理</span></h4>
+	  <ul>
+		  <li><h5><a href='addPartnerMember'>Add</a> a new Emp.</h5></li>
+	  </ul>
+	</div>
+    
+    <!-- 旗標getOne_For_Display見EmpnoController.java的第74行 -->
+    <div class="b" th:if="${getOne_For_Display}">
+        <!--使用listOneEmp.html網頁的listOneEmp-div片段--> <!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" --> <!-- 使用th:replace也可 -->
+        <div th:insert="~{/back-end/partnermember/listOnePartnerMember :: listOnePartnerMember-div}"></div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常見問題</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style> 
+     body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .faq-question {
+            font-weight: bold;
+            color: #2980b9;
+            cursor: pointer;
+        }
+        .faq-answer {
+            margin-top: 10px;
+            display: none;
+        }
+        .faq-question::before {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+        .faq-question.active::before {
+            transform: rotate(180deg);
+        }
+
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 10px;
+            }
+            .header .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 5px;
+            }
+            .login-popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                width: 300px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"></div>
+    
+    <div class="content-wrapper">
+     <h1>常見問題</h1>
+        
+        <div class="faq-item">
+            <div class="faq-question">如何註冊帳號？</div>
+            <div class="faq-answer">
+                <p>點擊網頁右上角的「註冊」按鈕,填寫必要的個人資訊,包括電子郵件、密碼等。完成後,您將收到一封確認郵件,點擊郵件中的連結即可啟用帳號。</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">如何查看我的訂單狀態？</div>
+            <div class="faq-answer">
+                <p>登入您的帳號後,點擊「我的帳戶」,然後選擇「我的訂單」。您可以在這裡查看所有訂單的狀態,包括待付款、已付款、已出票等信息。</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">如果活動取消或延期,我該如何處理？</div>
+            <div class="faq-answer">
+                <p>如遇活動取消或延期,我們會第一時間通過郵件或簡訊通知您。對於取消的活動,我們將自動為您辦理退票。如果是延期,您可以選擇保留票券或申請退票。具體處理方式將在通知中說明。</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">可以更改或取消我的訂單嗎？</div>
+            <div class="faq-answer">
+                <p>一般情況下,訂單確認後不可更改或取消。如有特殊情況,請盡快聯繫我們的客戶服務,我們將盡力協助您。請注意,部分活動可能有特定的退換票政策。</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">電子票券如何使用？</div>
+            <div class="faq-answer">
+                <p>電子票券將發送到您註冊的郵箱或手機APP。入場時,請出示電子票券上的QR碼供工作人員掃描。建議您提前下載到手機,以便順利入場。</p>
+            </div>
+        </div>
+			
+			</div>
+
+        <div id="footer"></div>
+        <script>
+	     // 載入 header
+	        fetch('/header')
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`HTTP error! status: ${response.status}`);
+	                }
+	                return response.text();
+	            })
+	            .then(data => {
+	                document.getElementById('header').innerHTML = data;
+	            })
+	            .catch(error => {
+	                console.error('Error loading header:', error);
+	                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+	            });
+	
+	        // 載入 footer
+	        fetch('/footer')
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`HTTP error! status: ${response.status}`);
+	                }
+	                return response.text();
+	            })
+	            .then(data => {
+	                document.getElementById('footer').innerHTML = data;
+	            })
+	            .catch(error => {
+	                console.error('Error loading footer:', error);
+	                document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+	            });
+		     // FAQ 問題展開/收起功能
+		        document.querySelectorAll('.faq-question').forEach(question => {
+		            question.addEventListener('click', () => {
+		                question.classList.toggle('active');
+		                const answer = question.nextElementSibling;
+		                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+		            });
+		        });
+          
+        </script>
+</body>
+
+</html>

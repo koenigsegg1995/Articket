@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>廠商後台-公告</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<!--<link rel="stylesheet" href="/css/partner.css">-->
+<link rel="stylesheet" href="/css/partner_sidebar.css">
+<link rel="icon" href="/images/icon.ico">
+<style>
+body {
+	display: flex;
+	font-family: 'Arial', sans-serif;
+	background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	/* display: flex;
+        justify-content: center;
+        align-items: center; */
+}
+.content {
+	flex-grow: 1;
+	padding: 20px;
+	margin-left: 250px; /* 與側邊欄寬度相同 */
+	box-sizing: border-box;
+}
+.container {
+	background-color: rgba(255, 255, 255, 0.95);
+	border-radius: 20px;
+	padding: 40px;
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+	width: 100%;
+	max-width: 900px;
+}
+
+h1 {
+	color: #4a4a4a;
+	text-align: center;
+	margin-bottom: 30px;
+	font-size: 2.8em;
+	font-weight: 700;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.announcement--list {
+	list-style-type: none;
+	padding: 0;
+}
+
+.announcement-item {
+	background-color: #ffffff;
+	border-left: 5px solid #4e54c8;
+	margin-bottom: 20px;
+	padding: 20px;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.announcement-item:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.announcement-date {
+	font-size: 0.9em;
+	color: #8e8e8e;
+	margin-bottom: 8px;
+	font-weight: 300;
+}
+
+.announcement-title {
+	font-size: 1.2em;
+	color: #333;
+	font-weight: 500;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	animation: fadeIn 0.3s;
+}
+
+
+keyframes fadeIn {from { opacity:0;
+	
+}
+
+to {
+	opacity: 1;
+}
+
+}
+.modal-content {
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 30px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 700px;
+	border-radius: 15px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+	animation: slideIn 0.4s ease-out;
+}
+
+
+keyframes slideIn {from { transform:translateY(-50px);
+	opacity: 0;
+}
+
+to {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+}
+/*.close {*/
+/*	color: #aaa;*/
+/*	float: right;*/
+/*	font-size: 28px;*/
+/*	font-weight: bold;*/
+/*	cursor: pointer;*/
+/*	transition: color 0.3s;*/
+/*}*/
+
+/*.close:hover {*/
+/*	color: #4e54c8;*/
+/*}*/
+.close {
+	color: #aaa;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: color 0.3s;
+	position: absolute;
+	top: 10px; /* 根據需要調整 */
+	right: 10px; /* 根據需要調整 */
+}
+
+.close:hover {
+	color: #4e54c8;
+}
+
+
+.modal-title {
+	margin-top: 0;
+	color: #4e54c8;
+	font-size: 1.8em;
+}
+
+.modal-date {
+	color: #8e8e8e;
+	margin-bottom: 20px;
+	font-size: 0.9em;
+}
+
+.modal-body {
+	line-height: 1.8;
+	color: #4a4a4a;
+}
+
+/*	分頁*/
+		.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+			font-family: Arial, sans-serif;
+		}
+
+		.pagination a, .pagination span {
+			color: #333;
+			padding: 8px 16px;
+			text-decoration: none;
+			transition: background-color 0.3s, color 0.3s;
+			border: 1px solid #ddd;
+			margin: 0 4px;
+			border-radius: 5px;
+		}
+
+		.pagination a:hover:not(.disabled) {
+			background-color: #4a69bd;
+			color: white;
+		}
+
+		.pagination .active {
+			background-color: #4a69bd;
+			color: white;
+			border: 1px solid #4a69bd;
+		}
+
+		.pagination .disabled {
+			color: #ddd;
+			pointer-events: none;
+			background-color: #f8f8f8;
+		}
+@media ( max-width : 768px) {
+	.container {
+		padding: 20px;
+	}
+	h1 {
+		font-size: 2.2em;
+	}
+	.modal-content {
+		width: 90%;
+		margin: 20% auto;
+	}
+}
+</style>
+
+
+</head>
+
+
+<body>
+<div id="sidebar-placeholder"></div>
+
+
+	<div class="content">
+		<div id="dynamic-content">
+			<section id="news1" class="section">
+				<div class="container">
+					<h1>最新公告</h1>
+					<div th:if="${#lists.isEmpty(announcements)}">
+						<p>目前沒有公告</p>
+					</div>
+
+<!--					<div id="announcementTable">-->
+<!--						<ul>-->
+<!--							<li th:each="announcement : ${announcements}" class="news-item" th:onclick="'showModal(' + ${announcement.announcementID} + ')'">-->
+<!--								<div class="news-date" th:text="${#dates.format(announcement.announcementCreateTime, 'yyyy-MM-dd')}"></div>-->
+<!--								<div class="news-title" th:text="${announcement.announcementTitle}"></div>-->
+<!--							</li>-->
+<!--						</ul>-->
+<!--					</div>-->
+					<div th:each="announcement : ${announcements}" class="announcement-item">
+						<div class="announcement-header">
+							<div class="announcement-date" th:text="${#dates.format(announcement.announcementCreateTime, 'yyyy/MM/dd')}"></div>
+						</div>
+						<h3 th:text="${announcement.announcementTitle}" class="announcement-title"></h3>
+						<div th:text="${announcement.announcementContent}" class="announcement-content" style="display: none;"></div>
+					</div>
+
+					<!--
+					<div class="pagination">
+						<button id="prevBtn" onclick="changePage(-1)">
+							<i class="fas fa-chevron-left"></i> 上一頁
+						</button>
+						<span id="pageInfo">第 1 頁，共 1 頁</span>
+						<button id="nextBtn" onclick="changePage(1)">
+							下一頁 <i class="fas fa-chevron-right"></i>
+						</button>
+					</div>
+					-->
+					<div class="pagination" th:if="${totalPages > 1}">
+						<span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+						<a th:if="${currentPage > 1}" th:href="@{'/announcement/allAnnouncement?page=' + ${currentPage - 1}}">上一頁</a>
+						<a th:if="${currentPage < totalPages}" th:href="@{'/announcement/allAnnouncement?page=' + ${currentPage + 1}}">下一頁</a>
+					</div>
+<!--					<div class="pagination" th:if="${totalPages > 1}">-->
+<!--						<a th:if="${currentPage > 1}" th:href="@{'/announcement/list?page=' + ${currentPage - 1}}">上一頁</a>-->
+<!--						<span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>-->
+<!--						<a th:if="${currentPage < totalPages}" th:href="@{'/announcement/list?page=' + ${currentPage + 1}}">下一頁</a>-->
+<!--					</div>-->
+				</div>
+
+
+			</section>
+		</div>
+	</div>
+
+<!--<div id="newsModal" class="modal">-->
+<!--	<div class="modal-content">-->
+<!--		<span class="close">&times;</span>-->
+<!--		<h2 id="modalTitle" class="modal-title"></h2>-->
+<!--		<p id="modalDate" class="modal-date"></p>-->
+<!--		<div id="modalBody" class="modal-body"></div>-->
+<!--	</div>-->
+<!--</div>-->
+<div id="modal" class="modal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<h2 id="modalTitle"></h2>
+		<div id="modalContent"></div>
+	</div>
+</div>
+
+<script th:inline="javascript">
+	// 顯示模態框的JavaScript代碼
+	var modal = document.getElementById("modal");
+	var span = document.getElementsByClassName("close")[0];
+
+	document.querySelectorAll('.announcement-title').forEach(item => {
+		item.addEventListener('click', function() {
+			var content = this.nextElementSibling.textContent;
+			var title = this.textContent;
+			document.getElementById("modalTitle").textContent = title;
+			document.getElementById("modalContent").innerHTML = content;
+			modal.style.display = "block";
+		});
+	});
+
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+</script>
+
+<script src="/js/partner.js"></script>
+<script src="/js/partner_sidebar.js"></script>
+
+
+<!--	<script th:inline="javascript">-->
+<!--		document.addEventListener('DOMContentLoaded', function() {-->
+<!--			/*<![CDATA[*/-->
+<!--			const announcements = /*[[${announcements}]]*/ [];-->
+<!--			let currentPage = 1;-->
+<!--			const itemsPerPage = 5; // 每頁顯示的公告數量-->
+<!--			let totalPages = Math.ceil(announcements.length / itemsPerPage);-->
+
+<!--			const announcementTable = document.getElementById('announcementTable');-->
+<!--			const modal = document.getElementById('newsModal');-->
+<!--			const modalTitle = document.getElementById('modalTitle');-->
+<!--			const modalDate = document.getElementById('modalDate');-->
+<!--			const modalBody = document.getElementById('modalBody');-->
+<!--			const closeBtn = document.getElementsByClassName('close')[0];-->
+<!--			const prevBtn = document.getElementById('prevBtn');-->
+<!--			const nextBtn = document.getElementById('nextBtn');-->
+<!--			const pageInfo = document.getElementById('pageInfo');-->
+
+<!--			function renderAnnouncements() {-->
+<!--				const startIndex = (currentPage - 1) * itemsPerPage;-->
+<!--				const endIndex = startIndex + itemsPerPage;-->
+<!--				const pageAnnouncements = announcements.slice(startIndex, endIndex);-->
+
+<!--				announcementTable.innerHTML = '';-->
+<!--				const ul = document.createElement('ul');-->
+<!--				pageAnnouncements.forEach(announcement => {-->
+<!--					const li = document.createElement('li');-->
+<!--					li.className = 'news-item';-->
+<!--					li.innerHTML = `-->
+<!--                    <div class="news-date">${new Date(announcement.announcementCreateTime).toLocaleDateString()}</div>-->
+<!--                    <div class="news-title">${announcement.announcementTitle}</div>-->
+<!--                `;-->
+<!--					li.onclick = () => showModal(announcement);-->
+<!--					ul.appendChild(li);-->
+<!--				});-->
+<!--				announcementTable.appendChild(ul);-->
+
+<!--				pageInfo.textContent = `第 ${currentPage} 頁，共 ${totalPages} 頁`;-->
+<!--				prevBtn.disabled = currentPage === 1;-->
+<!--				nextBtn.disabled = currentPage === totalPages;-->
+<!--			}-->
+
+<!--			function changePage(delta) {-->
+<!--				currentPage += delta;-->
+<!--				renderAnnouncements();-->
+<!--			}-->
+
+<!--			function showModal(announcement) {-->
+<!--				modalTitle.textContent = announcement.announcementTitle;-->
+<!--				modalDate.textContent = new Date(announcement.announcementCreateTime).toLocaleDateString();-->
+<!--				modalBody.textContent = announcement.announcementContent;-->
+<!--				modal.style.display = 'block';-->
+<!--			}-->
+
+<!--			if (closeBtn) {-->
+<!--				closeBtn.onclick = () => modal.style.display = 'none';-->
+<!--			}-->
+
+<!--			window.onclick = (event) => {-->
+<!--				if (event.target == modal) {-->
+<!--					modal.style.display = 'none';-->
+<!--				}-->
+<!--			};-->
+
+<!--			// 綁定changePage函數到全局作用域-->
+<!--			window.changePage = changePage;-->
+
+<!--			renderAnnouncements();-->
+<!--			/*]]>*/-->
+<!--		});-->
+<!--	</script>-->
+
+
+
+
+</body>
+</html>

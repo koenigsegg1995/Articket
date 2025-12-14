@@ -1,0 +1,333 @@
+/* forum_styles.css */
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container-fluid {
+    background-color: #F8F9FA; /* 主背景顏色 */
+    min-height: 100vh; /* 確保背景顏色覆蓋整個視窗 */
+    padding: 0;
+    margin: 0;
+}
+
+
+/* 側邊欄 */
+.sidebar-title span {
+    font-weight: bold;
+}
+
+
+/* 基本樣式：透明背景，無邊框 */
+.list-group-item {
+    background-color: transparent !important;
+    border: none !important;
+    color: #000; 
+    transition: all 0.3s ease;
+}
+
+/* 選中項目的樣式 */
+.list-group-item.active {
+    background-color: #FDBCB4 !important;
+    color: #FEFEFA !important;
+    font-weight: bold;
+    border-radius: 15px !important; /* 添加圓角效果 */
+    padding: 10px 15px; /* 調整內邊距以配合圓角效果 */
+}
+
+/* 移除所有針對 .active 元素的懸停效果 */
+.list-group-item.active:hover,
+.list-group-item.active:focus,
+.list-group-item.active:active {
+    background-color: #FDBCB4 !important;
+    color: #FEFEFA !important;
+    box-shadow: none !important;
+    cursor: default;
+}
+
+/* 移除默認聚焦效果 */
+.list-group-item:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 懸停效果 */
+.list-group-item:hover {
+    background-color: FEFEFA(253, 188, 180, 0.1) !important;
+}
+
+/* 懸停效果：灰色陰影（只應用於非活動項） */
+.list-group-item:not(.active):hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border-radius: 15px !important; /* 添加圓角效果，可以根據需要調整數值 */
+    padding: 10px 15px; /* 可選：調整內邊距以配合圓角效果 */
+}
+
+/* 確保選中項目懸停時保持相同效果，沒有額外變化 */
+.list-group-item.active:hover {
+    box-shadow: none !important;
+}
+
+
+    
+/* .ul {
+    list-style-type: none;  隱藏小黑點 
+    padding: 0;  去掉內邊距 
+    margin: 0;  去掉外邊距 
+} 
+
+.shadow-hover {
+    transition: box-shadow 0.3s ease-in-out;
+}
+.shadow-hover:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+} 
+
+header, footer {
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 20px; 
+    text-align: center; 
+} */
+
+/* 麵包屑 */
+#mainContent > div:first-child {
+  width: 100%;
+  margin-bottom: 20px; 
+}
+
+/* 導覽列 */
+.nav-link {
+    color: black;
+}
+
+.button-container {
+	width: 100%;
+    border: none; 
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.text-center {
+    height: 50px; 
+}
+
+.text-center a {
+    height: 100%;
+}
+
+/* 按鈕基本樣式*/
+.btn-group > .btn-outline-secondary {
+    background-color: transparent;
+    border-color: #6c757d;
+}
+
+/* 被選中按鈕的樣式 */
+.btn-group > .btn-outline-secondary.active,
+.btn-group > .btn-outline-secondary:active,
+.btn-group > .btn-outline-secondary.active:focus,
+.btn-group > .btn-outline-secondary.active:hover {
+    background-color: #777777 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    border-color: rgb(112, 112, 112) !important;
+    box-shadow: none !important;
+}
+
+/* 非選中按鈕的懸浮效果 */
+.btn-group > .btn-outline-secondary:hover:not(.active) {
+    background-color: #a0a0a0;
+    border-color: #ffffff;
+    border-radius: 3px;
+}
+
+/* 其他樣式保持不變 */
+.nav-link {
+    color: black;
+}
+
+.button-container {
+    border: none; 
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.text-center {
+    height: 50px; 
+}
+
+.text-center a {
+    height: 100%;
+}
+
+
+
+
+/* 發文按鈕 */
+.btn-hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+
+/* 文章列表 */
+.table {
+	table-layout: fixed;
+    width: 100%;
+    color: #333333;
+    background-color: #F8F9FA; 
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+
+.table th, .table td {
+    background-color: #F8F9FA;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* 文章列表表頭 */
+.col-index {
+    width: 5%;
+}
+
+.col-board {
+    width: 10%;
+}
+
+.col-title {
+    width: 35%;
+}
+
+.col-author {
+    width: 10%;
+}
+
+.col-like, .col-favorite {
+    width: 5%;
+    text-align: center;
+}
+
+/* 按讚和收藏圖標置中 */
+   .col-like i, .col-favorite i {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+
+/* 按讚和收藏數字置中 */
+ td.like-count, td.favorite-count,td.time {
+     text-align: center;
+ }
+
+
+.col-time {
+    width: 10%;
+    text-align: center
+}
+
+
+
+/* 響應式設計 */
+
+@media (min-width: 1200px) {
+    .sidebar {
+        width: 220px;
+    }
+}
+
+/* 中等屏幕 */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .sidebar ul {
+        padding: 0 10px;
+    }
+    
+    .sidebar li {
+        font-size: 14px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    header, footer {
+        padding: 15px;
+    }
+
+    .button-container {
+        padding: 8px;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+    .col-board, .col-author, .col-like, .col-favorite {
+        display: none;
+    }
+
+    .col-index {
+        width: 10%;
+    }
+
+    .col-title {
+        width: 60%;
+    }
+
+    .col-time {
+        width: 30%;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding: 10px;
+    }
+
+    header, footer {
+        padding: 10px;
+    }
+
+    .button-container {
+        margin-bottom: 10px;
+    }
+
+    .table {
+        font-size: 12px;
+    }
+}
+
+/* 小螢幕上使用水平滾動的表格 */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .col-board, .col-author, .col-like, .col-favorite {
+         display: none;
+     }
+
+     .col-index {
+         width: 10%;
+     }
+
+     .col-title {
+         width: 60%;
+     }
+
+     .col-time {
+         width: 30%;
+     }
+}

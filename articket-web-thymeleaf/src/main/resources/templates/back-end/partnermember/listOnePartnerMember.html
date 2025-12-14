@@ -1,0 +1,140 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>廠商資料修改成功</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/admin_sidebar.css">
+<style>
+body {
+	background-color: #f8f9fa;
+}
+
+.content {
+	margin-left: 250px; /* 與側邊欄寬度相同 */
+	padding: 20px;
+}
+
+.info-container {
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	margin-top: 20px;
+}
+
+.info-item {
+	margin-bottom: 10px;
+}
+
+.info-label {
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+@media ( max-width : 768px) {
+	.content {
+		margin-left: 0;
+	}
+}
+
+.btn-container {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.btn-confirm {
+	min-width: 150px;
+}
+</style>
+
+</head>
+<body>
+	<div id="sidebar-placeholder"></div>
+
+	<div class="content">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<h2 class="text-center mt-4 mb-4">廠商資料 - 修改成功</h2>
+					<div class="info-container">
+						<h3 class="text-center mb-4">資料結果</h3>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="info-item">
+									<span class="info-label">廠商編號:</span> <span
+										th:text="${partnerMember.partnerID}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">統一編號:</span> <span
+										th:text="${partnerMember.taxID}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">公司名稱:</span> <span
+										th:text="${partnerMember.partnerName}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">抬頭:</span> <span
+										th:text="${partnerMember.partnerHeading}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">地址:</span> <span
+										th:text="${partnerMember.partnerAddress}"></span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="info-item">
+									<span class="info-label">連絡電話:</span> <span
+										th:text="${partnerMember.partnerPhone}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">聯絡人:</span> <span
+										th:text="${partnerMember.partnerContactPerson}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">電子信箱:</span> <span
+										th:text="${partnerMember.partnerEmail}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">建立時間:</span> <span
+										th:text="${partnerMember.partnerCreateTime}"></span>
+								</div>
+								<div class="info-item">
+									<span class="info-label">帳號狀態:</span> <span
+										th:text="${partnerMember.partnerAccountStatus}"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="btn-container">
+							<a th:href="@{/partnermember/listAllPartnerMember}"
+								class="btn btn-primary btn-confirm">確認並返回廠商列表</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/memberListAll.js"></script>
+	<script src="/js/admin_sidebar.js"></script>
+</body>
+</html>

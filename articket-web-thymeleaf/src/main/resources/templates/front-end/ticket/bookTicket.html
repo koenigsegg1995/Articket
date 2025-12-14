@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>票券結帳</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="icon" href="/images/icon.ico">
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+
+        #main{
+            padding: 50px;
+        }
+
+        #step{
+            /* border: 1px solid red ; */
+            text-align: center;
+            top: 20px;
+            padding-top: 10px;
+            padding-bottom: 50px;
+        }
+
+        .stepIn {
+            /* border: 1px solid red; */
+            display: inline-flex;
+            justify-content: center;
+            align-items: center; 
+            width: 150px; 
+            height: 40px; 
+            margin: 0 100px;  /* 左右間距 */
+            border-radius: 10px;
+            font-size: 26px; 
+            text-align: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        #example tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+    
+        #example{
+            width: 100%;
+            text-align: center;
+        }
+        
+        hr{
+            background-color: gray;
+        }
+
+        #submit{
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .quantity{
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 0;
+            margin: 0 5px;
+        }
+
+        .quantity:hover {
+            background-color: #e0e0e0;
+        }
+
+        .quantity:active {
+            background-color: #d0d0d0;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-progress-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .custom-progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px;
+        }
+
+        .custom-step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            margin-bottom: 8px;
+        }
+
+        .custom-step-text {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        .custom-progress-line {
+            width: 50px;
+            height: 2px;
+            background-color: #e0e0e0;
+            margin: 0 10px;
+            align-self: center;
+        }
+
+        .custom-progress-step.custom-active .custom-step-circle {
+            background-color: #dc6b72;
+        }
+
+        .custom-progress-step.custom-active .custom-step-text {
+            color: #dc6b72;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div id="main">
+        <!-- <div id="step">
+            <span class="stepIn" style="background-color: #E18D96">座位/數量</span>
+            <span class="stepIn" style="background-color: #E18D96">結帳</span>
+            <span class="stepIn" style="background-color: gray">訂購完成</span>
+        </div> -->
+
+
+        <div class="main-content">
+            <div class="custom-progress-container">
+                <div class="custom-progress-step custom-active">
+                    <div class="custom-step-circle"></div>
+                    <div class="custom-step-text">座位選擇</div>
+                </div>
+                <div class="custom-progress-line"></div>
+                <div class="custom-progress-step custom-active">
+                    <div class="custom-step-circle"></div>
+                    <div class="custom-step-text">訂單確認</div>
+                </div>
+                <div class="custom-progress-line"></div>
+                <div class="custom-progress-step">
+                    <div class="custom-step-circle"></div>
+                    <div class="custom-step-text">付款完成</div>
+                </div>
+            </div>
+        
+
+            <!-- 訂單內容 -->
+            <div class="order-details">
+                <h2 style="margin: 20px 0"><b>訂單內容</b></h2>
+                <table id="example" class="display">
+                    <thead>
+                        <tr style="background-color:#E18D96">
+                            <th></th>
+                            <th>活動名稱</th>
+                            <th>日期/時間</th>
+                            <th>場館</th>
+                            <th>座位</th>
+                            <th>票價</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                        
+                    <tbody>
+                        <th:block th:each="ticket : ${session.ticketList}">
+                            <tr>
+                                <td th:text="${ticketStat.count}"></td>
+                                <td th:text="${ticket.activityTimeSlot.activity.activityName}"></td>
+                                <td th:switch="${ticket.activityTimeSlot.activityTimeSlot}">
+                                    <span th:case="1" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 10:00'"></span>
+                                    <span th:case="2" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 14:00'"></span>
+                                    <span th:case="3" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 18:00'"></span>
+                                </td>
+                                <td th:text="${ticket.activityTimeSlot.activity.venue.venueName}"></td>
+                                <td th:text="${ticket.seatStatus.seat.seatName}"></td>
+                                <td th:text="${'$' + ticket.activityAreaPrice.activityAreaPrice}"></td>
+                                <td style="width: 100px;">
+                                    <form method="post" th:action="@{/ticket/deleteOneTicket}" style="margin-bottom: 0px;">
+                                        <button type="submit" class="quantity">
+                                            <img th:src="@{/images/trash.png}" style="width: 50px; height: 50px;"></i>
+                                        </button>
+                                        <input type="hidden" name="count" th:value="${ticketStat.count}">
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" style="text-align: right"><b>合計：</b></td>
+                            <td th:text="${'$' + total}"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <hr>
+
+            <!-- 付款資訊 -->
+            <form method="post" th:action="@{/ticket/confirm}">
+                <input type="hidden" name="memberID" th:value="${session.memberID}">
+                <input type="hidden" name="totalPrice" th:value="${total}">
+
+                <div class="member-details">
+                    <h2 style="margin: 20px 0"><b>購買資料</b></h2>
+                    <h6 style="color: red">* 請填入票券持有人</h6>
+                    <div th:each="ticket:${session.ticketList}" style="margin: 10px 0">
+                        <label>序號 <span th:text="${ticketStat.count}"></span> 
+                            會員帳號：<input type="text"  name="ticketMemberIDs">
+                        </label>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- 信用卡資訊 -->
+                <div class="payment-details">
+                    <h2 style="margin: 20px 0"><b>付款資訊</b></h2>
+                    <div class="payment-method">
+                        <div>
+                            <label>
+                                持卡人：<input type="text" name="cardholder-name">
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                信用卡卡號：<input type="text" name="card-number" placeholder="XXXX-XXXX-XXXX-XXXX">
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                信用卡到期日：<input type="text" name="expiry-date" placeholder="MM/YY">
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                信用卡背面碼：<input type="text" name="cvv" placeholder="XXX">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 按鈕 -->
+                <div class="buttons" id="submit">
+                    <button type="submit" name="action" value="cancel">取消訂單</button>
+                    <button type="submit" name="action" value="confirm">確認結帳</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script>
+        // 載入 header
+           fetch('/header')
+               .then(response => {
+                   if (!response.ok) {
+                       throw new Error(`HTTP error! status: ${response.status}`);
+                   }
+                   return response.text();
+               })
+               .then(data => {
+                   document.getElementById('header').innerHTML = data;
+               })
+               .catch(error => {
+                   console.error('Error loading header:', error);
+                   document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+               });
+   
+           // 載入 footer
+           fetch('/footer')
+               .then(response => {
+                   if (!response.ok) {
+                       throw new Error(`HTTP error! status: ${response.status}`);
+                   }
+                   return response.text();
+               })
+               .then(data => {
+                   document.getElementById('footer').innerHTML = data;
+               })
+               .catch(error => {
+                   console.error('Error loading footer:', error);
+                   document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+               });
+    </script>
+</body>
+</html>

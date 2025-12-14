@@ -1,0 +1,79 @@
+/* 控制標題容器的佈局，使標題在右側區域水平居中 */
+.title-container {
+	margin-left: 250px; /* 預留側邊欄的寬度，假設側邊欄寬度為 250px */
+	display: flex;
+	justify-content: center; /* 使標題在右側區域水平居中 */
+	padding-top: 20px; /* 增加一些上方的空白 */
+}
+
+/* 新增表格容器樣式 */
+.table-container {
+	margin-left: 260px; /* 避開側邊欄 */
+	padding: 20px;
+	display: flex;
+	justify-content: center; /* 水平置中 */
+	width: calc(100% - 260px); /* 減去側邊欄的寬度 */
+	box-sizing: border-box;
+}
+
+.table-container table {
+	max-width: 100%; /* 確保表格不會超過容器寬度 */
+}
+
+
+
+
+/* =============================表單設計=========================== */
+/* 表頭行設計 */
+#example thead th {
+    background-color: #D1C4E9; /* 薄荷綠背景（或你選擇的顏色） */
+    color: #000000; /* 黑色文字 */
+    text-align: left; /* 左對齊文字，以避免與排序按鈕重疊 */
+    padding: 10px 20px; /* 增加右側內邊距以避免排序按鈕與文字重疊 */
+    font-weight: bold; /* 文字加粗 */
+    letter-spacing: 1px; /* 增加字母間距 */
+    position: relative; /* 相對定位，確保排序按鈕正常顯示 */
+}
+
+/* 表格行設計 */
+#example tbody tr {
+    background-color: #F1F1F1; /* 淺灰色背景，提升對比 */
+    color: #000000; /* 黑色文字 */
+    border-bottom: 1px solid #ddd; /* 每行之間的分隔線 */
+}
+
+#example tbody tr:hover {
+    background-color: #E3F2FD; /* 鼠標懸停效果 */
+}
+
+/* 表格單元格設計 */
+#example td {
+    padding: 10px; /* 增加內部間距 */
+    text-align: center; /* 文字居中 */
+}
+
+/* 表格外邊框設計 */
+#example {
+    border-collapse: separate; /* 不合併邊框 */
+    border-spacing: 0; /* 去除單元格間的空隙 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 整個表格的陰影效果 */
+    border-radius: 8px; /* 整個表格的圓角設計 */
+    overflow: hidden; /* 確保圓角顯示效果 */
+}
+
+/* 只在表格的四個角設置圓角 */
+#example thead th:first-child {
+    border-top-left-radius: 8px; /* 左上角 */
+}
+
+#example thead th:last-child {
+    border-top-right-radius: 8px; /* 右上角 */
+}
+
+#example tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px; /* 左下角 */
+}
+
+#example tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px; /* 右下角 */
+}

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/images/icon.ico">
+
+<title>確認訂單 - 藝票人商城</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+	rel="stylesheet">
+<style>
+body {
+	font-family: 'Noto Sans TC', sans-serif;
+	background-color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+	color: #333;
+}
+
+.container {
+	max-width: 800px;
+	margin: 20px auto;
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-steps {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px;
+}
+
+.cart-step {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	background-color: #e0e0e0;
+	color: #666;
+}
+
+.cart-step.active {
+	background-color: #d8515a;
+	color: #fff;
+}
+
+h2 {
+	color: #d8515a;
+	margin-bottom: 20px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.total-amount {
+	background-color: #f8f8f8;
+	padding: 15px;
+	text-align: center;
+	font-size: 1.2em;
+	margin-bottom: 20px;
+	border-radius: 4px;
+}
+
+.total-amount span {
+	color: #d8515a;
+	font-weight: bold;
+}
+
+.payment-info {
+	margin-bottom: 30px;
+}
+
+.payment-methods {
+	display: flex;
+	gap: 15px;
+	margin-bottom: 20px;
+}
+
+.payment-methods img {
+	height: 30px;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.card-number {
+	display: flex;
+	gap: 10px;
+}
+
+.card-number input {
+	flex: 1;
+}
+
+.expiry-date {
+	display: flex;
+	gap: 10px;
+}
+
+.expiry-date select {
+	flex: 1;
+}
+
+th, td {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+	text-align: left;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+.coupon-select {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 20px;
+}
+
+.total {
+	text-align: right;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.form-section {
+	margin-bottom: 30px;
+}
+
+.form-section h3 {
+	color: #d8515a;
+	margin-bottom: 15px;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.form-group input {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.radio-group {
+	margin-bottom: 15px;
+}
+
+.btn-group {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 30px;
+}
+
+.btn {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: background-color 0.3s;
+	text-align: right; /* 使用 float 使按鈕靠右 */
+}
+
+.btn-back {
+	background-color: #6c757d;
+	color: white;
+}
+
+.btn-next {
+	background-color: #d8515a;
+	color: white;
+}
+
+.btn:hover {
+	background-color: #e57373;
+}
+
+/* 優惠券 */
+.coupon-section {
+	margin-bottom: 20px;
+}
+
+.coupon-select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 16px;
+	appearance: none;
+	background-image:
+		url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+	background-repeat: no-repeat;
+	background-position: right 10px top 50%;
+	background-size: 12px auto;
+}
+
+.coupon-label {
+	display: block;
+	margin-bottom: 5px;
+	color: #d8515a;
+	font-weight: bold;
+}
+
+.discount-info {
+	color: #4CAF50;
+	margin-top: 5px;
+	font-style: italic;
+}
+
+.checkbox-group {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px; /* 根據需要調整間距 */
+}
+
+.checkbox-group input[type="checkbox"] {
+	margin-right: 5px; /* 調整勾選框和文字之間的間距 */
+}
+
+.checkbox-group label {
+	margin-bottom: 0; /* 移除標籤底部的默認間距 */
+}
+</style>
+</head>
+
+<body>
+	<div id="header"></div>
+
+
+
+
+	<div class="container">
+		<div class="cart-steps">
+			<div class="cart-step">購物車</div>
+			<div class="cart-step active">填寫資料</div>
+			<!--<div class="cart-step">確認結帳</div>-->
+			<div class="cart-step">訂單成立</div>
+		</div>
+
+		<form th:action="@{/cart/checkout}" method="post" id="checkoutForm">
+
+			<!-- 訂單內容 -->
+			<h2>訂單內容</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>商品編號</th>
+						<th>商品名稱</th>
+						<th>商品金額</th>
+						<th>數量</th>
+						<th>小計</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${cart.cartItems}">
+						<td th:text="${item.commodity.commodityID}"></td>
+						<td th:text="${item.commodity.commodityName}"></td>
+						<td th:text="${'$' + item.commodity.commodityPrice}"></td>
+						<td th:text="${item.checkedQuantity}"></td>
+						<td
+							th:text="${'$' + item.commodity.commodityPrice * item.checkedQuantity}"></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- 優惠券 -->
+			<div class="coupon-section">
+				<label for="coupon" class="coupon-label">優惠券：</label> <select
+					id="coupon" name="couponId" class="coupon-select"
+					th:onchange="'applyCoupon()'">
+					<option value="">選擇優惠券</option>
+					<option th:each="coupon : ${availableCoupons}"
+						th:value="${coupon.id}" th:text="${coupon.name}"></option>
+				</select>
+				<p id="discountInfo" class="discount-info"></p>
+			</div>
+
+			<p class="total">
+				共 <span
+					th:text="${#aggregates.sum(cart.cartItems.![checkedQuantity])}">0</span>
+				件商品 <br> 合計：<span id="totalAmount"
+					th:text="${'$' + cart.cartTotalPrice}"></span>
+			</p>
+
+
+
+
+
+			<!--訂購人資料-->
+			<div class="form-section">
+				<h3>訂購人資料</h3>
+				<div class="form-group">
+					<label for="orderName">姓名：</label> <input type="text"
+						id="orderName" name="orderName" th:value="${member.memberName}"
+						readonly>
+				</div>
+				<div class="form-group">
+					<label for="orderPhone">電話：</label> <input type="tel"
+						id="orderPhone" name="orderPhone" th:value="${member.memberPhone}"
+						readonly>
+				</div>
+				<div class="form-group">
+					<label for="orderEmail">E-mail：</label> <input type="email"
+						id="orderEmail" name="orderEmail"
+						th:value="${member.memberAccount}" readonly>
+				</div>
+			</div>
+
+
+
+			<!--收件人資料-->
+
+			<div class="form-section">
+				<h3>收件人資料</h3>
+				<div class="form-group">
+					<label for="recipient">姓名：</label> <input type="text"
+						id="recipient" name="recipient" required
+						th:value="${order.recipient}">
+				</div>
+				<div class="form-group">
+					<label for="recipientPhone">電話：</label> <input type="tel"
+						id="recipientPhone" name="recipientPhone" required
+						th:value="${order.recipientPhone}">
+				</div>
+				<div class="form-group">
+					<label for="recipientEmail">E-mail：</label> <input type="email"
+						id="recipientEmail" name="recipientEmail" required
+						th:value="${order.recipientEmail}">
+				</div>
+				<div class="form-group">
+					<label for="recipientAddress">地址：</label> <input type="text"
+						id="recipientAddress" name="recipientAddress" required
+						th:value="${order.recipientAddress}">
+				</div>
+				<!-- 如果有優惠券，添加以下字段 -->
+				<input type="hidden" id="memberCouponId" name="memberCouponId"
+					th:value="${selectedCouponId}">
+			</div>
+
+
+
+			<!-- 隱藏的表單，用於提交數據 -->
+			<form id="checkoutForm" th:action="@{/cart/checkout}" method="post"
+				style="display: none;">
+				<input type="hidden" name="recipient" th:value="${order.recipient}">
+				<input type="hidden" name="recipientPhone"
+					th:value="${order.recipientPhone}"> <input type="hidden"
+					name="recipientEmail" th:value="${order.recipientEmail}"> <input
+					type="hidden" name="recipientAddress"
+					th:value="${order.recipientAddress}"> <input type="hidden"
+					name="memberCouponId" th:value="${selectedCouponId}">
+			</form>
+
+
+
+
+
+
+
+
+			<!-- 付款資訊 -->
+			<div class="form-section" id="paymentInfo">
+				<h2>付款資訊</h2>
+				<div class="payment-info">
+					<div class="payment-methods">
+						<!-- 付款方式圖標 -->
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+							alt="Visa"> <img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
+							alt="Mastercard"> <img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/2560px-JCB_logo.svg.png"
+							alt="JCB">
+					</div>
+					 <div class="form-group">
+      <label for="cardHolder">持卡人：</label>
+      <input type="text" id="cardHolder" name="cardHolder" placeholder="請輸入持卡人姓名" required>
+    </div>
+    <div class="form-group">
+      <label for="cardNumber">信用卡號：</label>
+      <div class="card-number">
+        <input type="text" maxlength="4" name="cardNumber1" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+        <input type="text" maxlength="4" name="cardNumber2" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+        <input type="text" maxlength="4" name="cardNumber3" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+        <input type="text" maxlength="4" name="cardNumber4" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cvv">信用卡安全碼：</label>
+      <input type="text" id="cvv" name="cvv" maxlength="3" placeholder="xxx" required pattern="\d{3}" inputmode="numeric">
+    </div>
+					<div class="form-group">
+						<label>信用卡有效月年：</label>
+						<div class="expiry-date">
+							<select id="expiryMonth" name="expiryMonth">
+								<option value="">月</option>
+							</select> <select id="expiryYear" name="expiryYear">
+								<option value="">年</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="btn-group">
+				<a th:href="@{/cart/view}" class="btn btn-back">返回購物車</a>
+				<button type="submit" form="checkoutForm" class="btn btn-next">確認付款</button>
+			</div>
+		</form>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div id="footer"></div>
+
+
+
+
+
+
+
+
+	<script th:inline="javascript">
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 設置當前時間和隨機訂單編號
+    function setCurrentTimeAndOrderNumber() {
+        const currentTime = new Date().toLocaleString('zh-TW', {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        });
+        document.getElementById('currentTime').textContent = currentTime;
+
+        const orderNumber = 'ORD' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        document.getElementById('orderNumber').textContent = orderNumber;
+    }
+
+    // 填充訂購人資料
+    function populateOrderInfo() {
+        const orderInfo = document.getElementById('orderInfo');
+        if (orderInfo) {
+            document.getElementById('orderName').value = orderInfo.dataset.memberName || '';
+            document.getElementById('orderPhone').value = orderInfo.dataset.memberPhone || '';
+            document.getElementById('orderEmail').value = orderInfo.dataset.memberEmail || '';
+        } else {
+            console.error('Order info element not found');
+        }
+    }
+
+    // 更新收件人資訊
+    function toggleRecipientInfo() {
+        const sameAsOrder = document.getElementById('sameAsOrder').checked;
+        const recipientInputs = document.querySelectorAll('#recipientName, #recipientPhone, #recipientEmail');
+        const addressInput = document.getElementById('address');
+
+        recipientInputs.forEach(input => {
+            input.disabled = sameAsOrder;
+            if (sameAsOrder) {
+                switch (input.id) {
+                    case 'recipientName':
+                        input.value = document.getElementById('orderName').value;
+                        break;
+                    case 'recipientPhone':
+                        input.value = document.getElementById('orderPhone').value;
+                        break;
+                    case 'recipientEmail':
+                        input.value = document.getElementById('orderEmail').value;
+                        break;
+                }
+            } else {
+                input.value = '';
+            }
+        });
+
+        // 地址欄位保持可編輯
+        addressInput.disabled = false;
+    }
+
+    // 填充付款資訊
+    function populatePaymentInfo() {
+        const expiryMonth = document.getElementById('expiryMonth');
+        const expiryYear = document.getElementById('expiryYear');
+
+        // 填充月份
+        for (let i = 1; i <= 12; i++) {
+            let month = i.toString().padStart(2, '0');
+            expiryMonth.add(new Option(month, month));
+        }
+
+        // 填充年份
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i <= currentYear + 10; i++) {
+            expiryYear.add(new Option(i, i));
+        }
+    }
+
+    // 設置信用卡號輸入處理
+    function setupCardNumberInput() {
+        const cardInputs = document.querySelectorAll('.card-number input');
+        cardInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 4 && index < 3) {
+                    cardInputs[index + 1].focus();
+                }
+            });
+        });
+    }
+
+    // 加載優惠券
+    function loadCoupons() {
+        const couponSelect = document.getElementById('coupon');
+        const coupons = /*[[${availableCoupons}]]*/ [];
+
+        if (coupons && coupons.length > 0) {
+            coupons.forEach(coupon => {
+                const option = new Option(coupon.name, coupon.id);
+                couponSelect.add(option);
+            });
+        } else {
+            console.error('No coupons available or coupons not loaded correctly');
+        }
+    }
+
+    // 安全執行函數
+    function safelyExecute(fn) {
+        try {
+            fn();
+        } catch (error) {
+            console.error('Error executing function:', error);
+        }
+    }
+
+    // 執行所有初始化函數
+    safelyExecute(setCurrentTimeAndOrderNumber);
+    safelyExecute(populateOrderInfo);
+    safelyExecute(populatePaymentInfo);
+    safelyExecute(setupCardNumberInput);
+    safelyExecute(loadCoupons);
+
+    // 設置收件人資訊切換事件
+    const sameAsOrderCheckbox = document.getElementById('sameAsOrder');
+    if (sameAsOrderCheckbox) {
+        sameAsOrderCheckbox.addEventListener('change', toggleRecipientInfo);
+       // safelyExecute(toggleRecipientInfo); // 初始化收件人資料
+    }
+    
+ // 監聽訂購人資料的變更
+    const orderInputs = document.querySelectorAll('#orderName, #orderPhone, #orderEmail');
+    orderInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (document.getElementById('sameAsOrder').checked) {
+                toggleRecipientInfo();
+            }
+        });
+    });
+
+    // 應用優惠券功能
+    function applyCoupon() {
+        // ... 優惠券應用邏輯 ...
+    }
+
+    // 如果需要，設置優惠券選擇事件
+    const couponSelect = document.getElementById('coupon');
+    if (couponSelect) {
+        couponSelect.addEventListener('change', applyCoupon);
+    }
+
+    // 載入 header 和 footer
+    function loadHeaderFooter() {
+        // ... 載入 header 和 footer 的邏輯 ...
+        if (!document.getElementById('header').innerHTML.trim()) {
+        fetch('/header')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+            });
+        
+        if (!document.getElementById('footer').innerHTML.trim()) {
+            fetch('/footer')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+                });
+        }
+    }
+    }
+    loadHeaderFooter();
+});
+</script>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

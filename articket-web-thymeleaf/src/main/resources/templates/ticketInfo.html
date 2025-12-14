@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>票務須知</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style> 
+		body {
+		    font-family: Arial, sans-serif;
+		    line-height: 1.6;
+		    color: #333;
+		    margin: 0;
+		    padding: 0;
+		    background-color: white;
+		}
+		
+		.content-wrapper {
+		    max-width: 1200px;  /* 或者您想要的其他寬度 */
+		    margin: 0 auto;
+		    padding: 20px;
+		}
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+        }
+        ul, ol {
+            padding-left: 20px;
+            text-align: left;
+        }
+        .important {
+            background-color: #f9f9f9;
+            border-left: 5px solid #e74c3c;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        #activityDisplay {
+            text-align: center;
+            margin: 30px 0 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 10px;
+            }
+            .header .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 5px;
+            }
+            .login-popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                width: 300px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"></div>
+    
+    <div class="content-wrapper">
+    
+			 <h1>票務須知</h1>
+			
+			<p>親愛的顧客，感謝您使用我們的訂票平台。為確保您有最佳的訂票體驗，請仔細閱讀以下票務須知：</p>
+			
+			<h2>訂票流程</h2>
+			<ol>
+			    <li>註冊/登入：首次使用請先註冊帳號，舊會員請直接登入。</li>
+			    <li>選擇活動：瀏覽並選擇您想參加的演唱會或展演。</li>
+			    <li>選擇票種及數量：依據您的需求選擇合適的票種和數量。</li>
+			    <li>選擇座位：某些活動可能提供選座服務，請根據座位圖選擇您喜歡的位置。</li>
+			    <li>確認訂單：仔細核對訂單資訊，包括活動名稱、日期、票種、數量和總金額。</li>
+			    <li>付款：選擇您偏好的付款方式完成交易。</li>
+			    <li>收到確認：成功付款後，您將收到訂票確認信。請妥善保存，以便入場時使用。</li>
+			</ol>
+			
+			<h2>重要提醒</h2>
+			<div class="important">
+			    <ul>
+			        <li>票券一經售出，除活動取消外，恕不退換。</li>
+			        <li>請確保您所購買的票券資訊正確，包括活動日期、時間和場地。</li>
+			        <li>部分熱門活動可能採用實名制購票，請確保填寫的身份資訊準確無誤。</li>
+			        <li>請勿購買來路不明的票券，以免權益受損。</li>
+			    </ul>
+			</div>
+			
+			<h2>取票方式</h2>
+			<ul>
+			    <li>電子票券：大多數活動將發送電子票券至您的郵箱或手機APP。</li>
+			    <li>現場取票：部分活動可能需要您在活動當天至現場售票處取票，請攜帶訂票確認信和有效身份證明文件。</li>
+			</ul>
+			
+			<h2>退換票政策</h2>
+			<ul>
+			    <li>一般情況下，已購買的票券不可退換。</li>
+			    <li>如遇活動取消或延期，我們將透過電子郵件或簡訊通知您退票或換票程序。</li>
+			    <li>退票手續費可能適用，具體金額將根據不同活動而定。</li>
+			</ul>
+			
+			<h2>其他注意事項</h2>
+			<ul>
+			    <li>請務必準時入場，遲到可能無法入場或需等待適當時機才能進場。</li>
+			    <li>部分活動可能有年齡限制，請在購票前確認您符合入場要求。</li>
+			    <li>禁止攜帶外食、飲料、相機或攝影器材入場，具體規定請查看各活動的詳細資訊。</li>
+			    <li>如有任何問題或需要協助，請聯繫我們的客戶服務團隊。</li>
+			</ul>
+			
+			<p>我們期待為您提供優質的訂票服務，祝您觀賞愉快！</p>
+			</div>
+
+        <div id="footer"></div>
+        <script>
+	     // 載入 header
+	        fetch('/header')
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`HTTP error! status: ${response.status}`);
+	                }
+	                return response.text();
+	            })
+	            .then(data => {
+	                document.getElementById('header').innerHTML = data;
+	            })
+	            .catch(error => {
+	                console.error('Error loading header:', error);
+	                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+	            });
+	
+	        // 載入 footer
+	        fetch('/footer')
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`HTTP error! status: ${response.status}`);
+	                }
+	                return response.text();
+	            })
+	            .then(data => {
+	                document.getElementById('footer').innerHTML = data;
+	            })
+	            .catch(error => {
+	                console.error('Error loading footer:', error);
+	                document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+	            });
+          
+        </script>
+</body>
+
+</html>

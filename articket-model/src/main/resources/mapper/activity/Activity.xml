@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.activity.dao.ActivityDao">
+
+<!-- sql -->
+    <sql id="columnsForInsert">
+        partner_id,
+        venue_id,
+        venue_rental_id,
+        activity_name,
+        activity_content,
+        activity_post_time,
+        activity_tag,
+        activity_status,
+        ticket_set_status,
+        sell_time
+    </sql>
+
+    <sql id="columnsForSelect">
+        activity_id,
+        partner_id,
+        venue_id,
+        venue_rental_id,
+        activity_name,
+        activity_content,
+        activity_create_time,
+        activity_post_time,
+        activity_tag,
+        activity_status,
+        ticket_set_status,
+        sell_time
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="selectResultMap" type="com.maddog.articket.activity.entity.Activity">
+        <id column="activity_id" property="activityId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="venue_id" property="venueId" />
+        <result column="venue_rental_id" property="venueRentalId" />
+        <result column="activity_name" property="activityName" />
+        <result column="activity_content" property="activityContent" />
+        <result column="activity_create_time" property="activityCreateTime" />
+        <result column="activity_post_time" property="activityPostTime" />
+        <result column="activity_tag" property="activityTag" />
+        <result column="activity_status" property="activityStatus" />
+        <result column="ticket_set_status" property="ticketSetStatus" />
+        <result column="sell_time" property="sellTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增活動-->
+    <insert id="insert"
+            parameterType="com.maddog.articket.activity.entity.Activity">
+        INSERT INTO activity
+            <include refid="columnsForInsert" />
+        VALUES
+        (
+            #{partnerID},
+            #{venueID},
+            #{venueRentalID},
+            #{activityName},
+            #{activityContent},
+            #{activityPostTime},
+            #{activityTag},
+            #{activityStatus},
+            #{ticketSetStatus},
+            #{sellTime}
+        )
+    </insert>
+
+    <!-- 更新活動-->
+    <update id="update"
+            parameterType="com.maddog.articket.activity.entity.Activity">
+        UPDATE
+            activity
+        SET
+            partner_id = #{partnerId},
+            venue_id = #{venueId},
+            venue_rental_id = #{venueRentalId},
+            activity_name = #{activityName},
+            activity_content = #{activityContent},
+            activity_post_time = #{activityPostTime},
+            activity_tag = #{activityTag},
+            activity_status = #{activityStatus},
+            ticket_set_status = #{ticketSetStatus},
+            sell_time = #{sellTime}
+        WHERE
+            activity_id = #{activityId}
+    </update>
+
+    <!-- 刪除活動-->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            activity
+        WHERE
+            #{activityId}
+    </delete>
+
+    <!-- 依 ID 查詢活動-->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="selectResultMap">
+        SELECT
+            <include refid="columnsForSelect" />
+        FROM
+            activity
+        WHERE
+            activity_id = #{activityId}
+        ORDER BY
+            activity_id
+    </select>
+
+    <!-- 查詢所有活動-->
+    <select id="findAll"
+            resultType="com.maddog.articket.activity.entity.Activity">
+        SELECT
+            <include refid="columnsForSelect" />
+        FROM
+            activity
+        ORDER BY
+            activity_id
+    </select>
+
+    <!-- 依條件查詢-->
+    <select id="findByCondition"
+            parameterType="com.maddog.articket.activity.dto.ActivityQueryCondition"
+            resultType="com.maddog.articket.activity.entity.Activity">
+        SELECT
+            <include refid="columnsForSelect" />
+        FROM
+            activity
+        <where>
+            <if test=" venueId != null ">
+                AND venue_id = #{venueId}
+            </if>
+
+            <if test=" activityTag != null and activityTag != '' ">
+                AND venue_id = #{venueId}
+            </if>
+        </where>
+        ORDER BY
+            activity_id
+    </select>
+
+    <!-- 確認活動是否由該廠商所有-->
+    <select id="isActivityOwnedByPartner"
+            resultType="java.lang.Boolean">
+        SELECT EXIST(
+            SELECT
+                1
+            FROM
+                activity a
+            WHERE
+                activity_id = #{activityId}
+                AND
+                partner_id = #{partnerId}
+        )
+    </select>
+<!-- method-->
+
+</mapper>

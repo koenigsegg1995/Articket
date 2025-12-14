@@ -1,0 +1,181 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員列表</title>
+
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/admin_sidebar.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>                                    <!-- ●●js  for jquery datatables 用 -->
+<script	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>              <!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" /> <!-- ●●css for jquery datatables 用 -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- ●● jquery datatables 設定 -->
+<script>
+	$(document).ready(function() {
+		$('#example').DataTable({
+			"lengthMenu": [3 ,5, 10, 20, 50, 100],
+			"searching": true,  //搜尋功能, 預設是開啟
+		    "paging": true,     //分頁功能, 預設是開啟
+		    "ordering": true,   //排序功能, 預設是開啟
+		    "language": {
+		        "processing": "處理中...",
+		        "loadingRecords": "載入中...",
+		        "lengthMenu": "顯示 _MENU_ 筆結果",
+		        "zeroRecords": "沒有符合的結果",
+		        "info": "顯示第 _START_ 至 _END_ 筆結果，共<font color=red> _TOTAL_ </font>筆",
+		        "infoEmpty": "顯示第 0 至 0 筆結果，共 0 筆",
+		        "infoFiltered": "(從 _MAX_ 筆結果中過濾)",
+		        "infoPostFix": "",
+		        "search": "搜尋:",
+		        "paginate": {
+		            "first": "第一頁",
+		            "previous": "上一頁",
+		            "next": "下一頁",
+		            "last": "最後一頁"
+		        },
+		        "aria": {
+		            "sortAscending":  ": 升冪排列",
+		            "sortDescending": ": 降冪排列"
+		        }
+		    }
+		});
+	});
+</script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .content {
+            margin-left: 250px; /* 与侧边栏宽度相同 */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+        }
+        /* 确保表格不会超出其容器 */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="sidebar-placeholder"></div>
+
+<div class="content">
+		<section id="general-members" class="section">
+			<h1>會員列表</h1>
+	<form method="post" th:action="@{listGeneralmember_ByCompositeQuery}" class="container mt-4">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="memberID">輸入會員編號:</label>
+            <input type="text" class="form-control" id="memberID" name="memberID" value="" placeholder="請輸入會員編號">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="memberName">輸入會員姓名:</label>
+            <input type="text" class="form-control" id="memberName" name="memberName" value="" placeholder="請輸入會員姓名">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="memberAddress">輸入會員居住地:</label>
+            <input type="text" class="form-control" id="memberAddress" name="memberAddress" value="" placeholder="請輸入會員居住地">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>輸入會員性別:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="genderMale" value="男">
+                <label class="form-check-label" for="genderMale">男</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="女">
+                <label class="form-check-label" for="genderFemale">女</label>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">送出</button>
+</form>
+
+			<hr>
+			<div class="table-responsive">
+				
+				<table id= "example" class="display" style="width: 100%">
+					<thead>
+						<tr style="background-color: #E18D96">
+							<th>編號</th>
+							<th>帳號</th>
+							<th>姓名</th>
+							<th>電話</th>
+							<th>地址</th>
+							<th>暱稱</th>
+							<th>身分證字號</th>
+							<th>性別</th>
+							<th>生日</th>
+							<th>大頭照</th>
+							<th>帳號狀態</th>
+							<th>建立時間</th>
+							<th>修改</th>
+						</tr>
+					</thead>
+					<tbody id="member-table-body">
+						<!-- 會員資料將被動態添加到這裡 -->
+						<th:block th:each="generalmember : ${generalMemberListData}">
+							<tr>
+								<td th:text="${generalmember.memberID}"></td>
+								<td th:text="${generalmember.memberAccount}"></td>
+								<td th:text="${generalmember.memberName}"></td>
+								<td th:text="${generalmember.memberPhone}"></td>
+								<td th:text="${generalmember.memberAddress}"></td>
+								<td th:text="${generalmember.memberNickName}"></td>
+								<td th:text="${generalmember.nationalID}"></td>
+								<td th:text="${generalmember.gender}"></td>
+								<td th:text="${generalmember.birthday}"></td>
+								<td><img
+									th:src="@{/generalmember/MemberDBGifReader} + '?memberID=' + ${generalmember.memberID}"
+									width="100px"></td>
+								<td th:text="${generalmember.memberStatus}"></td>
+								<td th:text="${generalmember.memberCreateTime}"></td>
+								<td>
+									<form method="post"
+										th:action="@{/generalmember/getOne_For_Update}"
+										style="margin-bottom: 0px;">
+										<input type="submit" value="修改"> <input type="hidden"
+											name="memberID" th:value="${generalmember.memberID}">
+									</form>
+
+								</td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		</div>
+		<script src="/js/memberListAll.js"></script>
+		<script src="/js/admin_sidebar.js"></script>
+</body>
+</html>

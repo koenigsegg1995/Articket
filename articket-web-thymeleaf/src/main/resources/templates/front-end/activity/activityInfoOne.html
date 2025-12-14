@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/icon.ico">
+    <title>活動資訊</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main {
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        #header, #footer {
+            width: 100%;
+        }
+
+        #pictures {
+            width: 100%;
+            height: 0;
+            padding-bottom: 50%; /* 1200/1600 = 0.75 */
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .carousel-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        .info-section {
+            margin-top: 20px;
+        }
+        .info-item {
+            margin-bottom: 10px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        select, button {
+            margin-top: 10px;
+            padding: 5px;
+        }
+
+        form{
+            margin-bottom: 100px;
+        }
+
+        #submit {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #submit button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 20px;
+        }
+
+        #intro{
+            margin-bottom: 100px;
+            display: inline-block;
+            font-size: 26px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 10px;
+            }
+
+            .header .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .calendar th,
+            .calendar td {
+                padding: 5px;
+            }
+
+            .event-item {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 5px;
+            }
+
+            .header .top-bar {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .nav-bar {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .swiper-container {
+                height: 300px;
+            }
+
+            .event-item {
+                width: 100%;
+            }
+
+            .login-popup {
+                display: none;
+                /* 初始狀態隱藏 */
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                width: 300px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                /* 確保覆蓋其他內容 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+
+        <div id="main">
+            <div id="pictures">
+                <!-- 假設您有一個圖片列表 -->
+                <img th:each="activityPicture:${activityPictures}" 
+                    th:src="@{'/activity/DBGifReader' + '?activityPictureID=' + ${activityPicture.activityPictureID}}" 
+                    class="carousel-image" 
+                    style="display: none;"
+                    alt="活動圖片">
+            </div>
+
+            <div class="info-section">
+                <div class="info-item"><strong>介紹：</strong></div> <span id="intro" th:text="${activity.activityContent}"></span>
+                <div class="info-item"><strong>廠商名稱：</strong> <span th:text="${activity.partnerMember.partnerName}"></span></div>
+                <div class="info-item"><strong>場館名稱：</strong> <span th:text="${activity.venue.venueName}"></span></div>
+                <div class="info-item"><strong>類型標籤：</strong> <span th:text="${activity.activityTag}"></span></div>
+                <!-- 注意是否要改為方法顯示 -->
+                <div class="info-item"><strong>活動日期：</strong>
+                    <div th:each="activityTimeSlot:${activity.activityTimeSlots}">
+                        <span th:switch="${activityTimeSlot.activityTimeSlot}">
+                            <span th:case="1" th:text="${activityTimeSlot.activityTimeSlotDate} + ' 10:00'"></span>
+                            <span th:case="2" th:text="${activityTimeSlot.activityTimeSlotDate} + ' 14:00'"></span>
+                            <span th:case="3" th:text="${activityTimeSlot.activityTimeSlotDate} + ' 18:00'"></span>
+                        </span>
+                    </div>
+                </div>
+                <!-- <div class="info-item"><strong>起售日：</strong> <span th:text="${activity.sellTime}"></span></div> -->
+            </div>
+
+            <form method="get" th:action="@{/seatSelect}">
+                <div>
+                    <label for="session"><b>選擇場次：</b></label>
+                    <select id="session" name="activityTimeSlot">
+                        <option th:each="activityTimeSlot : ${activity.activityTimeSlots}" 
+                                th:value="${activityTimeSlot.activityTimeSlotID}"> 
+                                <th:block th:text="${activityTimeSlot.activityTimeSlotDate} + ' '"></th:block>
+                                <th:block th:switch="${activityTimeSlot.activityTimeSlot}">
+                                        <th:block th:case="1">10:00</th:block>
+                                        <th:block th:case="2">14:00</th:block>
+                                        <th:block th:case="3">18:00</th:block>
+                                </th:block>
+                        </option>
+                    </select>
+                </div>
+                <div id="submit">
+                    <button type="submit">開始訂位</button>
+                </div>
+            </form>
+        </div>
+    
+
+        <div id="footer"></div>
+    </div>
+    <script>
+        // 載入 header
+        fetch('/header')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+            });
+
+        // 載入 footer
+        fetch('/footer')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+            });
+
+        // 簡單的輪播功能
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.carousel-image');
+        
+        function showNextImage() {
+            images[currentIndex].style.display = 'none';
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].style.display = 'block';
+        }
+
+        // 初始顯示第一張圖片
+        images[0].style.display = 'block';
+
+        // 每 5 秒切換一次圖片
+        setInterval(showNextImage, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品管理</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<!--  <link rel="stylesheet" href="/css/partner.css">-->
+<link rel="stylesheet" href="/css/partner_sidebar.css">
+<link rel="icon" href="/images/icon.ico">
+<style>
+body {
+	/*font-family: 'Arial', sans-serif;*/
+	/*background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);*/
+	/*margin: 0;*/
+	/*padding: 20px;*/
+	/*min-height: 100vh;*/
+	display: flex;
+	font-family: 'Arial', sans-serif;
+	background: linear-gradient(135deg, #e2e4ee 0%, #aba6b0 100%);
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+}
+
+/*#sidebar-placeholder {*/
+/*  width: 250px; !* 調整為側邊欄的實際寬度 *!*/
+/*  flex-shrink: 0;*/
+/*}*/
+.content {
+	flex-grow: 1;
+	padding: 20px;
+	margin-left: 250px; /* 與側邊欄寬度相同 */
+	box-sizing: border-box;
+}
+
+.container {
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+}
+
+h1 {
+	color: #333;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+select, button, input {
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	background-color: #4a69bd;
+	color: white;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #3c56a5;
+}
+
+table {
+	width: 100%;
+	/*	border-collapse: collapse; */
+	border-collapse: separate;
+	border-spacing: 0 10px;
+}
+
+th, td {
+	/*
+	padding: 12px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+		*/
+	padding: 15px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+td {
+	background-color: #f8f9fa;
+	border-top: 1px solid #dee2e6;
+	border-bottom: 1px solid #dee2e6;
+}
+
+td:first-child {
+	border-left: 1px solid #dee2e6;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+td:last-child {
+	border-right: 1px solid #dee2e6;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.product-image {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.placeholder-image {
+	
+	height: 100px;
+	background-color: #e9ecef;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #6c757d;
+	font-size: 14px;
+	border-radius: 5px;
+}
+
+th {
+	background-color: #4a69bd;
+	color: white;
+}
+
+tr:hover {
+	background-color: #f5f5f5;
+}
+
+.action-buttons {
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+}
+
+.action-buttons button {
+	padding: 5px 10px;
+	font-size: 0.9em;
+}
+
+/*	分頁*/
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	font-family: Arial, sans-serif;
+}
+
+.pagination a, .pagination span {
+	color: #333;
+	padding: 8px 16px;
+	text-decoration: none;
+	transition: background-color 0.3s, color 0.3s;
+	border: 1px solid #ddd;
+	margin: 0 4px;
+	border-radius: 5px;
+}
+
+.pagination a:hover:not(.disabled) {
+	background-color: #4a69bd;
+	color: white;
+}
+
+.pagination .active {
+	background-color: #4a69bd;
+	color: white;
+	border: 1px solid #4a69bd;
+}
+
+.pagination .disabled {
+	color: #ddd;
+	pointer-events: none;
+	background-color: #f8f8f8;
+}
+</style>
+</head>
+
+<body>
+	<div id="sidebar-placeholder"></div>
+	<!-- 側邊欄內容 -->
+
+
+	<div class="content">
+		<div id="dynamic-content">
+			<section id="product-management" class="section">
+				<div class="container">
+				
+<!-- 首先檢查 activity 是否存在 -->
+<h1 th:if="${activity != null}" th:text="'商品管理 - ' + ${activityName}"></h1>
+<h1 th:if="${activity == null}" th:text="'商品管理 - 活動ID: ' + ${activityID}"></h1>
+
+<!-- 如果你需要顯示錯誤信息 -->
+<p th:if="${error != null}" th:text="${error}" style="color: red;"></p>
+
+<!-- 如果你確實有一個活動列表，可以這樣顯示 -->
+<table th:if="${activities != null and not #lists.isEmpty(activities)}">
+    <tr th:each="act : ${activities}">
+        <td th:text="${act.activityName}"></td>
+        <!-- 其他列... -->
+    </tr>
+</table>
+
+<!-- 如果沒有活動，顯示一個消息 -->
+					<div class="controls">
+
+						<!--            <div>-->
+						<!--              <label for="releaseDate">設定商品上架日期時間：</label>-->
+						<!--              <input type="datetime-local" id="releaseDate" name="releaseDate">-->
+						<!--              <button onclick="setReleaseDate()">設定</button>-->
+						<!--            </div>-->
+						<!--            <button onclick="location.href='addCommodity.html'">+ 新增商品</button>-->
+						<!--            <div>-->
+						<!--              <form th:action="@{/commodity/setPostTime}" method="post">-->
+						<!--                設定商品上架日期時間：-->
+						<!--                <input type="datetime-local" name="postTime" />-->
+						<!--                <button type="submit">設定</button>-->
+						<!--              </form>-->
+						<!--            </div>-->
+						<!--   要加這個         <a th:href="@{'/commodity/addCommodity/' + ${activityID}}" class="btn btn-primary">+ 新增商品</a>-->
+				<a th:href="@{/commodity/addCommodity(activityID=${activityID})}" class="btn btn-primary">+ 新增商品</a>
+						<!--            <a th:href="@{/commodity/addCommodity(activityID=${activityID}, partnerID=${partnerID})}" class="btn btn-primary">+ 新增商品</a>-->
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>編號</th>
+								<th>品名</th>
+								<th>價格</th>
+								<th>庫存數量</th>
+								<th>圖片</th>
+								<th>修改</th>
+							</tr>
+						</thead>
+						<tbody id="commodityTable">
+							<!-- 商品資料將由 JavaScript 動態添加 -->
+							<tr th:each="commodity : ${commodityList}">
+								<td th:text="${commodity.commodityID}"></td>
+								<td th:text="${commodity.commodityName}"></td>
+								<td th:text="${commodity.commodityPrice}"></td>
+								<td th:text="${commodity.commodityStock}"></td>
+								<!--  
+								<td><img
+									th:if="${not #lists.isEmpty(commodity.commodityPictures)}"
+									th:src="@{'/commodityPicture/' + ${commodity.commodityPictures[0].commodityPictureID}}"
+									alt="商品圖片" style="width: 50px; height: 50px;" /></td>
+								-->
+
+
+
+								<!--                <td>-->
+								<!--                  <a th:href="@{'/commodity/updateCommodity/' + ${commodity.commodityID}}">修改</a>-->
+								<!--                </td>-->
+
+								<!--
+								<td th:each="img : ${commodity.commodityPictures}"
+									class="col-md-4 mb-3"><img
+									th:src="@{/commodity/CommodityDBGifReader(commodityPictureID=${img.commodityPictureID})}"
+									alt="商品圖片" class="img-fluid"
+									style="width: 100px; height: 100px;">
+								</td>
+-->
+
+								<td>
+									<div th:if="${not #lists.isEmpty(commodity.commodityPictures)}">
+										<img
+											th:src="@{/commodity/CommodityDBGifReader(commodityPictureID=${commodity.commodityPictures[0].commodityPictureID})}"
+											alt="商品圖片" class="product-image">
+									</div>
+									<div th:if="${#lists.isEmpty(commodity.commodityPictures)}"
+										class="placeholder-image">無圖片</div>
+								</td>
+								<td>
+    <form method="post" th:action="@{/commodity/updateCommodity}">
+        <input type="submit" value="修改">
+        <input type="hidden" name="commodityID" th:value="${commodity.commodityID}">
+        <input type="hidden" name="activityID" th:value="${activityID}">
+    </form>
+</td>
+								
+								
+								<!--           要加這個     </td>-->
+								<!--                <td>-->
+								<!--                  <a th:href="@{'/commodity/updateCommodity/' + ${commodity.commodityID}}">修改</a>-->
+								<!--                  <a th:href="@{'/commodity/delete/' + ${commodity.commodityID}}">刪除</a>-->
+								<!--                </td>-->
+
+							</tr>
+						</tbody>
+					</table>
+					<!--          <div class="pagination">-->
+					<!--            <button id="prevBtn" onclick="changePage(-1)">上一頁</button>-->
+					<!--            <span id="pageInfo">第 1 頁，共 1 頁</span>-->
+					<!--            <button id="nextBtn" onclick="changePage(1)">下一頁</button>-->
+					<!--          </div>-->
+					<div class="pagination" th:if="${totalPages > 1}">
+						<span
+							th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+						<a th:if="${currentPage > 1}"
+							th:href="@{'/commodity/listAllCommodity?page=' + ${currentPage - 1}}">上一頁</a>
+
+						<a th:if="${currentPage < totalPages}"
+							th:href="@{'/commodity/listAllCommodity?page=' + ${currentPage + 1}}">下一頁</a>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	
+	
+	
+	<script>
+		// 模擬的商品資料
+		// const commodities = [
+		//   { id: 1, name: "安兪真SWITCH單封", price: 500, stock: 20, image: "/static/images/yujin1.jpg" },
+		//   { id: 2, name: "安狗狗設計保溫瓶", price: 300, stock: 980, image: "/static/images/yujin2.jpg" },
+		//   { id: 3, name: "IVE手燈", price: 100, stock: 980, image: "/static/images/ive1.jpg" }
+		// ];
+		//
+		// let currentPage = 1;
+		// const itemsPerPage = 10;
+
+		// function renderCommodities() {
+		//   const tableBody = document.getElementById('commodityTable');
+		//   tableBody.innerHTML = '';
+		//   const start = (currentPage - 1) * itemsPerPage;
+		//   const end = start + itemsPerPage;
+		//   const pageItems = commodities.slice(start, end);
+		//
+		//   pageItems.forEach(item => {
+		//     const row = `
+		//                 <tr>
+		//                     <td>${item.id}</td>
+		//                     <td>${item.name}</td>
+		//                     <td>${item.price}</td>
+		//                     <td>${item.stock}</td>
+		//                     <td><img src="${item.image}" alt="${item.name}" class="product-image"></td>
+		//                     <td>
+		//                         <div class="action-buttons">
+		//                             <button onclick="editCommodity(${item.id})">修改</button>
+		//                         </div>
+		//                     </td>
+		//                 </tr>
+		//             `;
+		//     tableBody.innerHTML += row;
+		//   });
+		//
+		//   updatePagination();
+		// }
+		//
+		// function updatePagination() {
+		//   const totalPages = Math.ceil(commodities.length / itemsPerPage);
+		//   document.getElementById('pageInfo').textContent = `第 ${currentPage} 頁，共 ${totalPages} 頁`;
+		//   document.getElementById('prevBtn').disabled = currentPage === 1;
+		//   document.getElementById('nextBtn').disabled = currentPage === totalPages;
+		// }
+		//
+		// function changePage(delta) {
+		//   const totalPages = Math.ceil(commodities.length / itemsPerPage);
+		//   currentPage = Math.max(1, Math.min(currentPage + delta, totalPages));
+		//   renderCommodities();
+		// }
+		//
+		// function editCommodity(id) {
+		//   alert(`編輯商品 ID: ${id}`);
+		//   // 這裡可以添加編輯商品的邏輯
+		//   window.location.href = 'updateCommodity.html';
+		// }
+		//
+		// function setReleaseDate() {
+		//   const releaseDate = document.getElementById('releaseDate').value;
+		//   if (releaseDate) {
+		//     alert(`商品上架時間設定為: ${releaseDate}`);
+		//     // 這裡可以添加設定上架時間的邏輯
+		//   } else {
+		//     alert('請選擇上架時間');
+		//   }
+		// }
+
+		window.onload = renderCommodities;
+	</script>
+
+	<script src="/js/partner.js"></script>
+	<script src="/js/partner_sidebar.js"></script>
+</body>
+
+</html>

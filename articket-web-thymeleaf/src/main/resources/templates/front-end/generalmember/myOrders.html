@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的訂單</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">我的訂單</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>訂單編號</th>
+                    <th>收件人</th>
+                    <th>連絡電話</th>
+                    <th>Email</th>
+                    <th>收件地址</th>
+                    <th>實付金額</th>
+                    <th>訂單狀態</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.orderID}"></td>
+                    <td th:text="${order.recipient}"></td>
+                    <td th:text="${order.recipientPhone}"></td>
+                    <td th:text="${order.recipientEmail}"></td>
+                    <td th:text="${order.recipientAddress}"></td>
+                    <td th:text="${order.actualAmount}"></td>
+                    <td th:text="${order.orderStatusDescription}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${#lists.isEmpty(orders)}">
+            <p>您目前沒有任何訂單。</p>
+        </div>
+
+        <a th:href="@{/generalmember/memberCenter}" class="btn btn-secondary mt-3">返回會員中心</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

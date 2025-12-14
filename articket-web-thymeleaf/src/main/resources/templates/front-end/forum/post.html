@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>發表新文章</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/draft-js@0.11.7/dist/Draft.css" />
+    <link rel="stylesheet" href="/css/post.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+    </style>
+</head>
+<body>
+		<div id="header"></div>
+
+		<main class="main-content">
+	    <div class="form-container">
+	      <!--   <form action="#" th:action="@{/post}" th:object="${article}" method="post"> -->	
+	     <form th:action="@{insert}" method="post" th:object="${article}" enctype="multipart/form-data">
+			        
+			<div>
+			    <label for="board">文章版塊:</label>
+			    <select id="board" th:field="*{board.boardID}">
+			        <option th:each="board : ${boardListData}" th:value="${board.boardID}" th:text="${board.boardName}"></option>
+			    </select>
+			    <span th:if="${#fields.hasErrors('board.boardID')}" th:errors="*{board.boardID}" class="error" id="board.errors"></span>
+			</div>           
+			 
+			<div>
+			    <label for="articleCategory">文章類型:</label>
+			    <select id="articleCategory" th:field="*{articleCategory}">
+			        <option th:each="category : ${articleCategories}" th:value="${category}" th:text="${category}"></option>
+			    </select>
+			    <span th:if="${#fields.hasErrors('articleCategory')}" th:errors="*{articleCategory}" class="error" id="articleCategory.errors"></span>
+			</div>
+			
+			<!-- 先用直接輸入會員去測試 -->	
+<!-- 			<div> -->
+<!-- 				<label>會員名稱:</label> -->
+<!-- 				<select th:field="*{generalMember.memberID}"> -->
+<!-- 					<option th:each="generalMember : ${generalMemberListData}" th:value="${generalMember.memberID}" th:text="${generalMember.memberName}" /> -->
+<!-- 				</select> -->
+<!-- 				<span th:if="${#fields.hasErrors('generalMember.memberID')}" th:errors="*{generalMember.memberID}" class="error" id="generalMember.memberID.errors"></span> -->
+<!-- 			</div> -->
+			
+			<div>
+			    <label for="articleTitle">文章標題:</label>
+			    <input type="text" id="articleTitle" th:field="*{articleTitle}" />
+			    <span th:if="${#fields.hasErrors('articleTitle')}" th:errors="*{articleTitle}" class="error" id="articleTitle.errors"></span>
+			</div>
+
+            
+           <div class="editor-container">
+                <textarea id="summernote" name="summernoteContent"></textarea>
+            </div>
+            
+            <!-- 隱藏字段 -->
+            <input type="hidden" id="articleContent" name="articleContent" th:field="*{articleContent}" />
+            
+            <input type="file" id="imageUpload" name="articlePic" multiple />
+			            
+			<button type="submit" class="btn btn-secondary ">
+			  送出文章
+			</button>
+			
+			<button type="button" class="btn btn-secondary" id="cancelButton">
+		      取消發文
+		    </button>
+			
+        </form>
+    </div>	
+    </main>
+    
+	<div id="footer"></div>
+	
+    <script src="/js/post.js"></script>
+</body>
+</html>

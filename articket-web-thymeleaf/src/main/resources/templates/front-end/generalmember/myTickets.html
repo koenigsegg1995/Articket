@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的票券</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .qr-code-img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">我的票券</h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>票券編號</th>
+                    <th>活動名稱</th>
+                    <th>活動時間</th>
+                    <th>座位</th>
+                    <th>價格</th>
+                    <th>QR Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ticket : ${tickets}">
+                    <td th:text="${ticket.ticketID}"></td>
+                    <td th:text="${ticket.activityTimeSlot?.activity?.activityName}"></td>
+                    <td th:text="${#dates.format(ticket.activityTimeSlot?.activityTimeSlotDate, 'yyyy-MM-dd') + ' ' + 
+                            (ticket.activityTimeSlot?.activityTimeSlot == 1 ? '09:00-12:00' : 
+                             ticket.activityTimeSlot?.activityTimeSlot == 2 ? '14:00-17:00' : '19:00-22:00')}">
+                    </td>
+                    <td th:text="${ticket.seatStatus?.seat?.seatRow != null and ticket.seatStatus?.seat?.seatNumber != null} ? 
+                                  ${ticket.seatStatus.seat.seatRow + '-' + ticket.seatStatus.seat.seatNumber} : '未分配'">
+                    </td>
+                    <td th:text="${ticket.activityAreaPrice?.activityAreaPrice}"></td>
+                    <td>
+                        <img th:src="@{'/images/qrcodes/ticket-' + ${ticket.ticketID} + '.png'}" class="qr-code-img" alt="QR Code">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${#lists.isEmpty(tickets)}">
+            <p>您目前沒有任何票券。</p>
+        </div>
+
+        <a th:href="@{/generalmember/memberCenter}" class="btn btn-secondary mt-3">返回會員中心</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

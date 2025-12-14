@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廠商會員註冊</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f2e1e1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+            font-weight: bolder;
+        }
+
+        .custom-btn {
+            background-color: rgb(243, 121, 142);
+            /* 自定義顏色 */
+            color: white;
+            /* 字體顏色 */
+            margin-top: 50px;
+            width: 10%;
+        }
+
+        .custom-btn:hover {
+            background-color: rgb(234, 164, 176);
+            /* 滑鼠懸停時的顏色 */
+        }
+
+        .form-group {
+            font-size: 25px;
+        }
+        .photo-preview {
+            max-width: 300px; /* 限制最大寬度 */
+            max-height: 300px; /* 限制最大高度 */
+            display: none; /* 初始隱藏 */
+            margin-top: 10px; /* 上方間距 */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <div class="container">
+        <div class="text-center">
+            <h1>廠商會員註冊</h1>
+        </div>
+        <form th:action="@{/partnermember/partnerRegister}" method="post" th:object="${partnerMember}" >
+        
+        
+        
+        
+            <div class="form-group">
+                <label for="taxID">統一編號:</label>
+                <input type="text" class="form-control" th:field="*{taxID}" onclick="hideContent('taxID.errors');" required>
+                <span  th:if="${#fields.hasErrors('taxID')}" th:errors="*{taxID}" class="error" id="taxID.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerPassword">密碼:</label>
+                <input type="password" class="form-control" th:field="*{partnerPassword}" onclick="hideContent('partnerPassword.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerPassword')}" th:errors="*{partnerPassword}" class="error" id="partnerPassword.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerName">公司名稱:</label>
+                <input type="text" class="form-control" th:field="*{partnerName}" onclick="hideContent('partnerName.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerName')}" th:errors="*{partnerName}" class="error" id="partnerName.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerHeading">抬頭:</label>
+                <input type="text" class="form-control" th:field="*{partnerHeading}" onclick="hideContent('partnerHeading.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerHeading')}" th:errors="*{partnerHeading}" class="error" id="partnerHeading.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerAddress">地址:</label>
+                <input type="text" class="form-control" th:field="*{partnerAddress}" onclick="hideContent('partnerAddress.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerAddress')}" th:errors="*{partnerAddress}" class="error" id="partnerAddress.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerPhone">電話:</label>
+                <input type="text" class="form-control" th:field="*{partnerPhone}" onclick="hideContent('partnerPhone.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerPhone')}" th:errors="*{partnerPhone}" class="error" id="partnerPhone.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerContactPerson">連絡人:</label>
+                <input type="text" class="form-control" th:field="*{partnerContactPerson}" onclick="hideContent('partnerContactPerson.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerContactPerson')}" th:errors="*{partnerContactPerson}" class="error" id="partnerContactPerson.errors"></span>
+            </div>
+            <div class="form-group">
+                <label for="partnerEmail">電子信箱:</label>
+                <input type="email" class="form-control" th:field="*{partnerEmail}" onclick="hideContent('partnerEmail.errors');" required>
+                <span  th:if="${#fields.hasErrors('partnerEmail')}" th:errors="*{partnerEmail}" class="error" id="partnerEmail.errors"></span>
+            </div>
+            <button type="submit" class="custom-btn">確認送出</button>
+        </form>
+    </div>
+
+    <script>
+ // 載入 header
+    fetch('/header')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error loading header:', error);
+            document.getElementById('header').innerHTML = '<p>Error loading header</p>';
+        });
+
+    // 載入 footer
+    fetch('/footer')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error loading footer:', error);
+            document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
+        });
+
+
+
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    </script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/javascript/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
