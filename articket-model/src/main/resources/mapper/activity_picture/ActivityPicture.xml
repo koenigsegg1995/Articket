@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.activitypicture.dao.ActivityPictureDao">
+
+<!-- sql -->
+    <sql id="columns">
+        activity_picture_id,
+        activity_id,
+        activity_picture
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="selectResultMap" type="com.maddog.articket.activitypicture.entity.ActivityPicture">
+        <id column="activity_picture_id" property="activityPictureId" />
+        <result column="activity_id" property="activityId" />
+        <result column="activity_picture" property="activityPicture" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 依活動圖片 ID 查詢活動圖片-->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="selectResultMap">
+        SELECT
+            <include refid="columns" />
+        FROM
+            activity_picture
+        WHERE
+            activity_picture_id = #{activityPictureId}
+    </select>
+<!-- method-->
+
+</mapper>

@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.reader;
 
 import com.maddog.articket.activity.service.pri.ActivityService;
-import com.maddog.articket.activitypicture.service.impl.ActivityPictureService;
+import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +26,13 @@ public class ActivityDBGifReaderController {
 	
 	//提供 <img> 顯示
 	@GetMapping("DBGifReader")
-	public void dBGifReader(@RequestParam("activityPictureID") String activityPictureID,HttpServletRequest req,
+	public void dBGifReader(@RequestParam("activityPictureId") String activityPictureId,HttpServletRequest req,
 			HttpServletResponse res) throws IOException {
 		res.setContentType("image/*");
 		ServletOutputStream out = res.getOutputStream();
 		
 		try {
-			byte[] activityPicture = activityPictureSvc.getOneActivityPicture(Integer.valueOf(activityPictureID)).getActivityPicture();
+			byte[] activityPicture = activityPictureSvc.getOneActivityPicture(Integer.valueOf(activityPictureId)).getActivityPicture();
 			
 			out.write(activityPicture);
 		} catch (Exception e) {

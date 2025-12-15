@@ -25,6 +25,14 @@ public class ActivityForView {
      */
     private String venueName;
 
+    private String activityContent;
+
+    private String partnerName;
+
+    private String activityTag;
+
+    private Date activityTimeSlotDate;
+
     /**
      * 圖片 ID 清單
      */

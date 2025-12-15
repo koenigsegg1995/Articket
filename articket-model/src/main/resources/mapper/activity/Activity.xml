@@ -17,7 +17,7 @@
         sell_time
     </sql>
 
-    <sql id="columnsForSelect">
+    <sql id="columnsForCondition">
         a.activity_id,
         a.activity_name,
         a.activity_post_time,
@@ -129,7 +129,7 @@
             parameterType="com.maddog.articket.activity.dto.ActivityQueryCondition"
             resultType="com.maddog.articket.activity.dto.ActivityForView">
         SELECT
-            <include refid="columnsForSelect" />
+            <include refid="columnsForCondition" />
         FROM
             activity
         LEFT JOIN
@@ -176,6 +176,19 @@
                 AND
                 partner_id = #{partnerId}
         )
+    </select>
+<!-- 依活動 ID 查詢圖片 ID 清單-->
+    <select id="findActivityPictureIdByActivityId"
+            parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        SELECT
+        activity_picture_id
+        FROM
+        activity_picture
+        WHERE
+        activity_id = #{activityId}
+        ORDER BY
+        activity_picture_id
     </select>
 <!-- method-->
 

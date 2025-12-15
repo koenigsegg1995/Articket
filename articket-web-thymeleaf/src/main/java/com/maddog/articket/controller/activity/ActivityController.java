@@ -1,9 +1,11 @@
 package com.maddog.articket.controller.activity;
 
+import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
+import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
 import com.maddog.articket.venue.entity.Venue;
@@ -35,6 +37,9 @@ public class ActivityController {
 	
 	@Autowired
 	private ActivityService activitySvc;
+
+	@Autowired
+	private ActivityPictureService  activityPictureSvc;
 	
 	@Autowired
 	private PartnerMemberService partnerSvc;
@@ -59,11 +64,11 @@ public class ActivityController {
 	
 	//活動資訊
 	@GetMapping("activityInfoOne")
-	public String activityInfoOne(@RequestParam("activityID") String activityID, ModelMap model) {
-		Activity activity = activitySvc.getOneActivity(Integer.valueOf(activityID));
-		Set<ActivityPicture> activityPictures = activity.getActivityPictures();
+	public String activityInfoOne(@RequestParam("activityId") String activityId, ModelMap model) {
+		Activity activity = activitySvc.getOneActivity(Integer.valueOf(activityId));
+		List<Integer> activityPictureIds = activitySvc.findActivityPictureIdByActivityId(activity.getActivityId());
 		
-		model.addAttribute("activityPictures", activityPictures);
+		model.addAttribute("activityPictureIds", activityPictureIds);
 		model.addAttribute("activity", activity);
 		
 		return "front-end/activity/activityInfoOne";
@@ -268,7 +273,7 @@ public class ActivityController {
 	//activityInfoAll 搜尋
 	@PostMapping("activitySearch")
 	public String activitySearch(@ModelAttribute ActivityQueryCondition condition, Model model) {
-		List<Activity> activities = activitySvc.findByCondition(condition);
+		List<ActivityForView> activities = activitySvc.findByCondition(condition);
 		model.addAttribute("activitySearchList", activities);
 		
 		return "front-end/activity/activityInfoAll";

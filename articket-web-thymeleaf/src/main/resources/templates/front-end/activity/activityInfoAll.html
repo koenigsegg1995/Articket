@@ -233,8 +233,8 @@
                                 <!-- 輪播圖片的容器，設定為flex布局以顯示多張圖片 -->
                                 <div class="image-slider" style="display: flex; transition: transform 0.5s ease-in-out;">
                                     <!-- 使用 th:each 遍歷每張圖片並顯示 -->
-                                    <img th:each="activityPicture : ${activity.activityPictures}" 
-                                         th:src="@{|/activity/DBGifReader?activityPictureID=${activityPicture.activityPictureID}|}" 
+                                    <img th:each="activityPictureId : ${activity.activityPictureIds}"
+                                         th:src="@{|/activity/DBGifReader?activityPictureId=${activityPictureId}|}"
                                          class="img-fluid" alt="Activity Image" 
                                          style="object-fit: cover; width: 100%; height: 200px;">
                                 </div>
@@ -242,7 +242,7 @@
                             <!-- 顯示活動名稱 -->
                             <h5 class="card-title" th:text="${activity.activityName}"></h5>
                             <p class="card-text" th:text="'日期：' + ${activity.activityPostTime}"></p>
-                            <p class="card-text" th:text="'地點：' + ${activity.venue.venueName}"></p>
+                            <p class="card-text" th:text="'地點：' + ${activity.venueName}"></p>
                         </a>
                     </div>
                 </div>

@@ -3,7 +3,6 @@ package com.maddog.articket.activity.service.impl;
 import com.maddog.articket.activity.dao.ActivityDao;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
-import com.maddog.articket.hibernate.util.compositequery.HibernateUtil_CompositeQuery_Activity;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import org.hibernate.SessionFactory;
@@ -11,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
@@ -74,11 +70,32 @@ public class ActivityServiceImpl implements ActivityService {
      * @return 活動清單
      *          List<ActivityForView>
      */
+	@Override
+	@Transactional(readOnly = true)
 	public List<ActivityForView> findByCondition(ActivityQueryCondition condition) {
         // 依條件由 DAO 查詢
         List<ActivityForView> viewList = activityDao.findByCondition(condition);
 
-        return activityDao.findByCondition(condition);
+		// 設定圖片 ID 清單
+		for(ActivityForView view : viewList) {
+			view.setActivityPictureIds(activityDao.findActivityPictureIdByActivityId(view.getActivityId()));
+		}
+
+        return viewList;
+	}
+
+	/**
+	 * 依活動 ID 查詢活動圖片 ID 清單
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 活動圖片 ID 清單
+	 * 			List<Integer>
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<Integer> findActivityPictureIdByActivityId(Integer activityId){
+		return activityDao.findActivityPictureIdByActivityId(activityId);
 	}
 	
 }

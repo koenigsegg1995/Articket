@@ -80,4 +80,14 @@ public interface ActivityDao {
      */
     boolean isActivityOwnedByPartner(Integer activityId, Integer partnerId);
 
+    /**
+     * 依活動 ID 查詢圖片 ID 清單
+     *
+     * @param activityId
+     * 			Integer
+     * @return 圖片 ID 清單
+     * 			List<Integer>
+     */
+    List<Integer> findActivityPictureIdByActivityId(Integer activityId);
+
 }

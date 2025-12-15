@@ -1,60 +1,84 @@
 package com.maddog.articket.activitypicture.entity;
 
-
-import com.maddog.articket.activity.entity.Activity;
-import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
-//活動圖片
-@Entity
-@Table(name = "activitypicture")
+/**
+ * 活動圖片
+ */
 public class ActivityPicture implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "activityPictureID", updatable = false)
-	private Integer activityPictureID; // 活動圖片ID
+	/**
+	 * 序列化
+	 */
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-	@ManyToOne
-	@JoinColumn(name = "activityID", referencedColumnName = "activityID")
-	private Activity activity; // 活動
+	/**
+	 * 活動圖片 ID
+	 */
+	private Integer activityPictureId;
 
-	@Column(name = "activityPicture", columnDefinition = "mediumblob")
-	private byte[] activityPicture; // 活動圖片
+	/**
+	 * 活動 ID
+	 */
+	private Integer activityId;
 
-	// 建構子
-	public ActivityPicture() {
-		super();
+	/**
+	 * 活動圖片
+	 */
+	private byte[] activityPicture;
+
+	/**
+	 *
+	 * @return activityPictureId
+	 * 			Integer
+	 */
+	public Integer getActivityPictureId() {
+		return activityPictureId;
 	}
 
-	public ActivityPicture(Integer activityPictureID, Activity activity, byte[] activityPicture) {
-		super();
-		this.activityPictureID = activityPictureID;
-		this.activity = activity;
-		this.activityPicture = activityPicture;
+	/**
+	 *
+	 * @param activityPictureId
+	 * 			Integer
+	 */
+	public void setActivityPictureId(Integer activityPictureId) {
+		this.activityPictureId = activityPictureId;
 	}
 
-	// Getters & Setters
-	public Integer getActivityPictureID() {
-		return activityPictureID;
+	/**
+	 *
+	 * @return activityId
+	 * 			Integer
+	 */
+	public Integer getActivityId() {
+		return activityId;
 	}
 
-	public void setActivityPictureID(Integer activityPictureID) {
-		this.activityPictureID = activityPictureID;
+	/**
+	 *
+	 * @param activityId
+	 * 			Integer
+	 */
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
 	}
 
-	public Activity getActivity() {
-		return activity;
-	}
-
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
-
+	/**
+	 *
+	 * @return activityPicture
+	 * 			byte[]
+	 */
 	public byte[] getActivityPicture() {
 		return activityPicture;
 	}
 
+	/**
+	 *
+	 * @param activityPicture
+	 * 			byte[]
+	 */
 	public void setActivityPicture(byte[] activityPicture) {
 		this.activityPicture = activityPicture;
 	}

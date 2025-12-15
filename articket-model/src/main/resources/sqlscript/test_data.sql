@@ -1,7 +1,7 @@
 USE articket;
 
 -- 清除所有表格數據
---SET FOREIGN_KEY_CHECKS = 0;
+-- SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE board;
 TRUNCATE TABLE coupon_type;
 TRUNCATE TABLE general_member;
@@ -35,7 +35,7 @@ TRUNCATE TABLE cart_item;
 TRUNCATE TABLE news;
 TRUNCATE TABLE announcement;
 TRUNCATE TABLE activity_area_price;
---SET FOREIGN_KEY_CHECKS = 1;
+-- SET FOREIGN_KEY_CHECKS = 1;
 
 -- 插入 board 測試資料
 INSERT INTO board (board_name) VALUES

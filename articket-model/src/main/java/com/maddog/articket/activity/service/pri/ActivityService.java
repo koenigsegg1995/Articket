@@ -51,5 +51,15 @@ public interface ActivityService {
      *          List<ActivityForView>
 	 */
 	List<ActivityForView> findByCondition(ActivityQueryCondition condition);
+
+	/**
+	 * 依活動 ID 查詢活動圖片 ID 清單
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 活動圖片 ID 清單
+	 * 			List<Integer>
+	 */
+	List<Integer> findActivityPictureIdByActivityId(Integer activityId);
 	
 }

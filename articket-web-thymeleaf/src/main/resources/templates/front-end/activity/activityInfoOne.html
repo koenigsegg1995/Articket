@@ -152,12 +152,11 @@
 
         <div id="main">
             <div id="pictures">
-                <!-- 假設您有一個圖片列表 -->
-                <img th:each="activityPicture:${activityPictures}" 
-                    th:src="@{'/activity/DBGifReader' + '?activityPictureID=' + ${activityPicture.activityPictureID}}" 
-                    class="carousel-image" 
-                    style="display: none;"
-                    alt="活動圖片">
+                <img th:each="activityPictureId : ${activityPictureIds}"
+                     th:src="@{'/activity/DBGifReader' + '?activityPictureId=' + ${activityPictureId}}"
+                     class="carousel-image"
+                     style="display: none;"
+                     alt="活動圖片">
             </div>
 
             <div class="info-section">
