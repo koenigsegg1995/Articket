@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -173,21 +173,21 @@
             <div class="col-md-12">
                 <form method="post" th:action="@{/activity/activitySearch}">
                     <div class="mb-3">
-                        <label for="venueID" class="form-label">地區:</label>
+                        <label class="form-label">地區:</label>
                         <div>
                             <label>
-                                <input type="checkbox" id="north" name="venueID" value="1"> 北部
+                                <input type="checkbox" id="north" name="venueId" value="1"> 北部
                             </label>
                             <label>
-                                <input type="checkbox" id="central" name="venueID" value="2"> 中部
+                                <input type="checkbox" id="central" name="venueId" value="2"> 中部
                             </label>
                             <label>
-                                <input type="checkbox" id="south" name="venueID" value="3"> 南部
+                                <input type="checkbox" id="south" name="venueId" value="3"> 南部
                             </label>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="activityTag" class="form-label">類型:</label>
+                        <label class="form-label">類型:</label>
                         <div>
                             <label>
                                 <input type="checkbox" id="concert" name="activityTag" value="演唱會"> 演唱會
@@ -227,7 +227,7 @@
                 <!-- 設定 overflow: hidden; 確保卡片內的內容不會超出卡片範圍 -->
                 <div class="card h-100">
                     <div class="card-body d-flex flex-column">
-                        <a th:href="@{activityInfoOne(activityID=${activity.activityID})}" class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
+                        <a th:href="@{activityInfoOne(activityId=${activity.activityId})}" class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
                             <!-- 設定圖片容器的寬度和 overflow: hidden; 來限制圖片顯示範圍 -->
                             <div class="image-wrapper mb-3" style="height: 200px; overflow: hidden;">
                                 <!-- 輪播圖片的容器，設定為flex布局以顯示多張圖片 -->

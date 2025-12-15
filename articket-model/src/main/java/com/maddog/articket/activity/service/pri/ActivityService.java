@@ -1,5 +1,7 @@
 package com.maddog.articket.activity.service.pri;
 
+import com.maddog.articket.activity.dto.ActivityForView;
+import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 
 import java.util.List;
@@ -22,19 +24,32 @@ public interface ActivityService {
 	 */
 	void deleteActivity(Integer activityID);
 
-	/**
-	 * 查詢 (單一)
-	 */
-	Activity getOneActivity(Integer activityID);
+    /**
+     * 依 ID 查詢活動
+     *
+     * @param activityId
+     *          Integer
+     * @return 活動
+     *          Activity
+     */
+	Activity getOneActivity(Integer activityId);
 
-	/**
-	 * 查詢 (全部)
-	 */
+    /**
+     * 查詢所有活動
+     *
+     * @return 活動清單
+     *          List<Activity>
+     */
 	List<Activity> getAll();
 
 	/**
-	 * 查詢 (複合)
+	 * 依條件查詢
+     *
+     * @param condition
+     *          ActivityQueryCondition
+     * @return 活動清單
+     *          List<ActivityForView>
 	 */
-	List<Activity> getAll(Map<String, String[]> map);
+	List<ActivityForView> findByCondition(ActivityQueryCondition condition);
 	
 }

@@ -1,5 +1,6 @@
 package com.maddog.articket.activity.dao;
 
+import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,22 +33,22 @@ public interface ActivityDao {
     /**
      * 刪除活動
      *
-     * @param activityID
+     * @param activityId
      *          Integer
      * @return 成功筆數
      *          int
      */
-    int deleteById(Integer activityID);
+    int deleteById(Integer activityId);
 
     /**
      * 依 ID 查詢活動
      *
-     * @param activityID
+     * @param activityId
      *          Integer
      * @return 活動
      *          Activity
      */
-    Activity findById(Integer activityID);
+    Activity findById(Integer activityId);
 
     /**
      * 查詢所有活動
@@ -63,20 +64,20 @@ public interface ActivityDao {
      * @param activityQueryCondition
      *          ActivityQueryCondition
      * @return 活動清單
-     *          List<Activity>
+     *          List<ActivityForView>
      */
-    List<Activity> findByCondition(ActivityQueryCondition activityQueryCondition);
+    List<ActivityForView> findByCondition(ActivityQueryCondition activityQueryCondition);
 
     /**
      * 確認活動是否由該廠商所有
      *
-     * @param activityID
+     * @param activityId
      *          Integer
-     * @param partnerID
+     * @param partnerId
      *          Integer
      * @return 是/否
      *          boolean
      */
-    boolean isActivityOwnedByPartner(Integer activityID, Integer partnerID);
+    boolean isActivityOwnedByPartner(Integer activityId, Integer partnerId);
 
 }

@@ -1,54 +1,54 @@
 USE articket;
 
 -- 清除所有表格數據
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE Board;
-TRUNCATE TABLE CouponType;
-TRUNCATE TABLE GeneralMember;
-TRUNCATE TABLE PartnerMember;
-TRUNCATE TABLE Administrator;
-TRUNCATE TABLE Venue;
-TRUNCATE TABLE VenueArea;
-TRUNCATE TABLE Seat;
-TRUNCATE TABLE VenueRental;
-TRUNCATE TABLE VenueTimeSlot;
-TRUNCATE TABLE Activity;
-TRUNCATE TABLE ActivityTimeSlot;
-TRUNCATE TABLE MemberCoupon;
-TRUNCATE TABLE BookTicket;
-TRUNCATE TABLE Ticket;
-TRUNCATE TABLE SeatStatus;
-TRUNCATE TABLE ActivityPicture;
-TRUNCATE TABLE ActivityCollection;
-TRUNCATE TABLE Article;
-TRUNCATE TABLE Message;
-TRUNCATE TABLE ArticleCollection;
-TRUNCATE TABLE Heart;
-TRUNCATE TABLE ArticleImg;
-TRUNCATE TABLE Prosecute;
-TRUNCATE TABLE Commodity;
-TRUNCATE TABLE CommodityPicture;
-TRUNCATE TABLE Orders;
-TRUNCATE TABLE OrderItem;
-TRUNCATE TABLE Cart;
-TRUNCATE TABLE CartItem;
-TRUNCATE TABLE News;
-TRUNCATE TABLE Announcement;
-TRUNCATE TABLE ActivityAreaPrice;
-SET FOREIGN_KEY_CHECKS = 1;
+--SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE board;
+TRUNCATE TABLE coupon_type;
+TRUNCATE TABLE general_member;
+TRUNCATE TABLE partner_member;
+TRUNCATE TABLE administrator;
+TRUNCATE TABLE venue;
+TRUNCATE TABLE venue_area;
+TRUNCATE TABLE seat;
+TRUNCATE TABLE venue_rental;
+TRUNCATE TABLE venue_time_slot;
+TRUNCATE TABLE activity;
+TRUNCATE TABLE activity_time_slot;
+TRUNCATE TABLE member_coupon;
+TRUNCATE TABLE book_ticket;
+TRUNCATE TABLE ticket;
+TRUNCATE TABLE seat_status;
+TRUNCATE TABLE activity_picture;
+TRUNCATE TABLE activity_collection;
+TRUNCATE TABLE article;
+TRUNCATE TABLE message;
+TRUNCATE TABLE article_collection;
+TRUNCATE TABLE heart;
+TRUNCATE TABLE article_img;
+TRUNCATE TABLE prosecute;
+TRUNCATE TABLE commodity;
+TRUNCATE TABLE commodity_picture;
+TRUNCATE TABLE orders;
+TRUNCATE TABLE order_item;
+TRUNCATE TABLE cart;
+TRUNCATE TABLE cart_item;
+TRUNCATE TABLE news;
+TRUNCATE TABLE announcement;
+TRUNCATE TABLE activity_area_price;
+--SET FOREIGN_KEY_CHECKS = 1;
 
--- 插入 Board 測試資料
-INSERT INTO Board (boardName) VALUES
+-- 插入 board 測試資料
+INSERT INTO board (board_name) VALUES
 ('K-pop Discussions'),
 ('Concert Reviews');
 
--- 插入 CouponType 測試資料
-INSERT INTO CouponType (couponTypeName, couponTypeRegulation, couponTypeDiscount) VALUES
+-- 插入 coupon_type 測試資料
+INSERT INTO coupon_type (coupon_type_name, coupon_type_regulation, coupon_type_discount) VALUES
 ('10% Off', 'Valid for one purchase only', 10.00),
 ('20% Off', 'Valid for one purchase only', 20.00);
 
--- 插入 GeneralMember 測試資料
-INSERT INTO GeneralMember (memberAccount, memberPassword, memberName, memberPhone, memberNickName, memberAddress, nationalID, gender, birthday, memberPicture, memberStatus) VALUES 
+-- 插入 general_member 測試資料
+INSERT INTO general_member (member_account, member_password, member_name, member_phone, member_nickname, member_address, national_id, gender, birthday, member_picture, member_status) VALUES
 ('john.doe@example.com', 'password123', 'John Doe', '0912345678', 'Johnny', '123 Main St, Cityville', 'A123456789', 'Male', '1985-01-01', NULL, 1),
 ('jane.smith@example.com', 'password456', 'Jane Smith', '0923456789', 'Janey', '456 Elm St, Townsville', 'B987654321', 'Female', '1990-02-02', NULL, 1),
 ('sam.wilson@example.com', 'password789', 'Sam Wilson', '0934567890', 'Sammy', '789 Oak St, Villageville', 'C135792468', 'Male', '1982-03-03', NULL, 1),
@@ -60,27 +60,27 @@ INSERT INTO GeneralMember (memberAccount, memberPassword, memberName, memberPhon
 ('david.miller@example.com', 'password606', 'David Miller', '0990123456', 'Davy', '606 Redwood St, Citytown', 'I719284635', 'Male', '1983-09-09', NULL, 1),
 ('olivia.jones@example.com', 'password707', 'Olivia Jones', '0901234567', 'Livvy', '707 Sequoia St, Towncity', 'J823746190', 'Female', '1987-10-10', NULL, 1);
 
--- 插入 PartnerMember 測試資料
-INSERT INTO PartnerMember (taxID, partnerName, partnerHeading, partnerAddress, partnerPhone, partnerContactPerson, partnerPassword, partnerEmail, partnerAccountStatus) VALUES
+-- 插入 partner_member 測試資料
+INSERT INTO partner_member (tax_id, partner_name, partner_heading, partner_address, partner_phone, partner_contact_person, partner_password, partner_email, partner_account_status) VALUES
 ('12345678', 'Starship Entertainment', 'Starship Ent.', '台北市信義區信義路五段7號', '02-3456-7890', '何宜倫', 'password123', 'contact@starship.com', 1),
 ('87654321', 'SM Entertainment', 'SM Ent.', '台北市大安區和平東路三段10號', '02-9876-5432', '楊凱盛', 'password123', 'contact@sm.com', 1),
 ('23456789', 'JYP Entertainment', 'JYP Ent.', '台北市松山區南京東路四段100號', '02-2345-6789', '高傳智', 'password123', 'contact@jyp.com', 1),
 ('98765432', 'YG Entertainment', 'YG Ent.', '台北市中正區忠孝西路一段12號', '02-8765-4321', '林俊逸', 'password123', 'contact@yg.com', 1),
 ('34567890', 'BigHit Entertainment', 'BigHit Ent.', '台北市中山區中山北路三段50號', '02-3456-7891', '陳奕迅', 'password123', 'contact@bighit.com', 1);
 
--- 插入 Administrator 測試資料
-INSERT INTO Administrator (administratorAccount, administratorPassword, administratorStatus) VALUES
+-- 插入 administrator 測試資料
+INSERT INTO administrator (administrator_account, administrator_password, administrator_status) VALUES
 ('admin', 'admin123', 1),
 ('manager', 'manager123', 1);
 
--- 插入 Venue 測試資料
-INSERT INTO Venue (venueName, venuePhone, venueContactPerson, venueAddress, venueLocation) VALUES
+-- 插入 venue 測試資料
+INSERT INTO venue (venue_name, venue_phone, venue_contact_person, venue_address, venue_location) VALUES
 ('北館', '02-1234-5678', '何宜倫', '台北市松山區復興北路123號', '台北'),
 ('中館', '02-2345-6789', '楊凱盛', '台中市西屯區市政路456號', '台中'),
 ('南館', '02-2345-6789', '高傳智', '高雄市前鎮區中華五路789號', '高雄');
 
--- 插入 VenueArea 測試資料
-INSERT INTO VenueArea (venueID, venueAreaName) VALUES
+-- 插入 venue_area 測試資料
+INSERT INTO venue_area (venue_id, venue_area_name) VALUES
 (1, '主舞台'),
 (1, 'VIP 區域'),
 (1, '普通區域'),
@@ -91,8 +91,8 @@ INSERT INTO VenueArea (venueID, venueAreaName) VALUES
 (3, 'VIP 區域'),
 (3, '普通區域');
 
--- 插入 Seat 測試資料
-INSERT INTO Seat (venueID, venueAreaID, seatName, seatRow, seatNumber) VALUES
+-- 插入 seat 測試資料
+INSERT INTO seat (venue_id, venue_area_id, seat_name, seat_row, seat_number) VALUES
 (1, 1, 'A1', 1, 1),
 (1, 1, 'A2', 1, 2),
 (1, 2, 'B1', 1, 1),
@@ -112,8 +112,8 @@ INSERT INTO Seat (venueID, venueAreaID, seatName, seatRow, seatNumber) VALUES
 (3, 9, 'C1', 1, 1),
 (3, 9, 'C2', 1, 2);
 
--- 插入 VenueRental 測試資料
-INSERT INTO VenueRental (venueID, partnerID, activityName, proposal, venueRentalStatus, venueRentalStartDate, venueRentalEndDate, venueRentalCode) VALUES
+-- 插入 venue_rental 測試資料
+INSERT INTO venue_rental (venue_id, partner_id, activity_name, proposal, venue_rental_status, venue_rental_start_date, venue_rental_end_date, venue_rental_code) VALUES
 (1, 1, 'IVE 演唱會', NULL, 1, '2024-09-01', '2024-09-05',CONCAT('G', LPAD(3001000 + 1, 7, '0'))),
 (2, 2, '話劇表演 - 李爾王', NULL, 1, '2024-10-01', '2024-10-07',CONCAT('G', LPAD(3001000 + 2, 7, '0'))),
 (3, 3, 'EXO 演唱會', NULL, 1, '2024-11-01', '2024-11-10',CONCAT('G', LPAD(3001000 + 3, 7, '0'))),
@@ -125,8 +125,8 @@ INSERT INTO VenueRental (venueID, partnerID, activityName, proposal, venueRental
 (3, 3, '台灣傳統戲劇表演', NULL, 1, '2025-05-01', '2025-05-07',CONCAT('G', LPAD(3001000 + 9, 7, '0'))),
 (1, 1, 'GOT7 演唱會', NULL, 1, '2025-06-01', '2025-06-09',CONCAT('G', LPAD(3001000 + 10, 7, '0')));
 
--- 插入 VenueTimeSlot 測試資料
-INSERT INTO VenueTimeSlot (venueRentalID, venueTimeSlotDate, venueTimeSlot, venueTimeSlotStatus) VALUES
+-- 插入 venue_time_slot 測試資料
+INSERT INTO venue_time_slot (venue_rental_id, venue_time_slot_date, venue_time_slot, venue_time_slot_status) VALUES
 (1, '2024-09-01', 1, 1),
 (1, '2024-09-01', 2, 1),
 (1, '2024-09-01', 3, 1),
@@ -188,13 +188,13 @@ INSERT INTO VenueTimeSlot (venueRentalID, venueTimeSlotDate, venueTimeSlot, venu
 (10, '2025-06-02', 2, 1),
 (10, '2025-06-02', 3, 1);
 
--- 插入 Activity 測試資料
-INSERT INTO Activity (partnerID, venueID, venueRentalID, activityName, activityContent, activityPostTime, activityTag, activityStatus, ticketSetStatus, sellTime) VALUES
+-- 插入 activity 測試資料
+INSERT INTO activity (partner_id, venue_id, venue_rental_id, activity_name, activity_content, activity_post_time, activity_tag, activity_status, ticket_set_status, sell_time) VALUES
 (1, 1, 1, 'IVE Live Concert', 'Join IVE for an unforgettable live concert.', '2024-07-01', 'K-pop', 1, 1, '2024-07-15'),
 (2, 2, 2, 'SM Town Concert', 'Experience the best of SM Town.', '2024-08-01', 'K-pop', 1, 1, '2024-08-15');
 
--- 插入 ActivityTimeSlot 測試資料
-INSERT INTO ActivityTimeSlot (activityID, activityTimeSlotDate, activityTimeSlot, activityTimeSlotSeatAmount) VALUES
+-- 插入 activity_time_slot 測試資料
+INSERT INTO activity_time_slot (activity_id, activity_time_slot_date, activity_time_slot, activity_time_slot_seat_amount) VALUES
 (1, '2024-09-01', 1, 100),
 (1, '2024-09-01', 2, 100),
 (1, '2024-09-02', 1, 100),
@@ -204,8 +204,8 @@ INSERT INTO ActivityTimeSlot (activityID, activityTimeSlotDate, activityTimeSlot
 (2, '2024-10-02', 1, 100),
 (2, '2024-10-02', 2, 100);
 
--- 插入 MemberCoupon 測試資料
-INSERT INTO MemberCoupon (memberID, couponTypeID, memberCouponExpirationDate, memberCouponStatus) VALUES
+-- 插入 member_coupon 測試資料
+INSERT INTO member_coupon (member_id, coupon_type_id, member_coupon_expiration_date, member_coupon_status) VALUES
 (1, 1, '2024-12-31', 0),
 (2, 2, '2024-12-31', 0),
 (3, 1, '2024-12-31', 0),
@@ -213,15 +213,15 @@ INSERT INTO MemberCoupon (memberID, couponTypeID, memberCouponExpirationDate, me
 (5, 1, '2024-12-31', 0),
 (6, 2, '2024-12-31', 0);
 
--- 插入 BookTicket 測試資料
-INSERT INTO BookTicket (memberID, activityID, activityTimeSlotID, memberCouponID, ticketQuantity, totalPrice) VALUES
+-- 插入 book_ticket 測試資料
+INSERT INTO book_ticket (member_id, activity_id, activity_time_slot_id, member_coupon_id, ticket_quantity, total_price) VALUES
 (1, 1, 1, 1, 2, 200.00),
 (2, 1, 2, 2, 1, 100.00),
 (3, 2, 3, 3, 2, 300.00),
 (4, 2, 4, 4, 1, 150.00);
 
--- 插入 SeatStatus 測試資料
-INSERT INTO SeatStatus (activityTimeSlotID, seatID, seatStatus) VALUES
+-- 插入 seat_status 測試資料
+INSERT INTO seat_status (activity_time_slot_id, seat_id, seat_status) VALUES
 (1, 1, 0),
 (1, 2, 0),
 (2, 3, 0),
@@ -231,8 +231,8 @@ INSERT INTO SeatStatus (activityTimeSlotID, seatID, seatStatus) VALUES
 (4, 7, 0),
 (4, 8, 0);
 
--- 插入 ActivityAreaPrice 測試資料
-INSERT INTO ActivityAreaPrice (venueAreaID, activityID, activityAreaPrice) VALUES
+-- 插入 activity_area_price 測試資料
+INSERT INTO activity_area_price (venue_area_id, activity_id, activity_area_price) VALUES
 (1, 1, 15000.00),
 (2, 1, 15000.00),
 (3, 1, 2000.00),
@@ -240,115 +240,115 @@ INSERT INTO ActivityAreaPrice (venueAreaID, activityID, activityAreaPrice) VALUE
 (5, 2, 1800.00),
 (6, 2, 2500.00);
 
--- 插入 Ticket 測試資料
-INSERT INTO Ticket (memberID, seatStatusID, activityAreaPriceID, bookTicketID, activityTimeSlotID) VALUES
+-- 插入 ticket 測試資料
+INSERT INTO ticket (member_id, seat_status_id, activity_area_price_id, book_ticket_id, activity_time_slot_id) VALUES
 (1, 1, 1, 1, 1),
 (2, 2, 2, 2, 2),
 (3, 3, 3, 3, 3),
 (4, 4, 4, 4, 4);
 
--- 插入 ActivityPicture 測試資料
-INSERT INTO ActivityPicture (activityID, activityPicture) VALUES
+-- 插入 activity_picture 測試資料
+INSERT INTO activity_picture (activity_id, activity_picture) VALUES
 (1, NULL),
 (2, NULL);
 
--- 插入 ActivityCollection 測試資料
-INSERT INTO ActivityCollection (memberID, activityID) VALUES
+-- 插入 activity_collection 測試資料
+INSERT INTO activity_collection (member_id, activity_id) VALUES
 (1, 1),
 (2, 1),
 (3, 2),
 (4, 2);
 
--- 插入 Article 測試資料
-INSERT INTO Article (articleCategory, articleTitle, memberID, articleContent, boardID, articleStatus) VALUES
+-- 插入 article 測試資料
+INSERT INTO article (article_category, article_title, member_id, article_content, board_id, article_status) VALUES
 ('K-pop', 'IVE Concert Experience', 1, 'The concert was amazing!', 1, 1),
 ('K-pop', 'IVE Fan Meeting', 2, 'I met IVE members!', 1, 1),
 ('K-pop', 'SM Town Concert Review', 3, 'The SM Town concert was fantastic!', 1, 1),
 ('K-pop', 'New K-pop Group Debut', 4, 'Check out this new K-pop group!', 1, 1);
 
--- 插入 Message 測試資料
-INSERT INTO Message (memberID, articleID, messageContent, messageStatus) VALUES
+-- 插入 message 測試資料
+INSERT INTO message (member_id, article_id, message_content, message_status) VALUES
 (1, 1, 'I agree, it was fantastic!', 1),
 (2, 2, 'I wish I could have been there!', 1),
 (3, 3, 'Great review!', 1),
 (4, 4, 'I am excited to see them!', 1);
 
--- 插入 ArticleCollection 測試資料
-INSERT INTO ArticleCollection (memberID, articleID) VALUES
+-- 插入 article_collection 測試資料
+INSERT INTO article_collection (member_id, article_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
 (4, 4);
 
--- 插入 Heart 測試資料
-INSERT INTO Heart (memberID, articleID) VALUES
+-- 插入 heart 測試資料
+INSERT INTO heart (member_id, article_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
 (4, 4);
 
--- 插入 ArticleImg 測試資料
-INSERT INTO ArticleImg (articleID, articlePic) VALUES
+-- 插入 article_img 測試資料
+INSERT INTO article_img (article_id, article_pic) VALUES
 (1, NULL),
 (2, NULL),
 (3, NULL),
 (4, NULL);
 
--- 插入 Prosecute 測試資料
-INSERT INTO Prosecute (memberID, articleID, prosecuteReason, prosecuteCreateTime, prosecuteStatus) VALUES
+-- 插入 prosecute 測試資料
+INSERT INTO prosecute (member_id, article_id, prosecute_reason, prosecute_create_time, prosecute_status) VALUES
 (1, 2, 'Inappropriate content', '2024-08-01', 0),
 (2, 3, 'Spam', '2024-08-02', 0);
 
--- 插入 Commodity 測試資料
-INSERT INTO Commodity (commodityName, commodityPrice, commodityStock, commodityContent, activityID, partnerID, commodityStatus, commodityPostTime) VALUES
+-- 插入 commodity 測試資料
+INSERT INTO commodity (commodity_name, commodity_price, commodity_stock, commodity_content, activity_id, partner_id, commodity_status, commodity_post_time) VALUES
 ('IVE T-shirt', 30.00, 500, 'Official IVE concert T-shirt', 1, 1, 1, '2024-07-01'),
 ('IVE Poster', 15.00, 300, 'Official IVE concert poster', 1, 1, 1, '2024-07-01'),
 ('SM Town T-shirt', 35.00, 400, 'Official SM Town concert T-shirt', 2, 2, 1, '2024-08-01'),
 ('SM Town Poster', 20.00, 200, 'Official SM Town concert poster', 2, 2, 1, '2024-08-01');
 
--- 插入 CommodityPicture 測試資料
-INSERT INTO CommodityPicture (commodityID, commodityPicture) VALUES
+-- 插入 commodity_picture 測試資料
+INSERT INTO commodity_picture (commodity_id, commodity_picture) VALUES
 (1, NULL),
 (2, NULL),
 (3, NULL),
 (4, NULL);
 
--- 插入 Orders 測試資料
-INSERT INTO Orders (memberID, recipient, recipientPhone, recipientEmail, recipientAddress, actualAmount, orderStatus, payStatus) VALUES
+-- 插入 orders 測試資料
+INSERT INTO orders (member_id, recipient, recipient_phone, recipient_email, recipient_address, actual_amount, order_status, pay_status) VALUES
 (1, 'An Yujin', '010-1234-5678', 'yujin@example.com', 'Seoul, South Korea', 60.00, 1, 1),
 (2, 'Jang Wonyoung', '010-2345-6789', 'wonyoung@example.com', 'Seoul, South Korea', 45.00, 1, 1),
 (3, 'Kim Ji Won', '010-3456-7890', 'liz@example.com', 'Seoul, South Korea', 70.00, 1, 1),
 (4, 'Naoi Rei', '010-4567-8901', 'rei@example.com', 'Tokyo, Japan', 55.00, 1, 1);
 
--- 插入 OrderItem 測試資料
-INSERT INTO OrderItem (orderID, commodityID, commodityOrderPrice, orderItemQuantity, orderItemTotalPrice) VALUES
+-- 插入 order_item 測試資料
+INSERT INTO order_item (order_id, commodity_id, commodity_order_price, order_item_quantity, order_item_total_price) VALUES
 (1, 1, 30.00, 1, 30.00),
 (1, 2, 15.00, 2, 30.00),
 (2, 2, 15.00, 3, 45.00),
 (3, 3, 35.00, 2, 70.00),
 (4, 4, 20.00, 1, 20.00);
 
--- 插入 Cart 測試資料
-INSERT INTO Cart (memberID, cartTotalPrice) VALUES
+-- 插入 cart 測試資料
+INSERT INTO cart (member_id, cart_total_price) VALUES
 (1, 60.00),
 (2, 45.00),
 (3, 70.00),
 (4, 55.00);
 
--- 插入 CartItem 測試資料
-INSERT INTO CartItem (cartID, commodityID, checkedQuantity) VALUES
+-- 插入 cart_item 測試資料
+INSERT INTO cart_item (cart_id, commodity_id, checked_quantity) VALUES
 (1, 1, 1),
 (1, 2, 2),
 (2, 2, 3),
 (3, 3, 2),
 (4, 4, 1);
 
--- 插入 News 測試資料
-INSERT INTO News (administratorID, newsTitle, newsContent, newsStatus) VALUES
+-- 插入 news 測試資料
+INSERT INTO news (administrator_id, news_title, news_content, news_status) VALUES
 (1, 'IVE Concert Announcement', 'We are excited to announce the IVE live concert in September!', 1),
 (2, 'SM Town Concert Announcement', 'Don\'t miss the SM Town concert in October!', 1);
 
--- 插入 Announcement 測試資料
-INSERT INTO Announcement (administratorID, announcementTitle, announcementContent, announcementStatus) VALUES
+-- 插入 announcement 測試資料
+INSERT INTO announcement (administrator_id, announcement_title, announcement_content, announcement_status) VALUES
 (1, 'IVE Concert Tickets', 'Tickets for the IVE concert will go on sale soon. Stay tuned!', 1),
 (2, 'SM Town Concert Tickets', 'Tickets for the SM Town concert will go on sale soon. Stay tuned!', 1);

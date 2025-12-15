@@ -1,5 +1,7 @@
 package com.maddog.articket.activity.dto;
 
+import java.util.List;
+
 /**
  * 封裝活動查詢條件
  */
@@ -8,47 +10,47 @@ public class ActivityQueryCondition {
     /**
      * 場館ID
      */
-    private Integer venueId;
+    private List<Integer> venueIdList;
 
     /**
      * 類型標籤
      */
-    private String activityTag;
+    private List<String> activityTagList;
 
     /**
      *
-     * @return venueId
-     *          Integer
+     * @return venueIdList
+     *          List<Integer>
      */
-    public Integer getVenueId() {
-        return venueId;
+    public List<Integer> getVenueIdList() {
+        return venueIdList;
     }
 
     /**
      *
-     * @param venueId
-     *          Integer
+     * @param venueIdList
+     *          List<Integer>
      */
-    public void setVenueId(Integer venueId) {
-        this.venueId = venueId;
+    public void setVenueIdList(List<Integer> venueIdList) {
+        this.venueIdList = venueIdList;
     }
 
     /**
      *
-     * @return activityTag
-     *          String
+     * @return activityTagList
+     *          List<String>
      */
-    public String getActivityTag() {
-        return activityTag;
+    public List<String> getActivityTagList() {
+        return activityTagList;
     }
 
     /**
      *
-     * @param activityTag
-     *          String
+     * @param activityTagList
+     *          List<String>
      */
-    public void setActivityTag(String activityTag) {
-        this.activityTag = activityTag;
+    public void setActivityTagList(List<String> activityTagList) {
+        this.activityTagList = activityTagList;
     }
 
 }

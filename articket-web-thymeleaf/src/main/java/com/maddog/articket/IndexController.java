@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 	
 	@Autowired
-    GeneralMemberService gmemberSvc;
+    private GeneralMemberService gmemberSvc;
 	
 	@Autowired
-    PartnerMemberService partnerSvc;
+    private PartnerMemberService partnerSvc;
 	
     @Autowired
-    ActivityService activitySvc;
+    private ActivityService activitySvc;
 	
 	//導向首頁
     @GetMapping("/")
@@ -140,12 +140,12 @@ public class IndexController {
         return "/back-end-admin/admin_prosecute";
     }
 
-    //查 activity 全部
+    /**
+     * 顯示所有活動
+     */
   	@ModelAttribute("activityListData")
-  	protected List<Activity> referenceListActivityData(Model model) {
-      	List<Activity> list = activitySvc.getAll();
-      	
-      	return list;
+  	protected List<Activity> referenceListActivityData() {
+      	return activitySvc.getAll();
   	}
   	
   	//票務須知

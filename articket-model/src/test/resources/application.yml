@@ -9,16 +9,6 @@ spring:
     username: root
     password: 123456
 
-  # Thymeleaf 設定
-  thymeleaf:
-    cache: false
-
-  # 檔案上傳限制
-  servlet:
-    multipart:
-      max-file-size: 30MB
-      max-request-size: 30MB
-
   # Jackson 時間格式
   jackson:
     time-zone: GMT+8
@@ -31,7 +21,3 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true # 開啟駝峰命名轉換
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 開啟 SQL LOG
-
-# Server 設定
-server:
-  port: 8080

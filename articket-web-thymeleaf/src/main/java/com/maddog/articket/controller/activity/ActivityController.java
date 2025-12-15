@@ -1,5 +1,6 @@
 package com.maddog.articket.controller.activity;
 
+import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
@@ -16,10 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,16 +34,16 @@ import java.util.stream.Collectors;
 public class ActivityController {
 	
 	@Autowired
-	ActivityService activitySvc;
+	private ActivityService activitySvc;
 	
 	@Autowired
-	PartnerMemberService partnerSvc;
+	private PartnerMemberService partnerSvc;
 	
 	@Autowired
-	VenueRentalService venueRentalSvc;
+	private VenueRentalService venueRentalSvc;
 	
 	@Autowired
-	VenueService venueSvc;
+	private VenueService venueSvc;
 	
 /********************* 跳轉 **********************/	
 //////////////// 前台 ////////////////
@@ -227,7 +225,7 @@ public class ActivityController {
 		// 去除BindingResult中upFiles欄位的FieldError紀錄
 		result = removeFieldError(activity, result, "activityPictures");
 
-		Activity activityORI = activitySvc.getOneActivity(activity.getActivityID());
+		Activity activityORI = activitySvc.getOneActivity(activity.getActivityId());
 		
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
 				Set<ActivityPicture> activityPictures = activityORI.getActivityPictures();
@@ -269,9 +267,8 @@ public class ActivityController {
 	
 	//activityInfoAll 搜尋
 	@PostMapping("activitySearch")
-	public String activitySearch(HttpServletRequest req, Model model) {
-		Map<String, String[]> map = req.getParameterMap();
-		List<Activity> activities = activitySvc.getAll(map);
+	public String activitySearch(@ModelAttribute ActivityQueryCondition condition, Model model) {
+		List<Activity> activities = activitySvc.findByCondition(condition);
 		model.addAttribute("activitySearchList", activities);
 		
 		return "front-end/activity/activityInfoAll";

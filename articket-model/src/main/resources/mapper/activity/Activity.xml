@@ -18,18 +18,10 @@
     </sql>
 
     <sql id="columnsForSelect">
-        activity_id,
-        partner_id,
-        venue_id,
-        venue_rental_id,
-        activity_name,
-        activity_content,
-        activity_create_time,
-        activity_post_time,
-        activity_tag,
-        activity_status,
-        ticket_set_status,
-        sell_time
+        a.activity_id,
+        a.activity_name,
+        a.activity_post_time,
+        v.venue_name
     </sql>
 <!-- sql -->
 
@@ -55,12 +47,14 @@
     <insert id="insert"
             parameterType="com.maddog.articket.activity.entity.Activity">
         INSERT INTO activity
+        (
             <include refid="columnsForInsert" />
+        )
         VALUES
         (
-            #{partnerID},
-            #{venueID},
-            #{venueRentalID},
+            #{partnerId},
+            #{venueId},
+            #{venueRentalId},
             #{activityName},
             #{activityContent},
             #{activityPostTime},
@@ -76,8 +70,12 @@
             parameterType="com.maddog.articket.activity.entity.Activity">
         UPDATE
             activity
-        SET
-            partner_id = #{partnerId},
+        <set>
+            <if test=" partnerId != null and partnerId != '' ">
+                partner_id = #{partnerId},
+            </if>
+
+
             venue_id = #{venueId},
             venue_rental_id = #{venueRentalId},
             activity_name = #{activityName},
@@ -87,6 +85,7 @@
             activity_status = #{activityStatus},
             ticket_set_status = #{ticketSetStatus},
             sell_time = #{sellTime}
+        </set>
         WHERE
             activity_id = #{activityId}
     </update>
@@ -128,18 +127,36 @@
     <!-- 依條件查詢-->
     <select id="findByCondition"
             parameterType="com.maddog.articket.activity.dto.ActivityQueryCondition"
-            resultType="com.maddog.articket.activity.entity.Activity">
+            resultType="com.maddog.articket.activity.dto.ActivityForView">
         SELECT
             <include refid="columnsForSelect" />
         FROM
             activity
+        LEFT JOIN
+            venue v
+            ON
+            a.venue_id = v.venue_id
         <where>
-            <if test=" venueId != null ">
-                AND venue_id = #{venueId}
+            <if test=" venueIdList != null and venueIdList.size() > 0 ">
+                AND venue_id IN
+                    <foreach collection="venueIdList"
+                             item="venueId"
+                             open="("
+                             close=")"
+                             separator=",">
+                        #{venueId)
+                    </foreach>
             </if>
 
-            <if test=" activityTag != null and activityTag != '' ">
-                AND venue_id = #{venueId}
+            <if test=" activityTagList != null and activityTagList.size() > 0 ">
+                AND activityTag IN
+                    <foreach collection="activityTagList"
+                             item="activityTag"
+                             open="("
+                             close=")"
+                             separator=",">
+                        #{activityTag}
+                    </foreach>
             </if>
         </where>
         ORDER BY
