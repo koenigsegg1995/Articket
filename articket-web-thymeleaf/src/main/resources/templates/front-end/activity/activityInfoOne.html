@@ -152,7 +152,7 @@
 
         <div id="main">
             <div id="pictures">
-                <img th:each="activityPictureId : ${activityPictureIds}"
+                <img th:each="activityPictureId : ${activity.activityPictureIds}"
                      th:src="@{'/activity/DBGifReader' + '?activityPictureId=' + ${activityPictureId}}"
                      class="carousel-image"
                      style="display: none;"
@@ -161,8 +161,8 @@
 
             <div class="info-section">
                 <div class="info-item"><strong>介紹：</strong></div> <span id="intro" th:text="${activity.activityContent}"></span>
-                <div class="info-item"><strong>廠商名稱：</strong> <span th:text="${activity.partnerMember.partnerName}"></span></div>
-                <div class="info-item"><strong>場館名稱：</strong> <span th:text="${activity.venue.venueName}"></span></div>
+                <div class="info-item"><strong>廠商名稱：</strong> <span th:text="${activity.partnerName}"></span></div>
+                <div class="info-item"><strong>場館名稱：</strong> <span th:text="${activity.venueName}"></span></div>
                 <div class="info-item"><strong>類型標籤：</strong> <span th:text="${activity.activityTag}"></span></div>
                 <!-- 注意是否要改為方法顯示 -->
                 <div class="info-item"><strong>活動日期：</strong>
@@ -182,7 +182,7 @@
                     <label for="session"><b>選擇場次：</b></label>
                     <select id="session" name="activityTimeSlot">
                         <option th:each="activityTimeSlot : ${activity.activityTimeSlots}" 
-                                th:value="${activityTimeSlot.activityTimeSlotID}"> 
+                                th:value="${activityTimeSlot.activityTimeSlotId}">
                                 <th:block th:text="${activityTimeSlot.activityTimeSlotDate} + ' '"></th:block>
                                 <th:block th:switch="${activityTimeSlot.activityTimeSlot}">
                                         <th:block th:case="1">10:00</th:block>

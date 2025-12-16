@@ -17,28 +17,26 @@
         sell_time
     </sql>
 
-    <sql id="columnsForCondition">
+    <sql id="columnsForView">
         a.activity_id,
         a.activity_name,
         a.activity_post_time,
-        v.venue_name
+        a.activity_content,
+        a.activityTag,
+        v.venue_name,
+        p.partner_name
     </sql>
 <!-- sql -->
 
 <!-- resultMap-->
-    <resultMap id="selectResultMap" type="com.maddog.articket.activity.entity.Activity">
+    <resultMap id="forViewResultMap" type="com.maddog.articket.activity.dto.ActivityForView">
         <id column="activity_id" property="activityId" />
-        <result column="partner_id" property="partnerId" />
-        <result column="venue_id" property="venueId" />
-        <result column="venue_rental_id" property="venueRentalId" />
         <result column="activity_name" property="activityName" />
-        <result column="activity_content" property="activityContent" />
-        <result column="activity_create_time" property="activityCreateTime" />
         <result column="activity_post_time" property="activityPostTime" />
+        <result column="activity_content" property="activityContent" />
         <result column="activity_tag" property="activityTag" />
-        <result column="activity_status" property="activityStatus" />
-        <result column="ticket_set_status" property="ticketSetStatus" />
-        <result column="sell_time" property="sellTime" />
+        <result column="venue_name" property="venueName" />
+        <result column="partner_name" property="partnerName" />
     </resultMap>
 <!-- resultMap-->
 
@@ -99,43 +97,65 @@
             #{activityId}
     </delete>
 
-    <!-- 依 ID 查詢活動-->
+    <!-- 依 ID 查詢活動 DO -->
     <select id="findById"
             parameterType="java.lang.Integer"
-            resultMap="selectResultMap">
+            resultType="com.maddog.articket.activity.entity.Activity">
         SELECT
-            <include refid="columnsForSelect" />
+            *
         FROM
             activity
         WHERE
             activity_id = #{activityId}
-        ORDER BY
-            activity_id
     </select>
 
-    <!-- 查詢所有活動-->
+    <!-- 依 ID 查詢活動 VO -->
+    <select id="findByIdForView"
+            parameterType="java.lang.Integer"
+            resultMap="forViewResultMap">
+        SELECT
+            <include refid="columnsForView" />
+        FROM
+            activity a
+        LEFT JOIN
+            venue v
+            ON
+            a.venue_id = v.venue_id
+        LEFT JOIN
+            partner_member p
+            ON
+            a.partner_id = p.partner_id
+        WHERE
+            activity_id = #{activityId}
+    </select>
+
+    <!-- 查詢所有活動 DO -->
     <select id="findAll"
             resultType="com.maddog.articket.activity.entity.Activity">
         SELECT
-            <include refid="columnsForSelect" />
+            *
         FROM
             activity
         ORDER BY
             activity_id
     </select>
 
-    <!-- 依條件查詢-->
-    <select id="findByCondition"
+    <!-- 依條件查詢活動 VO 清單 -->
+    <select id="findByConditionForView"
             parameterType="com.maddog.articket.activity.dto.ActivityQueryCondition"
             resultType="com.maddog.articket.activity.dto.ActivityForView">
         SELECT
-            <include refid="columnsForCondition" />
+            <include refid="columnsForView" />
         FROM
             activity
         LEFT JOIN
             venue v
             ON
             a.venue_id = v.venue_id
+        LEFT JOIN
+            partner_member p
+            ON
+            a.partner_id = p.partner_id
         <where>
             <if test=" venueIdList != null and venueIdList.size() > 0 ">
                 AND venue_id IN
@@ -182,14 +202,27 @@
             parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         SELECT
-        activity_picture_id
+            activity_picture_id
         FROM
-        activity_picture
+            activity_picture
         WHERE
-        activity_id = #{activityId}
+            activity_id = #{activityId}
         ORDER BY
-        activity_picture_id
+            activity_picture_id
     </select>
-<!-- method-->
+
+    <select id="findActivityTimeSlotByActivityId"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot">
+        SELECT
+            *
+        FROM
+            activity_time_slot
+        WHERE
+            activity_id = #{activityId}
+        ORDER BY
+            activity_time_slot_date, activity_time_slot
+    </select>
+    <!-- method-->
 
 </mapper>

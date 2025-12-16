@@ -3,9 +3,9 @@ package com.maddog.articket.activity.service.pri;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ActivityService {
 
@@ -25,7 +25,7 @@ public interface ActivityService {
 	void deleteActivity(Integer activityID);
 
     /**
-     * 依 ID 查詢活動
+     * 依 ID 查詢活動 (deprecated)
      *
      * @param activityId
      *          Integer
@@ -33,6 +33,16 @@ public interface ActivityService {
      *          Activity
      */
 	Activity getOneActivity(Integer activityId);
+
+    /**
+     * 依 ID 查詢活動 VO
+     *
+     * @param activityId
+     *          Integer
+     * @return 活動
+     *          ActivityForView
+     */
+    ActivityForView findByIdForView(Integer activityId);
 
     /**
      * 查詢所有活動
@@ -50,7 +60,7 @@ public interface ActivityService {
      * @return 活動清單
      *          List<ActivityForView>
 	 */
-	List<ActivityForView> findByCondition(ActivityQueryCondition condition);
+	List<ActivityForView> findByConditionForView(ActivityQueryCondition condition);
 
 	/**
 	 * 依活動 ID 查詢活動圖片 ID 清單
@@ -61,5 +71,15 @@ public interface ActivityService {
 	 * 			List<Integer>
 	 */
 	List<Integer> findActivityPictureIdByActivityId(Integer activityId);
+
+    /**
+     * 依活動 ID 查詢活動時段清單
+     *
+     * @param activityId
+     * 			Integer
+     * @return 活動時段清單
+     * 			List<ActivityTimeSlot>
+     */
+    List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId);
 	
 }

@@ -6,6 +6,7 @@ import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
 import com.maddog.articket.venue.entity.Venue;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,24 +54,44 @@ public class ActivityController {
 	
 /********************* 跳轉 **********************/	
 //////////////// 前台 ////////////////
-	//活動資訊總攬
+    /**
+     * 活動資訊總攬
+     *
+     * @param model
+     *          ModelMap
+     * @return activityInfoAll.html
+     *          String
+     */
 	@GetMapping("activityInfoAll")
-	public String activityInfo(ModelMap model) {
-		List<Activity> activities = activitySvc.getAll();
+	public String activityInfo(Model model) {
+        // 空容器，查詢後再顯示活動
+        List<ActivityForView> activities = new ArrayList<>();
 		
 		model.addAttribute("activitySearchList", activities);
 		
 		return "front-end/activity/activityInfoAll";
 	}
-	
-	//活動資訊
+
+    /**
+     * 活動資訊
+     *
+     * @param activityId
+     *          Integer
+     * @return activityInfoOne.html
+     *          String
+     */
 	@GetMapping("activityInfoOne")
-	public String activityInfoOne(@RequestParam("activityId") String activityId, ModelMap model) {
-		Activity activity = activitySvc.getOneActivity(Integer.valueOf(activityId));
-		List<Integer> activityPictureIds = activitySvc.findActivityPictureIdByActivityId(activity.getActivityId());
-		
-		model.addAttribute("activityPictureIds", activityPictureIds);
-		model.addAttribute("activity", activity);
+	public String activityInfoOne(@RequestParam("activityId") Integer activityId, ModelMap model) {
+		// 依活動 ID 查詢活動 VO
+        ActivityForView view = activitySvc.findByIdForView(activityId);
+
+        // 加進活動圖片 ID 清單
+        view.setActivityPictureIds(activitySvc.findActivityPictureIdByActivityId(activityId));
+
+        // 加進活動時段清單
+        view.setActivityTimeSlots(activitySvc.findActivityTimeSlotByActivityId(activityId));
+
+		model.addAttribute("activity", view);
 		
 		return "front-end/activity/activityInfoOne";
 	}
@@ -218,62 +240,71 @@ public class ActivityController {
 	
 	//activityConfig 送出更新
 	@PostMapping("update")
-	public String update(@Valid Activity activity, BindingResult result, 
-						 @RequestParam("activityPictures") MultipartFile[] parts, 
+	public String update(@Valid Activity activity, BindingResult result,
+						 @RequestParam("activityPictures") MultipartFile[] parts,
 						 HttpSession session, ModelMap model) throws IOException {
 		//確認是否登入，未登入重導至廠商登入頁面
 		if(session.getAttribute("partnerID") == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
-		
+
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		// 去除BindingResult中upFiles欄位的FieldError紀錄
 		result = removeFieldError(activity, result, "activityPictures");
 
 		Activity activityORI = activitySvc.getOneActivity(activity.getActivityId());
-		
+
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
 				Set<ActivityPicture> activityPictures = activityORI.getActivityPictures();
-				
+
 				activity.setActivityPictures(activityPictures);
 		} else {
 			for (MultipartFile multipartFile : parts) {
 				ActivityPicture activityPicture = new ActivityPicture();
-				
+
 				activityPicture.setActivityPicture(multipartFile.getBytes());
 				activityPicture.setActivity(activity);
 				activity.getActivityPictures().add(activityPicture);
 			}
 		}
-		
+
 		if (result.hasErrors()) {
 			return "back-end-partner/activity/activityConfig";
 		}
 		/*************************** 2.開始修改資料 *****************************************/
 		//////// 設置未在表單中的資訊 ////////////
-		
+
 		activity.setPartnerMember(activityORI.getPartnerMember());
 		activity.setVenue(activityORI.getVenue());
 		activity.setVenueRental(activityORI.getVenueRental());
 		activity.setActivityStatus(1);
 		activity.setTicketSetStatus(activityORI.getTicketSetStatus());
-		
+
 		////////設置未在表單中的資訊 ////////////
-		
+
 		activitySvc.updateActivity(activity);
-		
+
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
 		activity = activitySvc.getOneActivity(Integer.valueOf(activity.getActivityID()));
 		model.addAttribute("activity", activity);
-		
+
 		return "redirect:/activity/activityDisplay"; // 修改成功後轉交activityDisplay.html
 	}
-	
-	//activityInfoAll 搜尋
+
+    /**
+     * activityInfoAll 搜尋
+     *
+     * @param condition
+     *          ActivityQueryCondition
+     * @param model
+     *          Model
+     * @return activityInfoAll.html
+     *          String
+     */
 	@PostMapping("activitySearch")
 	public String activitySearch(@ModelAttribute ActivityQueryCondition condition, Model model) {
-		List<ActivityForView> activities = activitySvc.findByCondition(condition);
+		List<ActivityForView> activities = activitySvc.findByConditionForView(condition);
 		model.addAttribute("activitySearchList", activities);
 		
 		return "front-end/activity/activityInfoAll";
@@ -285,7 +316,7 @@ public class ActivityController {
 	public BindingResult removeFieldError(Activity activity, BindingResult result, String removedFieldname) {
 		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
 				.filter(fieldname -> !fieldname.getField().equals(removedFieldname))
-				.collect(Collectors.toList());
+				.toList();
 		result = new BeanPropertyBindingResult(activity, "activity");
 		for (FieldError fieldError : errorsListToKeep) {
 			result.addError(fieldError);

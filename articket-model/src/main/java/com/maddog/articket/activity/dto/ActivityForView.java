@@ -1,5 +1,7 @@
 package com.maddog.articket.activity.dto;
 
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,18 +22,18 @@ public class ActivityForView {
      */
     private Date activityPostTime;
 
+    private String activityContent;
+
+    private String activityTag;
+
     /**
      * 場館名稱
      */
     private String venueName;
 
-    private String activityContent;
-
     private String partnerName;
 
-    private String activityTag;
-
-    private Date activityTimeSlotDate;
+    private List<ActivityTimeSlot> activityTimeSlots;
 
     /**
      * 圖片 ID 清單
@@ -62,12 +64,44 @@ public class ActivityForView {
         this.activityPostTime = activityPostTime;
     }
 
+    public String getActivityContent() {
+        return activityContent;
+    }
+
+    public void setActivityContent(String activityContent) {
+        this.activityContent = activityContent;
+    }
+
+    public String getActivityTag() {
+        return activityTag;
+    }
+
+    public void setActivityTag(String activityTag) {
+        this.activityTag = activityTag;
+    }
+
     public String getVenueName() {
         return venueName;
     }
 
     public void setVenueName(String venueName) {
         this.venueName = venueName;
+    }
+
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    public void setPartnerName(String partnerName) {
+        this.partnerName = partnerName;
+    }
+
+    public List<ActivityTimeSlot> getActivityTimeSlots() {
+        return activityTimeSlots;
+    }
+
+    public void setActivityTimeSlots(List<ActivityTimeSlot> activityTimeSlots) {
+        this.activityTimeSlots = activityTimeSlots;
     }
 
     public List<Integer> getActivityPictureIds() {

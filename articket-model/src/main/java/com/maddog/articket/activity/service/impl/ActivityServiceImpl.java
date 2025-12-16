@@ -5,6 +5,7 @@ import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
     /**
-     * 依 ID 查詢活動
+     * 依 ID 查詢活動 (deprecated)
      *
      * @param activityId
      *          Integer
@@ -49,6 +50,20 @@ public class ActivityServiceImpl implements ActivityService {
 	public Activity getOneActivity(Integer activityId) {
 		 return activityDao.findById(activityId);
 	}
+
+    /**
+     * 依 ID 查詢活動 VO
+     *
+     * @param activityId
+     *          Integer
+     * @return 活動
+     *          ActivityForView
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ActivityForView findByIdForView(Integer activityId){
+        return activityDao.findByIdForView(activityId);
+    }
 
     /**
      * 查詢所有活動
@@ -72,9 +87,9 @@ public class ActivityServiceImpl implements ActivityService {
      */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ActivityForView> findByCondition(ActivityQueryCondition condition) {
+	public List<ActivityForView> findByConditionForView(ActivityQueryCondition condition) {
         // 依條件由 DAO 查詢
-        List<ActivityForView> viewList = activityDao.findByCondition(condition);
+        List<ActivityForView> viewList = activityDao.findByConditionForView(condition);
 
 		// 設定圖片 ID 清單
 		for(ActivityForView view : viewList) {
@@ -97,5 +112,19 @@ public class ActivityServiceImpl implements ActivityService {
 	public List<Integer> findActivityPictureIdByActivityId(Integer activityId){
 		return activityDao.findActivityPictureIdByActivityId(activityId);
 	}
+
+    /**
+     * 依活動 ID 查詢活動時段清單
+     *
+     * @param activityId
+     * 			Integer
+     * @return 活動時段清單
+     * 			List<ActivityTimeSlot>
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId){
+        return activityDao.findActivityTimeSlotByActivityId(activityId);
+    }
 	
 }

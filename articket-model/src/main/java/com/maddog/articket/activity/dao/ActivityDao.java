@@ -3,6 +3,7 @@ package com.maddog.articket.activity.dao;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public interface ActivityDao {
      * @return 成功筆數
      *          int
      */
+    // TODO:
     int update(Activity activity);
 
     /**
@@ -41,7 +43,7 @@ public interface ActivityDao {
     int deleteById(Integer activityId);
 
     /**
-     * 依 ID 查詢活動
+     * 依 ID 查詢活動 DO
      *
      * @param activityId
      *          Integer
@@ -51,7 +53,17 @@ public interface ActivityDao {
     Activity findById(Integer activityId);
 
     /**
-     * 查詢所有活動
+     * 依 ID 查詢活動 VO
+     *
+     * @param activityId
+     *          Integer
+     * @return 活動
+     *          ActivityForView
+     */
+    ActivityForView findByIdForView(Integer activityId);
+
+    /**
+     * 查詢所有活動 DO
      *
      * @return 活動清單
      *          List<Activity>
@@ -59,14 +71,14 @@ public interface ActivityDao {
     List<Activity> findAll();
 
     /**
-     * 依條件查詢
+     * 依條件查詢活動 VO 清單
      *
      * @param activityQueryCondition
      *          ActivityQueryCondition
      * @return 活動清單
      *          List<ActivityForView>
      */
-    List<ActivityForView> findByCondition(ActivityQueryCondition activityQueryCondition);
+    List<ActivityForView> findByConditionForView(ActivityQueryCondition activityQueryCondition);
 
     /**
      * 確認活動是否由該廠商所有
@@ -89,5 +101,15 @@ public interface ActivityDao {
      * 			List<Integer>
      */
     List<Integer> findActivityPictureIdByActivityId(Integer activityId);
+
+    /**
+     * 依活動 ID 查詢活動時段清單
+     *
+     * @param activityId
+     * 			Integer
+     * @return 活動時段清單
+     * 			List<ActivityTimeSlot>
+     */
+    List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId);
 
 }
