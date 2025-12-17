@@ -11,11 +11,9 @@ import java.util.Optional;
 
 @Service("venueRentalService")
 public class VenueRentalService {
-	@Autowired
-	VenueRentalRepository venueRentalRepository;
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	VenueRentalRepository venueRentalRepository;
 
 	public void addVenueRental(VenueRental venueRental) {
 		venueRentalRepository.save(venueRental);
@@ -23,11 +21,6 @@ public class VenueRentalService {
 
 	public void updateVenueRental(VenueRental venueRental) {
 		venueRentalRepository.save(venueRental);
-	}
-
-	public void deleteVenueRental(Integer venueRentalID) {// 刪不掉，寫開心的
-		if (venueRentalRepository.existsById(venueRentalID))
-			venueRentalRepository.deleteById(venueRentalID);
 	}
 
 	public VenueRental getOneVenueRental(Integer venueRentalID) {
@@ -47,7 +40,4 @@ public class VenueRentalService {
 		return venueRentalRepository.findUnNewByPartnerID(partnerID);
 	}
 
-//	public List<VenueRental> getAll(Map<String,String[]> map){//複合查詢，暫時先不做
-//		return HibernateUtil_CompositeQuery_VenueRental.getAllC(map,sessionFactory.openSession());
-//	}
 }

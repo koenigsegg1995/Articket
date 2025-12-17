@@ -41,18 +41,12 @@ public class ActivityController {
 	private ActivityService activitySvc;
 
 	@Autowired
-	private ActivityPictureService  activityPictureSvc;
-	
-	@Autowired
 	private PartnerMemberService partnerSvc;
 	
 	@Autowired
 	private VenueRentalService venueRentalSvc;
 	
-	@Autowired
-	private VenueService venueSvc;
-	
-/********************* 跳轉 **********************/	
+/********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
     /**
      * 活動資訊總攬
@@ -139,24 +133,20 @@ public class ActivityController {
 	
 	//活動新增
 	@PostMapping("activityAdd")
-	public String activityAdd(@RequestParam("venueRentalID") String venueRentalID, HttpSession session, ModelMap model) {
+	public String activityAdd(@RequestParam("venueRentalId") Integer venueRentalId,
+							  HttpSession session,
+							  ModelMap model) {
 		//確認是否登入，未登入重導至廠商登入頁面
 		if(session.getAttribute("partnerID") == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
-		
+
+		// TODO: 1.activityUnadd (活動待新增) 只送出 venueRentalId 2.請求到這方法，可以不用新增空 activity 容器，直接使用 name 綁定
 		Activity activity = new Activity();
-		VenueRental venueRental = venueRentalSvc.getOneVenueRental(Integer.valueOf(venueRentalID));
-//		activity.setVenueRental(venueRental);
-		
-		model.addAttribute("activity", activity);
+		VenueRental venueRental = venueRentalSvc.getOneVenueRental(venueRentalId);
+
     	model.addAttribute("venueRental", venueRental);
-    	System.out.println("----------------------------------------");
-    	System.out.println(venueRental.getVenueRentalID());
-    	System.out.println(venueRental.getActivityName());
-    	System.out.println("----------------------------------------");
-//		System.out.println(activity.getVenueRental().getActivityName());
-		
+
 		return "back-end-partner/activity/activityAdd";
 	}
 	
