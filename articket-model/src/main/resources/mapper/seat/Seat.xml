@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.seat.model.entity.SeatDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 依場館 ID 與座位代號查詢座位 ID -->
+    <select id="findSeatIdByVenueIdAndSeatName"
+            parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        SELECT
+            seatId
+        FROM
+            seat
+        WHERE
+            venueId = #{venueId)
+            AND
+            seatName = #{seatName}
+    </select>
+<!-- method-->
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.activitytimeslot.dao.ActivityTimeSlotDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 依時段 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot">
+        SELECT
+            *
+        FROM
+            activity_time_slot
+        WHERE
+            activity_time_slot_id = #{activity_time_slot_id}
+    </select>
+<!-- method-->
+
+</mapper>

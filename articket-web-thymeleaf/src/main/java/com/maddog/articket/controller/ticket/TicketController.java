@@ -100,7 +100,7 @@ public class TicketController {
 		}
 		
 		List<Ticket> ticketList = (List<Ticket>)session.getAttribute("ticketList");
-		Integer id = ticketList.get(0).getActivityTimeSlot().getActivityTimeSlotID();
+		Integer id = ticketList.get(0).getActivityTimeSlot().getActivityTimeSlotId();
 		
 		ticketList.remove(count - 1);
 		

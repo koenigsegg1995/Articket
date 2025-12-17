@@ -5,14 +5,13 @@ import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
 import com.maddog.articket.activityareaprice.service.impl.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
-import com.maddog.articket.activitytimeslot.service.impl.ActivityTimeSlotService;
+import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.seat.model.PriceForm;
 import com.maddog.articket.seat.model.SeatPriceData;
-import com.maddog.articket.seat.model.service.impl.SeatService;
+import com.maddog.articket.seat.model.service.pri.SeatService;
 import com.maddog.articket.seatstatus.service.impl.SeatStatusService;
 import com.maddog.articket.venuearea.service.impl.VenueAreaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequestMapping("/seatReservationAndPricing")
 public class SeatReservationAndPricingController {
-
-	private static final Logger logger = LoggerFactory.getLogger(SeatReservationAndPricingController.class);
 
 	@Autowired
 	private ActivityTimeSlotService activityTimeSlotService;
@@ -53,7 +51,7 @@ public class SeatReservationAndPricingController {
 	@PostMapping
 	public String getSeatReservationAndPricing(@RequestParam Integer activityID,
 			@RequestParam Integer activityTimeSlotID, Model model) {
-		logger.info("Accessing seat reservation and pricing page for Activity ID: {} and Time Slot ID: {}", activityID,
+		log.info("Accessing seat reservation and pricing page for Activity ID: {} and Time Slot ID: {}", activityID,
 				activityTimeSlotID);
 
 		// 獲取 VIP、A、B 區的價格
@@ -79,66 +77,66 @@ public class SeatReservationAndPricingController {
 	@ResponseBody
 	public ResponseEntity<?> setSeatsAndPrices(@RequestBody SeatPriceData data, @RequestParam Integer activityID,
 											   @RequestParam Integer activityTimeSlotID) {
-		logger.info("Received request to set seats and prices for Activity ID: {} and Time Slot ID: {}", activityID,
+		log.info("Received request to set seats and prices for Activity ID: {} and Time Slot ID: {}", activityID,
 				activityTimeSlotID);
 
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotID);
 		Activity activity = activityService.getOneActivity(activityID);
 		activity.setTicketSetStatus(1);//把活動狀態設定為1
 		activityService.updateActivity(activity);
-		Integer venueId = activity.getVenue().getVenueID();
+		Integer venueId = activity.getVenueId();
 		Map<String, Object> response = new HashMap<>();
 
 		try {
-			logger.info("Processing data...");
+			log.info("Processing data...");
 
 			// 驗證價格
 			if (!validatePrices(data.getPrices())) {
-				logger.warn("Invalid prices received: {}", data.getPrices());
+				log.warn("Invalid prices received: {}", data.getPrices());
 				response.put("error", "價格不能小於500");
 				return ResponseEntity.badRequest().body(response);
 			}
 
 			// 處理保留座位
 			if (data.getReservedSeats() != null && !data.getReservedSeats().isEmpty()) {
-				logger.info("Reserved seats:");
+				log.info("Reserved seats:");
 				for (String seatName : data.getReservedSeats()) {
-					logger.info(" - Seat Name: {}", seatName);
+					log.info(" - Seat Name: {}", seatName);
 					Integer seatId = seatService.findSeatId(venueId, seatName);
 					if (seatId != null) {
 						seatStatusService.updateSeatStatusToReserved(seatId, activityTimeSlotID);
-						logger.info("   Updated seat status for Seat ID: {} to Reserved (3)", seatId);
+						log.info("   Updated seat status for Seat ID: {} to Reserved (3)", seatId);
 
 						String venueAreaName = getVenueAreaNameFromSeatName(seatName);
 						if (venueAreaName != null) {
 							Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId,
 									venueAreaName);
 							if (venueAreaId != null) {
-								logger.info("   Seat belongs to Venue Area ID: {}", venueAreaId);
+								log.info("   Seat belongs to Venue Area ID: {}", venueAreaId);
 							} else {
-								logger.warn("   No corresponding Venue Area ID found for Venue Area Name: {}",
+								log.warn("   No corresponding Venue Area ID found for Venue Area Name: {}",
 										venueAreaName);
 							}
 						} else {
-							logger.warn("   Unable to determine Venue Area Name for Seat Name: {}", seatName);
+							log.warn("   Unable to determine Venue Area Name for Seat Name: {}", seatName);
 						}
 					} else {
-						logger.warn("   No corresponding Seat ID found for Seat Name: {}", seatName);
+						log.warn("   No corresponding Seat ID found for Seat Name: {}", seatName);
 					}
 				}
 				response.put("reservedSeats", data.getReservedSeats());
 			} else {
-				logger.info("No reserved seats");
+				log.info("No reserved seats");
 				response.put("reservedSeats", "None");
 			}
 
 			// 處理票價
 			if (data.getPrices() != null && !data.getPrices().isEmpty()) {
-				logger.info("Ticket prices:");
+				log.info("Ticket prices:");
 				for (Map.Entry<String, Integer> entry : data.getPrices().entrySet()) {
 					String venueAreaName = entry.getKey();
 					Integer price = entry.getValue();
-					logger.info(" - {} area: ${}", venueAreaName, price);
+					log.info(" - {} area: ${}", venueAreaName, price);
 
 					Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId,
 							venueAreaName);
@@ -146,29 +144,29 @@ public class SeatReservationAndPricingController {
 						try {
 							ActivityAreaPrice updatedPrice = activityAreaPriceService
 									.updateOrCreateActivityAreaPrice(venueAreaId, activityID, new BigDecimal(price));
-							logger.info(
+							log.info(
 									"   Updated/Created price for Venue Area ID: {}, Activity ID: {}, New Price: ${}",
 									venueAreaId, activityID, updatedPrice.getActivityAreaPrice());
 						} catch (Exception e) {
-							logger.error("Error updating/creating price for Venue Area ID: {}, Activity ID: {}",
+							log.error("Error updating/creating price for Venue Area ID: {}, Activity ID: {}",
 									venueAreaId, activityID, e);
 						}
 					} else {
-						logger.warn("   No corresponding Venue Area ID found for Venue Area Name: {}", venueAreaName);
+						log.warn("   No corresponding Venue Area ID found for Venue Area Name: {}", venueAreaName);
 					}
 				}
 				response.put("prices", data.getPrices());
 			} else {
-				logger.info("No ticket prices set");
+				log.info("No ticket prices set");
 				response.put("prices", "Not set");
 			}
 
-			logger.info("Data processing completed successfully");
+			log.info("Data processing completed successfully");
 			response.put("message", "設定已成功保存");
 			return ResponseEntity.ok(response);
 
 		} catch (Exception e) {
-			logger.error("Error occurred while processing the request", e);
+			log.error("Error occurred while processing the request", e);
 			response.put("error", "處理請求時發生錯誤: " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
@@ -177,7 +175,7 @@ public class SeatReservationAndPricingController {
 	@PostMapping("/seatStatus")
 	@ResponseBody
 	public ResponseEntity<?> getSeatStatus(@RequestParam Integer activityTimeSlotID) {
-		logger.info("Fetching seat status for Time Slot ID: {}", activityTimeSlotID);
+		log.info("Fetching seat status for Time Slot ID: {}", activityTimeSlotID);
 
 		try {
 			List<String> soldSeats = seatStatusService.getSeatNamesWithStatus2(activityTimeSlotID);
@@ -187,10 +185,10 @@ public class SeatReservationAndPricingController {
 			response.put("soldSeats", soldSeats);
 			response.put("reservedSeats", reservedSeats);
 
-			logger.info("Successfully fetched seat status");
+			log.info("Successfully fetched seat status");
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
-			logger.error("Error occurred while fetching seat status", e);
+			log.error("Error occurred while fetching seat status", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("獲取座位狀態時發生錯誤");
 		}
 	}
@@ -198,7 +196,7 @@ public class SeatReservationAndPricingController {
 	@PostMapping("/cancelReservation")
 	@ResponseBody
 	public ResponseEntity<?> cancelReservation(@RequestBody Map<String, String> request) {
-		logger.info("Received request to cancel seat reservation");
+		log.info("Received request to cancel seat reservation");
 
 		String seatName = request.get("seatName");
 		Integer activityTimeSlotID = Integer.parseInt(request.get("activityTimeSlotID"));
@@ -209,20 +207,20 @@ public class SeatReservationAndPricingController {
 
 			if (seatId != null) {
 				seatStatusService.updateSeatStatus(seatId, activityTimeSlotID, 1); // 將狀態更新為1（可用）
-				logger.info("Successfully canceled reservation for seat: {}", seatName);
+				log.info("Successfully canceled reservation for seat: {}", seatName);
 				Map<String, Object> response = new HashMap<>();
 				response.put("success", true);
 				response.put("message", "座位預留已成功取消");
 				return ResponseEntity.ok(response);
 			} else {
-				logger.warn("No corresponding Seat ID found for Seat Name: {}", seatName);
+				log.warn("No corresponding Seat ID found for Seat Name: {}", seatName);
 				Map<String, Object> response = new HashMap<>();
 				response.put("success", false);
 				response.put("message", "找不到對應的座位");
 				return ResponseEntity.badRequest().body(response);
 			}
 		} catch (Exception e) {
-			logger.error("Error occurred while canceling seat reservation", e);
+			log.error("Error occurred while canceling seat reservation", e);
 			Map<String, Object> response = new HashMap<>();
 			response.put("success", false);
 			response.put("message", "取消座位預留時發生錯誤");
@@ -241,7 +239,7 @@ public class SeatReservationAndPricingController {
 		} else if (seatName.startsWith("B")) {
 			return "B";
 		} else {
-			logger.warn("Unknown seat area for seat name: {}", seatName);
+			log.warn("Unknown seat area for seat name: {}", seatName);
 			return null;
 		}
 	}
@@ -262,11 +260,11 @@ public class SeatReservationAndPricingController {
 
 	private Integer getVenueIdForActivity(Integer activityID) {
 		Activity activity = activityService.getOneActivity(activityID);
-		return activity.getVenue().getVenueID();
+		return activity.getVenueId();
 	}
 
-	private Integer getVenueIdForActivityTimeSlot(Integer activityTimeSlotID) {
-		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotID);
+	private Integer getVenueIdForActivityTimeSlot(Integer activityTimeSlotId) {
+		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotId);
 		return activityTimeSlot.getActivity().getVenue().getVenueID();
 	}
 
