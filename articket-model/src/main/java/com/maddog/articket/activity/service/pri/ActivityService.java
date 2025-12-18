@@ -1,5 +1,6 @@
 package com.maddog.articket.activity.service.pri;
 
+import com.maddog.articket.activity.dto.ActivityForAdd;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
@@ -81,5 +82,15 @@ public interface ActivityService {
      * 			List<ActivityTimeSlot>
      */
     List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId);
+
+	/**
+	 * 依場地申請 ID 取得活動新增容器
+	 *
+	 * @param venueRentalId
+	 * 			Integer
+	 * @return 活動新增容器
+	 * 			ActivityForAdd
+	 */
+	ActivityForAdd getActivityForAddByVenueRentalId(Integer venueRentalId);
 	
 }

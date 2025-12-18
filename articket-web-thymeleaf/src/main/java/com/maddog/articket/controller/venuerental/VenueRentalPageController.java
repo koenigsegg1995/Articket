@@ -47,8 +47,8 @@ public class VenueRentalPageController {
 	@GetMapping("/partnerVenueRentalList")
 	public String getVenueRentalsByPartnerID(ModelMap model, HttpSession session) {
 		// 從 session 中獲取 partnerID
-		Integer partnerID = (Integer) session.getAttribute("partnerID");
-		List<VenueRental> list = venueRentalService.findByPartnerMemberPartnerID(partnerID);
+		Integer partnerId = (Integer) session.getAttribute("partnerID");
+		List<VenueRental> list = venueRentalService.findByPartnerId(partnerId);
 		model.addAttribute("venueRentalListData", list);
 		return "/back-end-partner/venue/listAllPartnerVenueRental";
 	}

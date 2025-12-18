@@ -1,5 +1,6 @@
 package com.maddog.articket.controller.activity;
 
+import com.maddog.articket.activity.dto.ActivityForAdd;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
@@ -121,31 +122,38 @@ public class ActivityController {
 		}
 		
 		//取得登入帳號
-		Integer partnerID = (Integer)session.getAttribute("partnerID");
+		Integer partnerId = (Integer)session.getAttribute("partnerID");
 		
 		//取得廠商未新增活動的場地申請
-		List<VenueRental> venueRentals = venueRentalSvc.findUnNewByPartnerID(partnerID);
+		List<VenueRental> venueRentals = venueRentalSvc.findUnNewByPartnerId(partnerId);
 		
 		model.addAttribute("venueRentalListData", venueRentals);
 		
 		return "back-end-partner/activity/activityUnadd";
 	}
-	
-	//活動新增
+
+	/**
+	 * 活動新增
+	 *
+	 * @param venueRentalId
+	 * 			Integer
+	 * @param session
+	 * 			HttpSession
+	 * @param model
+	 * 			Model
+	 */
 	@PostMapping("activityAdd")
 	public String activityAdd(@RequestParam("venueRentalId") Integer venueRentalId,
 							  HttpSession session,
-							  ModelMap model) {
+							  Model model) {
 		//確認是否登入，未登入重導至廠商登入頁面
 		if(session.getAttribute("partnerID") == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
 
-		// TODO: 1.activityUnadd (活動待新增) 只送出 venueRentalId 2.請求到這方法，可以不用新增空 activity 容器，直接使用 name 綁定
-		Activity activity = new Activity();
-		VenueRental venueRental = venueRentalSvc.getOneVenueRental(venueRentalId);
+		ActivityForAdd activityForAdd = activitySvc.getActivityForAddByVenueRentalId(venueRentalId);
 
-    	model.addAttribute("venueRental", venueRental);
+    	model.addAttribute("activityForAdd", activityForAdd);
 
 		return "back-end-partner/activity/activityAdd";
 	}
@@ -173,56 +181,43 @@ public class ActivityController {
 /********************* action *******************/
 	//activityAdd 送出新增
 	@PostMapping("add")
-	public String addActivity(@Valid Activity activity, BindingResult result,
-							  /*@RequestParam("venueRentalID") String venueRentalID,*/ 
-							  @RequestParam("activityPictures") MultipartFile[] parts, 
-							  HttpSession session, ModelMap model) throws IOException {
+	public String addActivity(@Valid ActivityForAdd activityForAdd,
+							  BindingResult result,
+							  @RequestParam("activityPictures") MultipartFile[] parts,
+							  HttpSession session) throws IOException {
 		
-		System.out.println("*****************************************");	
-		System.out.println(activity.getActivityName());	
-		System.out.println("*****************************************");	
-		
-		//確認是否登入，未登入重導至廠商登入頁面
-		if(session.getAttribute("partnerID") == null) {
+		// 確認是否登入，未登入重導至廠商登入頁面
+		Integer partnerId = (Integer) session.getAttribute("partnerID");
+		if(partnerId == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
 		
-		
-		
-		//錯誤驗證
+		// 錯誤驗證
 		if (result.hasErrors()) {
 			return "back-end-partner/activity/activityAdd";
 		}
-		
-		//取得 Partner
-		Integer partnerID = (Integer)session.getAttribute("partnerID");
-		PartnerMember partner = partnerSvc.getOnePartnerMember(partnerID);
-		
-		//取得 VenueRental
-//		VenueRental venueRental = venueRentalSvc.getOneVenueRental(Integer.valueOf(venueRentalID));
-		
-		//取得 Venue
-		Venue venue = activity.getVenueRental().getVenue();
-		
-		//取得上傳圖片並設置
-		Set<ActivityPicture> activityPictures = activity.getActivityPictures();
+
+		// 設置上傳圖片
+		List<ActivityPicture> activityPictureList = new ArrayList<>();
 		for (MultipartFile multipartFile : parts) {
 			ActivityPicture activityPicture = new ActivityPicture();
 			
+			// activityId 於 service 再設置
 			activityPicture.setActivityPicture(multipartFile.getBytes());
-			activityPicture.setActivity(activity);
-			activityPictures.add(activityPicture);
+
+			activityPictureList.add(activityPicture);
 		}
 		
 		//////// 設置未在表單中的資訊 ////////////
-		activity.setPartnerMember(partner);
-		activity.setVenue(venue);
-//		activity.setVenueRental(venueRental);
-		activity.setActivityStatus(1);
+
+		// 取得 venueId
+		VenueRental venueRental = venueRentalSvc.getOneVenueRental(activityForAdd.getVenueRentalId());
+		Integer venueId = venueRental.getVenueId();
+
 		//////// 設置未在表單中的資訊 ////////////
-		
+
 		//新增 activity
-		activitySvc.addActivity(activity);
+		activitySvc.addActivity(activityForAdd, partnerId, venueId);
 		
 		//跳轉至 activityDisplay
 		return "redirect:/activity/activityDisplay";

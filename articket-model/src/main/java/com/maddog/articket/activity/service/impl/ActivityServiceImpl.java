@@ -1,11 +1,14 @@
 package com.maddog.articket.activity.service.impl;
 
 import com.maddog.articket.activity.dao.ActivityDao;
+import com.maddog.articket.activity.dto.ActivityForAdd;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
+import com.maddog.articket.venuerental.entity.VenueRental;
+import com.maddog.articket.venuerental.service.impl.VenueRentalService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,10 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
-	ActivityDao activityDao;
-	
+	private ActivityDao activityDao;
+
 	@Autowired
-	private SessionFactory sessionFactory;
+	private VenueRentalService venueRentalSvc;
 	
 	//新增
 	public void addActivity(Activity activity) {
@@ -126,5 +129,25 @@ public class ActivityServiceImpl implements ActivityService {
     public List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId){
         return activityDao.findActivityTimeSlotByActivityId(activityId);
     }
+
+	/**
+	 * 依場地申請 ID 取得活動新增容器
+	 *
+	 * @param venueRentalId
+	 * 			Integer
+	 * @return 活動新增容器
+	 * 			ActivityForAdd
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public ActivityForAdd getActivityForAddByVenueRentalId(Integer venueRentalId){
+		VenueRental venueRental = venueRentalSvc.getOneVenueRental(venueRentalId);
+
+		ActivityForAdd activityForAdd = new ActivityForAdd();
+		activityForAdd.setVenueRentalId(venueRentalId);
+		activityForAdd.setActivityName(venueRental.getActivityName());
+
+		return activityForAdd;
+	}
 	
 }

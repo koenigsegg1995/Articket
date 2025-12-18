@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.venuerental.dao.VenueRentalDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 依 ID 查詢場地申請資料 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+        SELECT
+            *
+        FROM
+            venue_rental
+        WHERE
+            venue_rental_id = #{venue_rental_id)
+    </select>
+
+    <!-- 依廠商 ID 查詢場地申請資料清單 -->
+    <select id="findByPartnerId"
+            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+        SELECT
+            *
+        FROM
+            venue_rental
+        WHERE
+            partner_id = #{partnerId}
+    </select>
+
+    <!-- 依廠商 ID 查詢未新增活動清單 -->
+    <select id="findUnNewByPartnerId"
+            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+        SELECT
+            *
+        FROM
+            venue_rental
+        WHERE
+            venue_rental_status = 1
+            AND
+            partner_id = #{partnerId}
+    </select>
+<!-- method-->
+
+</mapper>

@@ -128,13 +128,13 @@
     <div id="main-container">
         <h1 id="title"><strong>活動新增</strong></h1>
         <div id="inputBlock">
-            <form th:action="@{/activity/add}" method="post" th:object="${activity}" enctype="multipart/form-data">
-                <input type="hidden" name="venueRentalId" th:value="${venueRental.venueRentalId}">
+            <form th:action="@{/activity/add}" method="post" th:object="${activityForAdd}" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{venueRentalId}">
 
                 <div class="form-group">
                     <strong>名稱:</strong>
                     <div class="form-input">
-                        <input type="text" name="activityName" th:value="${venueRental.activityName}" onclick="hideContent('activityName.errors');"/>
+                        <input type="text" th:field="*{activityName}" onclick="hideContent('activityName.errors');"/>
                         <span  th:if="${#fields.hasErrors('activityName')}" th:errors="*{activityName}" class="error" id="activityName.errors"></span>
                     </div>
                 </div>

@@ -1,179 +1,241 @@
 package com.maddog.articket.venuerental.entity;
 
-import com.maddog.articket.activity.entity.Activity;
-import com.maddog.articket.venuetimeslot.entity.VenueTimeSlot;
-import com.maddog.articket.partnermember.entity.PartnerMember;
-import com.maddog.articket.venue.entity.Venue;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Set;
+import java.io.Serial;
+import java.util.Date;
 
-@Entity
-@Table(name = "venuerental")
 public class VenueRental implements java.io.Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "venueRentalID")
-	private Integer venueRentalID;  // 修改為 Integer
+	/**
+	 * 場地申請資料 ID
+	 */
+	private Integer venueRentalId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venueID", referencedColumnName = "venueID")
-	private Venue venue;
+	/**
+	 * 場館 ID
+	 */
+	private Integer venueId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "partnerID", referencedColumnName = "partnerID")
-	private PartnerMember partnerMember;
+	/**
+	 * 廠商會員 ID
+	 */
+	private Integer partnerId ;
 
-	@NotEmpty(message = "活動名稱不能為空")
-	@Size(max = 255, message = "活動名稱不能超過 255 個字符")
-	@Column(name = "activityName", length = 255)
+	/**
+	 * 活動名稱
+	 */
 	private String activityName;
 
-	@Lob
-	@Column(name = "proposal")
+	/**
+	 * 企劃書
+	 */
 	private byte[] proposal;
 
-	@Column(name = "venueRentalStatus")
-	private Integer venueRentalStatus;  // 修改為 Integer
+	/**
+	 * 申請狀態 0:不通過 1:通過 3:審核中 4:取消中 5:已取消
+	 */
+	private Integer venueRentalStatus;
 
-	@Column(name = "venueRentalStartDate")
+	/**
+	 * 租用開始日期
+	 */
 	private Date venueRentalStartDate;
 
-	@Column(name = "venueRentalEndDate")
+	/**
+	 * 租用結束日期
+	 */
 	private Date venueRentalEndDate;
 
-	@Column(name = "venueRentalCreateTime", updatable = false, insertable = false)
-	private Timestamp venueRentalCreateTime;
+	/**
+	 * 申請建立時間
+	 */
+	private Date venueRentalCreateTime;
 
-	@Column(name = "venueRentalCode", length = 255)
+	/**
+	 * 場地申請編號
+	 */
 	private String venueRentalCode;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "venueRental")
-	@OrderBy("venueTimeSlotID asc")
-	private Set<VenueTimeSlot> venueTimeSlots;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "venueRental")
-	private Activity activity;
-
-	public VenueRental() {
+	/**
+	 *
+	 * @return venueRentalId
+	 * 			Integer
+	 */
+	public Integer getVenueRentalId() {
+		return venueRentalId;
 	}
 
-	public Integer getVenueRentalID() {  // 修改為 Integer
-		return venueRentalID;
+	/**
+	 *
+	 * @param venueRentalId
+	 * 			Integer
+	 */
+	public void setVenueRentalId(Integer venueRentalId) {
+		this.venueRentalId = venueRentalId;
 	}
 
-	public void setVenueRentalID(Integer venueRentalID) {  // 修改為 Integer
-		this.venueRentalID = venueRentalID;
+	/**
+	 *
+	 * @return venueId
+	 * 			Integer
+	 */
+	public Integer getVenueId() {
+		return venueId;
 	}
 
-	public Venue getVenue() {
-		return venue;
+	/**
+	 *
+	 * @param venueId
+	 * 			Integer
+	 */
+	public void setVenueId(Integer venueId) {
+		this.venueId = venueId;
 	}
 
-	public void setVenue(Venue venue) {
-		this.venue = venue;
+	/**
+	 *
+	 * @return partnerId
+	 * 			Integer
+	 */
+	public Integer getPartnerId() {
+		return partnerId;
 	}
 
-	public PartnerMember getPartnerMember() {
-		return partnerMember;
+	/**
+	 *
+	 * @param partnerId
+	 * 			Integer
+	 */
+	public void setPartnerId(Integer partnerId) {
+		this.partnerId = partnerId;
 	}
 
-	public void setPartnerMember(PartnerMember partnerMember) {
-		this.partnerMember = partnerMember;
-	}
-
+	/**
+	 *
+	 * @return activityName
+	 * 			String
+	 */
 	public String getActivityName() {
 		return activityName;
 	}
 
+	/**
+	 *
+	 * @param activityName
+	 * 			String
+	 */
 	public void setActivityName(String activityName) {
 		this.activityName = activityName;
 	}
 
+	/**
+	 *
+	 * @return proposal
+	 * 			byte[]
+	 */
 	public byte[] getProposal() {
 		return proposal;
 	}
 
+	/**
+	 *
+	 * @param proposal
+	 * 			byte[]
+	 */
 	public void setProposal(byte[] proposal) {
 		this.proposal = proposal;
 	}
 
-	public Integer getVenueRentalStatus() {  // 修改為 Integer
+	/**
+	 *
+	 * @return venueRentalStatus
+	 * 			Integer
+	 */
+	public Integer getVenueRentalStatus() {
 		return venueRentalStatus;
 	}
 
-	public void setVenueRentalStatus(Integer venueRentalStatus) {  // 修改為 Integer
+	/**
+	 *
+	 * @param venueRentalStatus
+	 * 			Integer
+	 */
+	public void setVenueRentalStatus(Integer venueRentalStatus) {
 		this.venueRentalStatus = venueRentalStatus;
 	}
 
+	/**
+	 *
+	 * @return venueRentalStartDate
+	 * 			Date
+	 */
 	public Date getVenueRentalStartDate() {
 		return venueRentalStartDate;
 	}
 
+	/**
+	 *
+	 * @param venueRentalStartDate
+	 * 			Date
+	 */
 	public void setVenueRentalStartDate(Date venueRentalStartDate) {
 		this.venueRentalStartDate = venueRentalStartDate;
 	}
 
+	/**
+	 *
+	 * @return venueRentalEndDate
+	 * 			Date
+	 */
 	public Date getVenueRentalEndDate() {
 		return venueRentalEndDate;
 	}
 
+	/**
+	 *
+	 * @param venueRentalEndDate
+	 * 			Date
+	 */
 	public void setVenueRentalEndDate(Date venueRentalEndDate) {
 		this.venueRentalEndDate = venueRentalEndDate;
 	}
 
-	public Timestamp getVenueRentalCreateTime() {
+	/**
+	 *
+	 * @return venueRentalCreateTime
+	 * 			Date
+	 */
+	public Date getVenueRentalCreateTime() {
 		return venueRentalCreateTime;
 	}
 
-	public void setVenueRentalCreateTime(Timestamp venueRentalCreateTime) {
+	/**
+	 *
+	 * @param venueRentalCreateTime
+	 * 			Date
+	 */
+	public void setVenueRentalCreateTime(Date venueRentalCreateTime) {
 		this.venueRentalCreateTime = venueRentalCreateTime;
 	}
 
+	/**
+	 *
+	 * @return venueRentalCode
+	 * 			String
+	 */
 	public String getVenueRentalCode() {
 		return venueRentalCode;
 	}
 
+	/**
+	 *
+	 * @param venueRentalCode
+	 * 			String
+	 */
 	public void setVenueRentalCode(String venueRentalCode) {
 		this.venueRentalCode = venueRentalCode;
 	}
 
-	public Set<VenueTimeSlot> getVenueTimeSlots() {
-		return venueTimeSlots;
-	}
-
-	public void setVenueTimeSlots(Set<VenueTimeSlot> venueTimeSlots) {
-		this.venueTimeSlots = venueTimeSlots;
-	}
-
-	public Activity getActivity() {
-		return activity;
-	}
-
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
-
-	// 將場地租借狀態轉換為中文描述
-    public String getStatusInChinese() {
-        switch (this.venueRentalStatus) {
-            case 0:
-                return "不通過";
-            case 1:
-                return "通過";
-            case 2:
-                return "審核中";
-            case 3:
-                return "取消中";
-            case 4:
-                return "已取消";
-            default:
-                return "未知狀態";
-        }
-    }
 }
