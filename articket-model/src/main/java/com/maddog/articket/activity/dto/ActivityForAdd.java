@@ -1,8 +1,6 @@
 package com.maddog.articket.activity.dto;
 
-import com.maddog.articket.activitypicture.entity.ActivityPicture;
-
-import java.util.List;
+import java.util.Date;
 
 public class ActivityForAdd {
 

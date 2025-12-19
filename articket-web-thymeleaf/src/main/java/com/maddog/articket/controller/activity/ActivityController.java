@@ -6,12 +6,8 @@ import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
-import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
-import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
-import com.maddog.articket.venue.entity.Venue;
-import com.maddog.articket.venue.service.impl.VenueService;
 import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.impl.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +20,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/activity")
@@ -217,7 +210,7 @@ public class ActivityController {
 		//////// 設置未在表單中的資訊 ////////////
 
 		//新增 activity
-		activitySvc.addActivity(activityForAdd, partnerId, venueId);
+		activitySvc.addActivity(activityForAdd, partnerId, venueId, activityPictureList);
 		
 		//跳轉至 activityDisplay
 		return "redirect:/activity/activityDisplay";

@@ -6,10 +6,11 @@ import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
+import com.maddog.articket.activitypicture.entity.ActivityPicture;
+import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.impl.VenueRentalService;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,51 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
 	private VenueRentalService venueRentalSvc;
-	
-	//新增
-	public void addActivity(Activity activity) {
-		// activity.insert(activity);
+
+	@Autowired
+	private ActivityPictureService activityPictureSvc;
+
+	/**
+	 * 新增
+	 *
+	 * @param activityForAdd
+	 *            ActivityForAdd
+	 * @param partnerId
+	 *            Integer
+	 * @param venueId
+	 *            Integer
+	 * @param activityPictureList
+	 *            List<ActivityPicture>
+	 * @return 成功筆數
+	 *            Integer
+	 */
+	@Override
+	@Transactional
+	public int addActivity(ActivityForAdd activityForAdd, Integer partnerId, Integer venueId, List<ActivityPicture> activityPictureList) {
+		// 包裝為 DO
+		Activity activity = new Activity();
+		activity.setPartnerId(partnerId);
+		activity.setVenueId(venueId);
+		activity.setVenueRentalId(activityForAdd.getVenueRentalId());
+		activity.setActivityName(activityForAdd.getActivityName());
+		activity.setActivityContent(activityForAdd.getActivityContent());
+			// activity_create_time 由 DB 預設 CURRENT_TIMESTAMP
+		activity.setActivityTag(activityForAdd.getActivityTag());
+			// activity_status 預設 0
+
+		// insert 活動
+		int insertCount = activityDao.insert(activity);
+
+		if(insertCount == 1) {
+			// 取得新增活動 ID
+			Integer activityId = activity.getActivityId();
+
+			// insert 活動圖片
+			activityPictureList.forEach(activityPicture -> {
+				activityPicture.setActivityId(activityId);
+
+				activityPictureSvc.
+			});
 	}
 
 	//修改

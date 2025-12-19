@@ -176,9 +176,25 @@
                         <input type="file" th:field="*{activityPictures}" onclick="previewImage()" multiple="multiple" />
                         <div id="blob_holder">
                             <img th:each="activityPicture:*{activityPictures}" 
-                                 th:src="@{'/activity/DBGifReader/' + '?activityPictureID=' + ${activityPicture.activityPictureID}}"
+                                 th:src="@{'/activity/DBGifReader/' + '?activityPictureId=' + ${activityPicture.activityPictureId}}"
                                  width="100px" height="75px" style="object-fit: cover; margin: 5px;">
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <strong>排程時間:</strong>
+                    <div class="form-input">
+                        <input type="date" th:field="*{activityPostTime}" onclick="hideContent('activityPostTime.errors');" />
+                        <span th:if="${#fields.hasErrors('activityPostTime')}" th:errors="*{activityPostTime}" class="error" id="activityPostTime.errors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <strong>起售日:</strong>
+                    <div class="form-input">
+                        <input type="date" th:field="*{sellTime}" onclick="hideContent('sellTime.errors');" />
+                        <span th:if="${#fields.hasErrors('sellTime')}" th:errors="*{sellTime}" class="error" id="sellTime.errors"></span>
                     </div>
                 </div>
                 

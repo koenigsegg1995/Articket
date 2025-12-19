@@ -12,7 +12,7 @@ import java.util.List;
 public interface ActivityDao {
 
     /**
-     * 新增活動
+     * 新增
      *
      * @param activity
      *          Activity
@@ -22,7 +22,7 @@ public interface ActivityDao {
     int insert(Activity activity);
 
     /**
-     * 更新活動
+     * 更新
      *
      * @param activity
      *          Activity

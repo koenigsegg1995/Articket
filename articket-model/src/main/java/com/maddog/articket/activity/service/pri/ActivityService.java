@@ -4,6 +4,7 @@ import com.maddog.articket.activity.dto.ActivityForAdd;
 import com.maddog.articket.activity.dto.ActivityForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 
 import java.util.List;
@@ -12,8 +13,19 @@ public interface ActivityService {
 
 	/**
 	 * 新增
+	 *
+	 * @param activityForAdd
+	 *            ActivityForAdd
+	 * @param partnerId
+	 *            Integer
+	 * @param venueId
+	 *            Integer
+	 * @param activityPictureList
+	 *            List<ActivityPicture>
+	 * @return 成功筆數
+	 *            Integer
 	 */
-	void addActivity(Activity activity);
+	int addActivity(ActivityForAdd activityForAdd, Integer partnerId, Integer venueId, List<ActivityPicture> activityPictureList);
 
 	/**
 	 * 修改

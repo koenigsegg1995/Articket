@@ -43,7 +43,9 @@
 <!-- method-->
     <!-- 新增活動-->
     <insert id="insert"
-            parameterType="com.maddog.articket.activity.entity.Activity">
+            parameterType="com.maddog.articket.activity.entity.Activity"
+            useGeneratedKeys="true"
+            keyProperty="activityId">
         INSERT INTO activity
         (
             <include refid="columnsForInsert" />
