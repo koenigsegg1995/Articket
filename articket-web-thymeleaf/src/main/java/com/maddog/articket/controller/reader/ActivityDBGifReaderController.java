@@ -26,8 +26,8 @@ public class ActivityDBGifReaderController {
 	
 	//提供 <img> 顯示
 	@GetMapping("DBGifReader")
-	public void dBGifReader(@RequestParam("activityPictureId") String activityPictureId,HttpServletRequest req,
-			HttpServletResponse res) throws IOException {
+	public void dBGifReader(@RequestParam("activityPictureId") String activityPictureId,
+							HttpServletResponse res) throws IOException {
 		res.setContentType("image/*");
 		ServletOutputStream out = res.getOutputStream();
 		
