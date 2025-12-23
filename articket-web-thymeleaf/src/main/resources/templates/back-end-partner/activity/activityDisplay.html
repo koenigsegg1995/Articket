@@ -36,7 +36,7 @@
     <div id="sidebar-placeholder"></div>
     
     <div id="main">
-        <h1 id="title"><strong>活動資訊</h1>
+        <h1 id="title"><strong>活動資訊</strong></h1>
         
         <table id="example" class="display" style="width: 100%">
             <thead>
@@ -46,7 +46,7 @@
                     <th>名稱</th>
                     <th>場館</th>
                     <!-- <th>排程時間</th> -->
-                    <th>類型標籤</th>
+                    <th>類型</th>
                     <!-- <th>起售日</th> -->
                     <!-- <th>設定狀態</th> -->
                     <th>設定</th>
@@ -54,12 +54,12 @@
             </thead>
                 
             <tbody>
-                <th:block th:each="activity : ${backEndActivityListData}">
+                <th:block th:each="activity : ${activityList}">
                     <tr>
                         <td th:text="${activityStat.count}"></td>
-                        <td th:text="${activity.activityID}"></td>
+                        <td th:text="${activity.activityId}"></td>
                         <td th:text="${activity.activityName}"></td>
-                        <td th:text="${activity.venue.venueName}"></td>
+                        <td th:text="${activity.venueName}"></td>
                         <!-- <td th:text="${activity.activityPostTime}"></td> -->
                         <td th:text="${activity.activityTag}"></td>
                         <!-- <td th:text="${activity.sellTime}"></td> -->
@@ -70,7 +70,7 @@
                         <td>
                             <form method="post" th:action="@{/activity/activityConfig}" style="margin-bottom: 0px;">
                                 <input type="submit" value="設定">
-                                <input type="hidden" name="activityID" th:value="${activity.activityID}">
+                                <input type="hidden" name="activityId" th:value="${activity.activityId}">
                             </form>
                         </td>
                     </tr>

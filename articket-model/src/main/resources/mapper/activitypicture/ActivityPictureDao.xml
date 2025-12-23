@@ -20,6 +20,20 @@
 <!-- resultMap-->
 
 <!-- method-->
+    <insert id="insert"
+            parameterType="com.maddog.articket.activitypicture.entity.ActivityPicture">
+        INSERT INTO activity_picture
+        (
+            activity_id,
+            activity_picture
+        )
+        VALUES
+        (
+            #{activityId},
+            #{activityPicture}
+        )
+    </insert>
+
     <!-- 依活動圖片 ID 查詢活動圖片-->
     <select id="findById"
             parameterType="java.lang.Integer"

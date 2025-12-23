@@ -1,8 +1,6 @@
 package com.maddog.articket.activity.service.pri;
 
-import com.maddog.articket.activity.dto.ActivityForAdd;
-import com.maddog.articket.activity.dto.ActivityForView;
-import com.maddog.articket.activity.dto.ActivityQueryCondition;
+import com.maddog.articket.activity.dto.*;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
@@ -55,7 +53,7 @@ public interface ActivityService {
      * @return 活動
      *          ActivityForView
      */
-    ActivityForView findByIdForView(Integer activityId);
+    ActivityFrontEndForView findByIdForView(Integer activityId);
 
     /**
      * 查詢所有活動
@@ -73,7 +71,7 @@ public interface ActivityService {
      * @return 活動清單
      *          List<ActivityForView>
 	 */
-	List<ActivityForView> findByConditionForView(ActivityQueryCondition condition);
+	List<ActivityFrontEndForView> findByConditionForView(ActivityQueryCondition condition);
 
 	/**
 	 * 依活動 ID 查詢活動圖片 ID 清單
@@ -104,5 +102,25 @@ public interface ActivityService {
 	 * 			ActivityForAdd
 	 */
 	ActivityForAdd getActivityForAddByVenueRentalId(Integer venueRentalId);
+
+	/**
+	 * 依廠商 ID 取得活動清單
+	 *
+	 * @param partnerId
+	 * 			Integer
+	 * @return 活動清單
+	 * 			List<ActivityDisplayForView>
+	 */
+	List<ActivityDisplayForView> getActivityDisplayForViewByPartnerId(Integer partnerId);
+
+	/**
+	 * 依活動 ID 取得活動修改容器
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 活動修改容器
+	 * 			ActivityForUpdate
+	 */
+	ActivityForUpdate getActivityForUpdateByActivityId(Integer activityId);
 	
 }

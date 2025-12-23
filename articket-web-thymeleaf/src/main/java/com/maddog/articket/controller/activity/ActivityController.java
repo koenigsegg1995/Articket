@@ -1,7 +1,8 @@
 package com.maddog.articket.controller.activity;
 
+import com.maddog.articket.activity.dto.ActivityDisplayForView;
 import com.maddog.articket.activity.dto.ActivityForAdd;
-import com.maddog.articket.activity.dto.ActivityForView;
+import com.maddog.articket.activity.dto.ActivityFrontEndForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
@@ -53,7 +54,7 @@ public class ActivityController {
 	@GetMapping("activityInfoAll")
 	public String activityInfo(Model model) {
         // 空容器，查詢後再顯示活動
-        List<ActivityForView> activities = new ArrayList<>();
+        List<ActivityFrontEndForView> activities = new ArrayList<>();
 		
 		model.addAttribute("activitySearchList", activities);
 		
@@ -71,7 +72,7 @@ public class ActivityController {
 	@GetMapping("activityInfoOne")
 	public String activityInfoOne(@RequestParam("activityId") Integer activityId, ModelMap model) {
 		// 依活動 ID 查詢活動 VO
-        ActivityForView view = activitySvc.findByIdForView(activityId);
+        ActivityFrontEndForView view = activitySvc.findByIdForView(activityId);
 
         // 加進活動圖片 ID 清單
         view.setActivityPictureIds(activitySvc.findActivityPictureIdByActivityId(activityId));
@@ -86,22 +87,30 @@ public class ActivityController {
 //////////////// 前台 ////////////////
 	
 //////////////// 後台 ////////////////
-	//活動資訊
+	/**
+	 * 活動資訊
+	 *
+	 * @param session
+	 * 			HttpSession
+	 * @param model
+	 * 			Model
+	 * @return activityDisplay.html
+	 * 			String
+	 */
 	@GetMapping("activityDisplay")
-	public String activityDisplay(HttpSession session, ModelMap model) {
+	public String activityDisplay(HttpSession session, Model model) {
 		//確認是否登入，未登入重導至廠商登入頁面
 		if(session.getAttribute("partnerID") == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
 		
 		//取得登入帳號
-		Integer partnerID = (Integer)session.getAttribute("partnerID");
-		PartnerMember partner = partnerSvc.getOnePartnerMember(partnerID);
-		
+		Integer partnerId = (Integer)session.getAttribute("partnerID");
+
 		//取得廠商活動
-		Set<Activity> partnerActivities = partner.getActivities();
+		List<ActivityDisplayForView> activityList = activitySvc.getActivityDisplayForViewByPartnerId(partnerId);
 		
-		model.addAttribute("backEndActivityListData", partnerActivities);
+		model.addAttribute("activityList", activityList);
 		
 		return "back-end-partner/activity/activityDisplay";
 	}
@@ -153,17 +162,16 @@ public class ActivityController {
 	
 	//活動資訊設定
 	@PostMapping("activityConfig")
-	public String activityConfig(@RequestParam("activityID") String activityID, HttpSession session, ModelMap model) {
+	public String activityConfig(@RequestParam("activityId") Integer activityId,
+								 HttpSession session,
+								 Model model) {
 		//確認是否登入，未登入重導至廠商登入頁面
 		if(session.getAttribute("partnerID") == null) {
 			return "redirect:/partnermember/partnerLogin";
 		}
 		
-		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		/*************************** 2.開始查詢資料 *****************************************/
-		Activity activity = activitySvc.getOneActivity(Integer.valueOf(activityID));
+		Activity activity = activitySvc.getOneActivity(activityId);
 		
-		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("activity", activity);
 		
 		return "back-end-partner/activity/activityConfig";
@@ -172,7 +180,21 @@ public class ActivityController {
 /********************* 跳轉 **********************/
 	
 /********************* action *******************/
-	//activityAdd 送出新增
+	/**
+	 * activityAdd 送出新增
+	 *
+	 * @param activityForAdd
+	 *          ActivityForAdd
+	 * @param result
+	 *          BindingResult
+	 * @param parts
+	 *          MultipartFile[]
+	 * @param session
+	 *          HttpSession
+	 * @return activityDisplay.html
+	 *          String
+	 * @throws IOException
+	 */
 	@PostMapping("add")
 	public String addActivity(@Valid ActivityForAdd activityForAdd,
 							  BindingResult result,
@@ -282,7 +304,7 @@ public class ActivityController {
      */
 	@PostMapping("activitySearch")
 	public String activitySearch(@ModelAttribute ActivityQueryCondition condition, Model model) {
-		List<ActivityForView> activities = activitySvc.findByConditionForView(condition);
+		List<ActivityFrontEndForView> activities = activitySvc.findByConditionForView(condition);
 		model.addAttribute("activitySearchList", activities);
 		
 		return "front-end/activity/activityInfoAll";

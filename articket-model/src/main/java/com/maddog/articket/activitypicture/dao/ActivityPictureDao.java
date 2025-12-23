@@ -7,6 +7,16 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ActivityPictureDao {
 
 	/**
+	 * 新增活動圖片
+	 *
+	 * @param activityPicture
+	 * 			ActivityPicture
+	 * @return 成功筆數
+	 * 			int
+	 */
+	int insert(ActivityPicture activityPicture);
+
+	/**
 	 * 依活動圖片 ID 查詢活動圖片
 	 *
 	 * @param activityPictureId

@@ -5,7 +5,7 @@ import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import java.util.Date;
 import java.util.List;
 
-public class ActivityForView {
+public class ActivityFrontEndForView {
 
     /**
      * 活動 ID

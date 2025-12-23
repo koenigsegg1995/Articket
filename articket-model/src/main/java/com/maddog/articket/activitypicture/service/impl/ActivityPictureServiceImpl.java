@@ -25,7 +25,7 @@ public class ActivityPictureServiceImpl implements ActivityPictureService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int insertActivityPicture(ActivityPicture activityPicture){
-		return activityPictureDao.insertActivityPicture(activityPicture);
+		return activityPictureDao.insert(activityPicture);
 	}
 
 	/**

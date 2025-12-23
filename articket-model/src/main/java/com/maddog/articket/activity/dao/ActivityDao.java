@@ -1,6 +1,7 @@
 package com.maddog.articket.activity.dao;
 
-import com.maddog.articket.activity.dto.ActivityForView;
+import com.maddog.articket.activity.dto.ActivityDisplayForView;
+import com.maddog.articket.activity.dto.ActivityFrontEndForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
@@ -60,7 +61,7 @@ public interface ActivityDao {
      * @return 活動
      *          ActivityForView
      */
-    ActivityForView findByIdForView(Integer activityId);
+    ActivityFrontEndForView findByIdForView(Integer activityId);
 
     /**
      * 查詢所有活動 DO
@@ -78,7 +79,7 @@ public interface ActivityDao {
      * @return 活動清單
      *          List<ActivityForView>
      */
-    List<ActivityForView> findByConditionForView(ActivityQueryCondition activityQueryCondition);
+    List<ActivityFrontEndForView> findByConditionForView(ActivityQueryCondition activityQueryCondition);
 
     /**
      * 確認活動是否由該廠商所有
@@ -111,5 +112,15 @@ public interface ActivityDao {
      * 			List<ActivityTimeSlot>
      */
     List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId);
+
+    /**
+     * 依廠商 ID 取得活動清單
+     *
+     * @param partnerId
+     * 			Integer
+     * @return 活動清單
+     * 			List<ActivityDisplayForView>
+     */
+    List<ActivityDisplayForView> getActivityDisplayForViewByPartnerId(Integer partnerId);
 
 }

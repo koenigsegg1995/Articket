@@ -1,6 +1,6 @@
 package com.maddog.articket.activity.dto;
 
-public class ActivityForAdd {
+public class ActivityForUpdate {
 
     /**
      * 場地申請資料 ID

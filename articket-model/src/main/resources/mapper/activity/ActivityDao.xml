@@ -10,14 +10,11 @@
         venue_rental_id,
         activity_name,
         activity_content,
-        activity_post_time,
         activity_tag,
-        activity_status,
-        ticket_set_status,
-        sell_time
+        activity_status
     </sql>
 
-    <sql id="columnsForView">
+    <sql id="columnsForViewForFrontEnd">
         a.activity_id,
         a.activity_name,
         a.activity_post_time,
@@ -26,10 +23,17 @@
         v.venue_name,
         p.partner_name
     </sql>
+
+    <sql id="columnsForViewForBackEnd">
+        a.activity_id,
+        a.activity_name,
+        v.venue_name,
+        a.activityTag
+    </sql>
 <!-- sql -->
 
 <!-- resultMap-->
-    <resultMap id="forViewResultMap" type="com.maddog.articket.activity.dto.ActivityForView">
+    <resultMap id="forViewResultMap" type="com.maddog.articket.activity.dto.ActivityFrontEndForView">
         <id column="activity_id" property="activityId" />
         <result column="activity_name" property="activityName" />
         <result column="activity_post_time" property="activityPostTime" />
@@ -57,11 +61,8 @@
             #{venueRentalId},
             #{activityName},
             #{activityContent},
-            #{activityPostTime},
             #{activityTag},
-            #{activityStatus},
-            #{ticketSetStatus},
-            #{sellTime}
+            #{activityStatus}
         )
     </insert>
 
@@ -116,7 +117,7 @@
             parameterType="java.lang.Integer"
             resultMap="forViewResultMap">
         SELECT
-            <include refid="columnsForView" />
+            <include refid="columnsForViewForFrontEnd" />
         FROM
             activity a
         LEFT JOIN
@@ -145,9 +146,9 @@
     <!-- 依條件查詢活動 VO 清單 -->
     <select id="findByConditionForView"
             parameterType="com.maddog.articket.activity.dto.ActivityQueryCondition"
-            resultType="com.maddog.articket.activity.dto.ActivityForView">
+            resultType="com.maddog.articket.activity.dto.ActivityFrontEndForView">
         SELECT
-            <include refid="columnsForView" />
+            <include refid="columnsForViewForFrontEnd" />
         FROM
             activity
         LEFT JOIN
@@ -224,6 +225,23 @@
             activity_id = #{activityId}
         ORDER BY
             activity_time_slot_date, activity_time_slot
+    </select>
+
+    <select id="getActivityDisplayForViewByPartnerId"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.activity.dto.ActivityDisplayForView">
+        SELECT
+            <include refid="columnsForViewForBackEnd" />
+        FROM
+            activity a
+        JOIN
+            venue v
+            ON
+            a.venue_id = v.venue_id
+        WHERE
+            a.partner_id = #{partnerId}
+        ORDER BY
+            a.activity_id
     </select>
     <!-- method-->
 

@@ -173,7 +173,12 @@
                 <div class="form-group">
                     <strong>圖片:</strong>
                     <div class="form-input">
-                        <input type="file" th:field="*{activityPictures}" onclick="previewImage(); hideContent('activityPictures.errors');" multiple="multiple" />
+                        <input type="file" name="activityPictures" onclick="previewImage(); hideContent('activityPictures.errors');" multiple="multiple" />
+                        <div id="blob_holder">
+                            <img th:each="activityPicture:*{activityPictures}"
+                                 th:src="@{'/activity/DBGifReader/' + '?activityPictureId=' + ${activityPicture.activityPictureId}}"
+                                 width="100px" height="75px" style="object-fit: cover; margin: 5px;">
+                        </div>
                         <span th:if="${#fields.hasErrors('activityPictures')}" th:errors="*{activityPictures}" class="error" id="activityPictures.errors"></span>
                     </div>
                 </div>

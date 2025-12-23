@@ -1,9 +1,7 @@
 package com.maddog.articket.activity.service.impl;
 
 import com.maddog.articket.activity.dao.ActivityDao;
-import com.maddog.articket.activity.dto.ActivityForAdd;
-import com.maddog.articket.activity.dto.ActivityForView;
-import com.maddog.articket.activity.dto.ActivityQueryCondition;
+import com.maddog.articket.activity.dto.*;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
@@ -13,6 +11,7 @@ import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.impl.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class ActivityServiceImpl implements ActivityService {
 	 *            Integer
 	 */
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int addActivity(ActivityForAdd activityForAdd, Integer partnerId, Integer venueId, List<ActivityPicture> activityPictureList) {
 		// 包裝為 DO
 		Activity activity = new Activity();
@@ -54,8 +53,11 @@ public class ActivityServiceImpl implements ActivityService {
 		activity.setActivityName(activityForAdd.getActivityName());
 		activity.setActivityContent(activityForAdd.getActivityContent());
 			// activity_create_time 由 DB 預設 CURRENT_TIMESTAMP
+			// activity_post_time 由 活動資訊設定 設定
 		activity.setActivityTag(activityForAdd.getActivityTag());
 			// activity_status 預設 0
+			// ticket_set_status 預設 0
+			// sell_time 由 活動資訊設定 設定
 
 		// insert 活動
 		int insertCount = activityDao.insert(activity);
@@ -68,8 +70,11 @@ public class ActivityServiceImpl implements ActivityService {
 			activityPictureList.forEach(activityPicture -> {
 				activityPicture.setActivityId(activityId);
 
-				activityPictureSvc.
+				activityPictureSvc.insertActivityPicture(activityPicture);
 			});
+		}
+
+		return insertCount;
 	}
 
 	//修改
@@ -106,7 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ActivityForView findByIdForView(Integer activityId){
+    public ActivityFrontEndForView findByIdForView(Integer activityId){
         return activityDao.findByIdForView(activityId);
     }
 
@@ -132,12 +137,12 @@ public class ActivityServiceImpl implements ActivityService {
      */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ActivityForView> findByConditionForView(ActivityQueryCondition condition) {
+	public List<ActivityFrontEndForView> findByConditionForView(ActivityQueryCondition condition) {
         // 依條件由 DAO 查詢
-        List<ActivityForView> viewList = activityDao.findByConditionForView(condition);
+        List<ActivityFrontEndForView> viewList = activityDao.findByConditionForView(condition);
 
 		// 設定圖片 ID 清單
-		for(ActivityForView view : viewList) {
+		for(ActivityFrontEndForView view : viewList) {
 			view.setActivityPictureIds(activityDao.findActivityPictureIdByActivityId(view.getActivityId()));
 		}
 
@@ -190,6 +195,37 @@ public class ActivityServiceImpl implements ActivityService {
 		activityForAdd.setActivityName(venueRental.getActivityName());
 
 		return activityForAdd;
+	}
+
+	/**
+	 * 依廠商 ID 取得活動清單
+	 *
+	 * @param partnerId
+	 * 			Integer
+	 * @return 活動清單
+	 * 			List<ActivityDisplayForView>
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<ActivityDisplayForView> getActivityDisplayForViewByPartnerId(Integer partnerId){
+		return activityDao.getActivityDisplayForViewByPartnerId(partnerId);
+	}
+
+	/**
+	 * 依活動 ID 取得活動修改容器
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 活動修改容器
+	 * 			ActivityForUpdate
+	 */
+	public ActivityForUpdate getActivityForUpdateByActivityId(Integer activityId){
+		// 依活動 ID 取得活動 DO
+		Activity activity = activityDao.findById(activityId);
+
+		// 轉換為 update DTO
+		ActivityForUpdate activityForUpdate = new ActivityForUpdate();
+
 	}
 	
 }
