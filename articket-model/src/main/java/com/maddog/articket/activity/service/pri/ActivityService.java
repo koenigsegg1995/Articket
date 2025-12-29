@@ -6,7 +6,11 @@ import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 
 import java.util.List;
+import java.util.Set;
 
+/**
+ * 活動 Service Interface
+ */
 public interface ActivityService {
 
 	/**
@@ -27,13 +31,19 @@ public interface ActivityService {
 
 	/**
 	 * 修改
+	 *
+	 * @param activityForUpdate
+	 *            ActivityForUpdate
+	 * @param addActivityPictureList
+	 *            List<ActivityPicture>
+	 * @param deleteActivityPictureIds
+	 *            Set<Integer>
+	 * @return 成功筆數
+	 *            int
 	 */
-	void updateActivity(Activity activity);
-
-	/**
-	 * 刪除
-	 */
-	void deleteActivity(Integer activityID);
+	int updateActivity(ActivityForUpdate activityForUpdate,
+					   List<ActivityPicture> addActivityPictureList,
+					   Set<Integer> deleteActivityPictureIds);
 
     /**
      * 依 ID 查詢活動 (deprecated)
@@ -122,5 +132,15 @@ public interface ActivityService {
 	 * 			ActivityForUpdate
 	 */
 	ActivityForUpdate getActivityForUpdateByActivityId(Integer activityId);
+
+	/**
+	 * 將該 ID 活動設為已設定票券
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 成功筆數
+	 * 			Integer
+	 */
+	int setTicketSetStatusFinished(Integer activityId);
 	
 }

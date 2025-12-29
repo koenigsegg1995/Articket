@@ -1,11 +1,13 @@
 package com.maddog.articket.activity.dto;
 
+import java.util.Date;
+
 public class ActivityForUpdate {
 
     /**
-     * 場地申請資料 ID
+     * 活動 ID
      */
-    private Integer venueRentalId;
+    private Integer activityId;
 
     /**
      * 活動名稱
@@ -18,26 +20,36 @@ public class ActivityForUpdate {
     private String activityTag;
 
     /**
+     * 排程時間
+     */
+    private Date activityPostTime;
+
+    /**
+     * 起售日
+     */
+    private Date sellTime;
+
+    /**
      * 活動介紹
      */
     private String activityContent;
 
     /**
      *
-     * @return venueRentalId
+     * @return activityId
      *          Integer
      */
-    public Integer getVenueRentalId() {
-        return venueRentalId;
+    public Integer getActivityId() {
+        return activityId;
     }
 
     /**
      *
-     * @param venueRentalId
+     * @param activityId
      *          Integer
      */
-    public void setVenueRentalId(Integer venueRentalId) {
-        this.venueRentalId = venueRentalId;
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     /**
@@ -74,6 +86,42 @@ public class ActivityForUpdate {
      */
     public void setActivityTag(String activityTag) {
         this.activityTag = activityTag;
+    }
+
+    /**
+     *
+     * @return activityPostTime
+     *          Date
+     */
+    public Date getActivityPostTime() {
+        return activityPostTime;
+    }
+
+    /**
+     *
+     * @param activityPostTime
+     *          Date
+     */
+    public void setActivityPostTime(Date activityPostTime) {
+        this.activityPostTime = activityPostTime;
+    }
+
+    /**
+     *
+     * @return sellTime
+     *          Date
+     */
+    public Date getSellTime() {
+        return sellTime;
+    }
+
+    /**
+     *
+     * @param sellTime
+     *          Date
+     */
+    public void setSellTime(Date sellTime) {
+        this.sellTime = sellTime;
     }
 
     /**

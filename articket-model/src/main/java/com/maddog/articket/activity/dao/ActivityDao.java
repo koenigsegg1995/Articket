@@ -1,6 +1,7 @@
 package com.maddog.articket.activity.dao;
 
 import com.maddog.articket.activity.dto.ActivityDisplayForView;
+import com.maddog.articket.activity.dto.ActivityForUpdate;
 import com.maddog.articket.activity.dto.ActivityFrontEndForView;
 import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
@@ -25,23 +26,12 @@ public interface ActivityDao {
     /**
      * 更新
      *
-     * @param activity
-     *          Activity
+     * @param activityForUpdate
+     *          ActivityForUpdate
      * @return 成功筆數
      *          int
      */
-    // TODO:
-    int update(Activity activity);
-
-    /**
-     * 刪除活動
-     *
-     * @param activityId
-     *          Integer
-     * @return 成功筆數
-     *          int
-     */
-    int deleteById(Integer activityId);
+    int update(ActivityForUpdate activityForUpdate);
 
     /**
      * 依 ID 查詢活動 DO
@@ -122,5 +112,15 @@ public interface ActivityDao {
      * 			List<ActivityDisplayForView>
      */
     List<ActivityDisplayForView> getActivityDisplayForViewByPartnerId(Integer partnerId);
+
+    /**
+     * 將該 ID 活動設為已設定票券
+     *
+     * @param activityId
+     * 			Integer
+     * @return 成功筆數
+     * 			Integer
+     */
+    int setTicketSetStatusFinished(Integer activityId);
 
 }

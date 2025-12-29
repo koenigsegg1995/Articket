@@ -45,6 +45,17 @@
         WHERE
             activity_picture_id = #{activityPictureId}
     </select>
+
+    <delete id="delete"
+            parameterType="java.util.Set">
+        DELETE FROM
+            activity_picture
+        WHERE
+            activity_picture_id IN
+            <foreach collection="collection" open="(" separator="," close=")">
+                #{activityPictureId}
+            </foreach>
+    </delete>
 <!-- method-->
 
 </mapper>

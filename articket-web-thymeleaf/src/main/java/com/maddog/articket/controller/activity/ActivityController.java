@@ -1,19 +1,14 @@
 package com.maddog.articket.controller.activity;
 
-import com.maddog.articket.activity.dto.ActivityDisplayForView;
-import com.maddog.articket.activity.dto.ActivityForAdd;
-import com.maddog.articket.activity.dto.ActivityFrontEndForView;
-import com.maddog.articket.activity.dto.ActivityQueryCondition;
+import com.maddog.articket.activity.dto.*;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
-import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
 import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.impl.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,19 +26,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 活動 Controller
+ */
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
-	
+
+	/**
+	 * 活動 Service
+	 */
 	@Autowired
 	private ActivityService activitySvc;
 
+	/**
+	 * 活動圖片 Service
+	 */
 	@Autowired
 	private ActivityPictureService activityPictureSvc;
 
-	@Autowired
-	private PartnerMemberService partnerSvc;
-	
+	/**
+	 * 場館申請 Service
+	 */
 	@Autowired
 	private VenueRentalService venueRentalSvc;
 
@@ -170,8 +174,19 @@ public class ActivityController {
 
 		return "back-end-partner/activity/activityAdd";
 	}
-	
-	//活動資訊設定
+
+	/**
+	 * 活動資訊設定
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @param session
+	 * 			HttpSession
+	 * @param model
+	 * 			Model
+	 * @return activityConfig.html
+	 * 			String
+	 */
 	@PostMapping("activityConfig")
 	public String activityConfig(@RequestParam("activityId") Integer activityId,
 								 HttpSession session,
@@ -181,9 +196,9 @@ public class ActivityController {
 			return "redirect:/partnermember/partnerLogin";
 		}
 		
-		Activity activity = activitySvc.getOneActivity(activityId);
+		ActivityForUpdate activityForUpdate = activitySvc.getActivityForUpdateByActivityId(activityId);
 		
-		model.addAttribute("activity", activity);
+		model.addAttribute("activity", activityForUpdate);
 		
 		return "back-end-partner/activity/activityConfig";
 	}
@@ -271,13 +286,31 @@ public class ActivityController {
 		//跳轉至 activityDisplay
 		return "redirect:/activity/activityDisplay";
 	}
-	
-	//activityConfig 送出更新
+
+	/**
+	 * activityConfig 送出更新
+	 *
+	 * @param activityForUpdate
+	 *          ActivityForUpdate
+	 * @param result
+	 *          BindingResult
+	 * @param parts
+	 *          MultipartFile[]
+	 * @param deletePictureIds
+	 *          Set<Integer>
+	 * @param session
+	 *          HttpSession
+	 * @param model
+	 *          Model
+	 * @return activityDisplay.html
+	 *          String
+	 * @throws IOException
+	 */
 	@PostMapping("update")
-	public String update(@Valid Activity activity,
+	public String update(@Valid ActivityForUpdate activityForUpdate,
 						 BindingResult result,
 						 @RequestParam(value = "addPictures", required = false) MultipartFile[] parts,
-						 @RequestParam(value = "deletePictureIds", required = false) List<Integer> deletePictureIds,
+						 @RequestParam(value = "deletePictureIds", required = false) Set<Integer> deletePictureIds,
 						 HttpSession session,
 						 Model model) throws IOException {
 
@@ -288,44 +321,29 @@ public class ActivityController {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		// 去除BindingResult中upFiles欄位的FieldError紀錄
-		result = removeFieldError(activity, result, "activityPictures");
-
-		Activity activityORI = activitySvc.getOneActivity(activity.getActivityId());
-
-		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
-				Set<ActivityPicture> activityPictures = activityORI.getActivityPictures();
-
-				activity.setActivityPictures(activityPictures);
-		} else {
-			for (MultipartFile multipartFile : parts) {
-				ActivityPicture activityPicture = new ActivityPicture();
-
-				activityPicture.setActivityPicture(multipartFile.getBytes());
-				activityPicture.setActivity(activity);
-				activity.getActivityPictures().add(activityPicture);
-			}
-		}
+		result = removeFieldError(activityForUpdate, result, "activityPictures");
 
 		if (result.hasErrors()) {
 			return "back-end-partner/activity/activityConfig";
 		}
 		/*************************** 2.開始修改資料 *****************************************/
-		//////// 設置未在表單中的資訊 ////////////
+		// 包裝新增圖片
+		List<ActivityPicture> addActivityPictureList = new ArrayList<>();
 
-		activity.setPartnerMember(activityORI.getPartnerMember());
-		activity.setVenue(activityORI.getVenue());
-		activity.setVenueRental(activityORI.getVenueRental());
-		activity.setActivityStatus(1);
-		activity.setTicketSetStatus(activityORI.getTicketSetStatus());
+		if(parts != null){
+			for(MultipartFile part : parts){
+				ActivityPicture activityPicture = new ActivityPicture();
+				activityPicture.setActivityId(activityForUpdate.getActivityId());
+				activityPicture.setActivityPicture(part.getBytes());
 
-		////////設置未在表單中的資訊 ////////////
+				addActivityPictureList.add(activityPicture);
+			}
+		}
 
-		activitySvc.updateActivity(activity);
+		activitySvc.updateActivity(activityForUpdate, addActivityPictureList, deletePictureIds);
 
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
-		activity = activitySvc.getOneActivity(Integer.valueOf(activity.getActivityID()));
-		model.addAttribute("activity", activity);
 
 		return "redirect:/activity/activityDisplay"; // 修改成功後轉交activityDisplay.html
 	}
@@ -350,7 +368,9 @@ public class ActivityController {
 /********************* action ********************/
 
 /*************** ExceptionHandler ****************/
-	// 去除BindingResult中某個欄位的FieldError紀錄
+	/**
+	 * 去除BindingResult中某個欄位的FieldError紀錄 (新增)
+ 	 */
 	public BindingResult removeFieldError(Activity activity, BindingResult result, String removedFieldname) {
 		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
 				.filter(fieldname -> !fieldname.getField().equals(removedFieldname))
@@ -360,6 +380,21 @@ public class ActivityController {
 			result.addError(fieldError);
 		}
 		
+		return result;
+	}
+
+	/**
+	 * 去除BindingResult中某個欄位的FieldError紀錄 (更新)
+ 	 */
+	public BindingResult removeFieldError(ActivityForUpdate activityForUpdate, BindingResult result, String removedFieldname) {
+		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
+				.filter(fieldname -> !fieldname.getField().equals(removedFieldname))
+				.toList();
+		result = new BeanPropertyBindingResult(activityForUpdate, "activity");
+		for (FieldError fieldError : errorsListToKeep) {
+			result.addError(fieldError);
+		}
+
 		return result;
 	}
 /*************** ExceptionHandler ****************/

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service("activityPictureService")
 public class ActivityPictureServiceImpl implements ActivityPictureService {
 
@@ -40,6 +42,20 @@ public class ActivityPictureServiceImpl implements ActivityPictureService {
 	@Transactional(readOnly=true)
 	public ActivityPicture getOneActivityPicture(Integer activityPictureID) {
 		return activityPictureDao.findById(activityPictureID);
+	}
+
+	/**
+	 * 刪除圖片
+	 *
+	 * @param activityPictureId
+	 * 		 	Set<Integer>
+	 * @return 成功筆數
+	 * 		 	int
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int delete(Set<Integer> activityPictureId){
+		return activityPictureDao.delete(activityPictureId);
 	}
 	
 }

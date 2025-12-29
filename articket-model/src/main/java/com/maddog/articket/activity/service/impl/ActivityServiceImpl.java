@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
@@ -77,14 +78,33 @@ public class ActivityServiceImpl implements ActivityService {
 		return insertCount;
 	}
 
-	//修改
-	public void updateActivity(Activity activity) {
-		// activity.update(activity);
-	}
+	/**
+	 * 修改
+	 *
+	 * @param activityForUpdate
+	 *            ActivityForUpdate
+	 * @param addActivityPictureList
+	 *            List<ActivityPicture>
+	 * @param deleteActivityPictureIds
+	 *            Set<Integer>
+	 * @return 成功筆數
+	 *            int
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int updateActivity(ActivityForUpdate activityForUpdate,
+							  List<ActivityPicture> addActivityPictureList,
+							  Set<Integer> deleteActivityPictureIds) {
+		// 新增活動圖片
+		for(ActivityPicture activityPicture : addActivityPictureList){
+			activityPictureSvc.insertActivityPicture(activityPicture);
+		}
 
-	//刪除
-	public void deleteActivity(Integer activityID) {
-		// activity.delete(activityID);
+		// 刪除活動圖片
+		activityPictureSvc.delete(deleteActivityPictureIds);
+
+		// 更新活動
+		return activityDao.update(activityForUpdate);
 	}
 
     /**
@@ -225,7 +245,28 @@ public class ActivityServiceImpl implements ActivityService {
 
 		// 轉換為 update DTO
 		ActivityForUpdate activityForUpdate = new ActivityForUpdate();
+		activityForUpdate.setActivityId(activity.getActivityId());
+		activityForUpdate.setActivityName(activity.getActivityName());
+		activityForUpdate.setActivityTag(activity.getActivityTag());
+		activityForUpdate.setActivityPostTime(activity.getActivityPostTime());
+		activityForUpdate.setSellTime(activity.getSellTime());
+		activityForUpdate.setActivityContent(activity.getActivityContent());
 
+		return activityForUpdate;
+	}
+
+	/**
+	 * 將該 ID 活動設為已設定票券
+	 *
+	 * @param activityId
+	 * 			Integer
+	 * @return 成功筆數
+	 * 			Integer
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int setTicketSetStatusFinished(Integer activityId){
+		return activityDao.setTicketSetStatusFinished(activityId);
 	}
 	
 }

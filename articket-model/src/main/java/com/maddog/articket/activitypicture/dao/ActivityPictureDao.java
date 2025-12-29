@@ -3,6 +3,8 @@ package com.maddog.articket.activitypicture.dao;
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Set;
+
 @Mapper
 public interface ActivityPictureDao {
 
@@ -25,5 +27,15 @@ public interface ActivityPictureDao {
 	 * 			ActivityPicture
 	 */
 	ActivityPicture findById(Integer activityPictureId);
+
+	/**
+	 * 刪除圖片
+	 *
+	 * @param activityPictureId
+	 * 		 	Set<Integer>
+	 * @return 成功筆數
+	 * 		 	int
+	 */
+	int delete(Set<Integer> activityPictureId);
 
 }

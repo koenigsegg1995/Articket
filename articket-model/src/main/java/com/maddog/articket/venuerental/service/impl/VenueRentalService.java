@@ -35,6 +35,13 @@ public class VenueRentalService {
 		return venueRentalDao.findById(venueRentalId);
 	}
 
+	/**
+	 * 查詢所有場地申請資料清單
+	 *
+	 * @return 場地申請資料清單
+	 * 			List<VenueRental>
+	 */
+	@Transactional(readOnly = true)
 	public List<VenueRental> getAll() {
 		return venueRentalDao.findAll();
 	}

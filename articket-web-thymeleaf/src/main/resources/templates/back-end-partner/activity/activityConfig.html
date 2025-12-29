@@ -128,7 +128,7 @@
     <div id="main-container">
         <h1 id="title"><strong>活動資訊設定</strong></h1>
         <div id="inputBlock">
-            <form th:action="@{/activity/update}" method="post" th:object="${activity}" enctype="multipart/form-data">
+            <form th:action="@{/activity/update}" method="post" th:object="${activityForUpdate}" enctype="multipart/form-data">
                 <input type="hidden" th:field="*{activityId}">
                 
                 <div class="form-group">

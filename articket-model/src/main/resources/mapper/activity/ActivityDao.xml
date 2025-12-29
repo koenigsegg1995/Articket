@@ -4,6 +4,7 @@
 <mapper namespace="com.maddog.articket.activity.dao.ActivityDao">
 
 <!-- sql -->
+    <!-- 新增欄位 -->
     <sql id="columnsForInsert">
         partner_id,
         venue_id,
@@ -14,6 +15,7 @@
         activity_status
     </sql>
 
+    <!-- 前端顯示欄位 -->
     <sql id="columnsForViewForFrontEnd">
         a.activity_id,
         a.activity_name,
@@ -24,6 +26,7 @@
         p.partner_name
     </sql>
 
+    <!-- 後端顯示欄位 -->
     <sql id="columnsForViewForBackEnd">
         a.activity_id,
         a.activity_name,
@@ -33,6 +36,7 @@
 <!-- sql -->
 
 <!-- resultMap-->
+    <!-- 顯示欄位 -->
     <resultMap id="forViewResultMap" type="com.maddog.articket.activity.dto.ActivityFrontEndForView">
         <id column="activity_id" property="activityId" />
         <result column="activity_name" property="activityName" />
@@ -45,7 +49,7 @@
 <!-- resultMap-->
 
 <!-- method-->
-    <!-- 新增活動-->
+    <!-- 新增 -->
     <insert id="insert"
             parameterType="com.maddog.articket.activity.entity.Activity"
             useGeneratedKeys="true"
@@ -66,39 +70,37 @@
         )
     </insert>
 
-    <!-- 更新活動-->
+    <!-- 更新 -->
     <update id="update"
-            parameterType="com.maddog.articket.activity.entity.Activity">
+            parameterType="com.maddog.articket.activity.dto.ActivityForUpdate">
         UPDATE
             activity
         <set>
-            <if test=" partnerId != null and partnerId != '' ">
-                partner_id = #{partnerId},
+            <if test=" activityName != null and activityName != '' ">
+                activity_name = #{activityName},
             </if>
 
+            <if test=" activityTag != null and activityTag != '' ">
+                activity_tag = #{activityTag},
+            </if>
 
-            venue_id = #{venueId},
-            venue_rental_id = #{venueRentalId},
-            activity_name = #{activityName},
-            activity_content = #{activityContent},
-            activity_post_time = #{activityPostTime},
-            activity_tag = #{activityTag},
-            activity_status = #{activityStatus},
-            ticket_set_status = #{ticketSetStatus},
-            sell_time = #{sellTime}
+            <if test=" activityPostTime != null ">
+                activity_post_time = #{activityPostTime},
+            </if>
+
+            <if test=" sellTime != null ">
+                sell_time = #{sellTime},
+            </if>
+
+            <if test=" activityContent != null and activityContent != '' ">
+                activity_content = #{activityContent},
+            </if>
+
+            activity_status = 1
         </set>
         WHERE
             activity_id = #{activityId}
     </update>
-
-    <!-- 刪除活動-->
-    <delete id="deleteById"
-            parameterType="java.lang.Integer">
-        DELETE FROM
-            activity
-        WHERE
-            #{activityId}
-    </delete>
 
     <!-- 依 ID 查詢活動 DO -->
     <select id="findById"
@@ -186,7 +188,7 @@
             activity_id
     </select>
 
-    <!-- 確認活動是否由該廠商所有-->
+    <!-- 確認活動是否由該廠商所有 -->
     <select id="isActivityOwnedByPartner"
             resultType="java.lang.Boolean">
         SELECT EXIST(
@@ -200,7 +202,8 @@
                 partner_id = #{partnerId}
         )
     </select>
-<!-- 依活動 ID 查詢圖片 ID 清單-->
+
+    <!-- 依活動 ID 查詢圖片 ID 清單 -->
     <select id="findActivityPictureIdByActivityId"
             parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
@@ -214,6 +217,7 @@
             activity_picture_id
     </select>
 
+    <!-- 依活動 ID 查詢活動時段清單 -->
     <select id="findActivityTimeSlotByActivityId"
             parameterType="java.lang.Integer"
             resultType="com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot">
@@ -227,9 +231,10 @@
             activity_time_slot_date, activity_time_slot
     </select>
 
+    <!-- 依廠商 ID 取得活動清單 -->
     <select id="getActivityDisplayForViewByPartnerId"
             parameterType="java.lang.Integer"
-            resultType="com.maddog.articket.activity.dto.ActivityDisplayForView">
+            resultMap="forViewResultMap">
         SELECT
             <include refid="columnsForViewForBackEnd" />
         FROM
@@ -243,6 +248,17 @@
         ORDER BY
             a.activity_id
     </select>
-    <!-- method-->
+
+    <!-- 將該 ID 活動設為已設定票券 -->
+    <update id="setTicketSetStatusFinished"
+            parameterType="java.lang.Integer">
+        UPDATE
+            activity
+        SET
+            ticket_set_status = 1
+        WHERE
+            activity_id = #{activityId}
+    </update>
+<!-- method-->
 
 </mapper>

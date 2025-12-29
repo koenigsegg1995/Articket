@@ -82,8 +82,7 @@ public class SeatReservationAndPricingController {
 
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotID);
 		Activity activity = activityService.getOneActivity(activityID);
-		activity.setTicketSetStatus(1);//把活動狀態設定為1
-		activityService.updateActivity(activity);
+		activityService.setTicketSetStatusFinished(activityID);
 		Integer venueId = activity.getVenueId();
 		Map<String, Object> response = new HashMap<>();
 
@@ -265,7 +264,9 @@ public class SeatReservationAndPricingController {
 
 	private Integer getVenueIdForActivityTimeSlot(Integer activityTimeSlotId) {
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotId);
-		return activityTimeSlot.getActivity().getVenue().getVenueID();
+
+		Activity activity = activityService.getOneActivity(activityTimeSlot.getActivityId());
+		return activity.getVenueId();
 	}
 
 	// 驗證價格的方法

@@ -8,14 +8,25 @@
 <!-- sql -->
 
 <!-- resultMap-->
-
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.venuerental.entity.VenueRental">
+        <id column="venue_rental_id" property="venueRentalId" />
+        <result column="venue_id" property="venueId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="activity_name" property="activityName" />
+        <result column="proposal" property="proposal" />
+        <result column="venue_rental_status" property="venueRentalStatus" />
+        <result column="venue_rental_start_Date" property="venueRentalStartDate" />
+        <result column="venue_rental_end_date" property="venueRentalEndDate" />
+        <result column="venue_rental_create_time" property="venueRentalCreateTime" />
+        <result column="venue_rental_code" property="venueRentalCode" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
     <!-- 依 ID 查詢場地申請資料 -->
     <select id="findById"
             parameterType="java.lang.Integer"
-            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+            resultMap="resultMapForSelect">
         SELECT
             *
         FROM
@@ -24,9 +35,20 @@
             venue_rental_id = #{venue_rental_id)
     </select>
 
+    <!-- 查詢所有場地申請資料清單 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            venue_rental
+        ORDER BY
+            venue_rental_id
+    </select>
+
     <!-- 依廠商 ID 查詢場地申請資料清單 -->
     <select id="findByPartnerId"
-            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+            resultMap="resultMapForSelect">
         SELECT
             *
         FROM
@@ -37,7 +59,7 @@
 
     <!-- 依廠商 ID 查詢未新增活動清單 -->
     <select id="findUnNewByPartnerId"
-            resultType="com.maddog.articket.venuerental.entity.VenueRental">
+            resultMap="resultMapForSelect">
         SELECT
             *
         FROM

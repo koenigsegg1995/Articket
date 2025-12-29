@@ -18,6 +18,12 @@ public interface VenueRentalDao {
 	 */
 	VenueRental findById(Integer venueRentalId);
 
+	/**
+	 * 查詢所有場地申請資料清單
+	 *
+	 * @return 場地申請資料清單
+	 * 			List<VenueRental>
+	 */
 	List<VenueRental> findAll();
 
 	/**
