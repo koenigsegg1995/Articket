@@ -1,10 +1,17 @@
 package com.maddog.articket.activity.dto;
 
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 前臺活動 VO
+ */
+@Setter
+@Getter
 public class ActivityFrontEndForView {
 
     /**
@@ -22,8 +29,14 @@ public class ActivityFrontEndForView {
      */
     private Date activityPostTime;
 
+    /**
+     * 活動內容
+     */
     private String activityContent;
 
+    /**
+     * 活動標籤
+     */
     private String activityTag;
 
     /**
@@ -31,8 +44,14 @@ public class ActivityFrontEndForView {
      */
     private String venueName;
 
+    /**
+     * 廠商名稱
+     */
     private String partnerName;
 
+    /**
+     * 活動時段清單
+     */
     private List<ActivityTimeSlot> activityTimeSlots;
 
     /**
@@ -40,75 +59,4 @@ public class ActivityFrontEndForView {
      */
     private List<Integer> activityPictureIds;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    public String getActivityName() {
-        return activityName;
-    }
-
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
-
-    public Date getActivityPostTime() {
-        return activityPostTime;
-    }
-
-    public void setActivityPostTime(Date activityPostTime) {
-        this.activityPostTime = activityPostTime;
-    }
-
-    public String getActivityContent() {
-        return activityContent;
-    }
-
-    public void setActivityContent(String activityContent) {
-        this.activityContent = activityContent;
-    }
-
-    public String getActivityTag() {
-        return activityTag;
-    }
-
-    public void setActivityTag(String activityTag) {
-        this.activityTag = activityTag;
-    }
-
-    public String getVenueName() {
-        return venueName;
-    }
-
-    public void setVenueName(String venueName) {
-        this.venueName = venueName;
-    }
-
-    public String getPartnerName() {
-        return partnerName;
-    }
-
-    public void setPartnerName(String partnerName) {
-        this.partnerName = partnerName;
-    }
-
-    public List<ActivityTimeSlot> getActivityTimeSlots() {
-        return activityTimeSlots;
-    }
-
-    public void setActivityTimeSlots(List<ActivityTimeSlot> activityTimeSlots) {
-        this.activityTimeSlots = activityTimeSlots;
-    }
-
-    public List<Integer> getActivityPictureIds() {
-        return activityPictureIds;
-    }
-
-    public void setActivityPictureIds(List<Integer> activityPictureIds) {
-        this.activityPictureIds = activityPictureIds;
-    }
 }

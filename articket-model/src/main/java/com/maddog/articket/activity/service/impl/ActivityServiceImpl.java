@@ -8,7 +8,7 @@ import com.maddog.articket.activitypicture.entity.ActivityPicture;
 import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.venuerental.entity.VenueRental;
-import com.maddog.articket.venuerental.service.impl.VenueRentalService;
+import com.maddog.articket.venuerental.service.pri.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,15 +17,27 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 活動 Service Implementation
+ */
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
 
+	/**
+	 * 活動 DAO
+	 */
 	@Autowired
 	private ActivityDao activityDao;
 
+	/**
+	 * 場地申請 Service
+	 */
 	@Autowired
 	private VenueRentalService venueRentalSvc;
 
+	/**
+	 * 活動圖片 Service
+	 */
 	@Autowired
 	private ActivityPictureService activityPictureSvc;
 

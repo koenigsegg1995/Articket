@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.activityareaprice.dao.ActivityAreaPriceDao">
+
+<!-- sql -->
+    <!-- 新增欄位 -->
+    <sql id="columnsForInsert">
+        venue_area_id,
+        activity_id,
+        activity_area_price
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 顯示欄位 -->
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice">
+        <id column="activity_area_price_id" property="activityAreaPriceId" />
+        <result column="venue_area_id" property="venueAreaId" />
+        <result column="activity_id" property="activityId" />
+        <result column="activity_area_price" property="activityAreaPrice" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice">
+        INSERT INTO activity_area_price
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{venueAreaId},
+            #{activityId},
+            #{activityAreaPrice}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice">
+        UPDATE
+            activity
+        SET
+            activity_area_price = #{activityAreaPrice}
+        WHERE
+            venue_area_id = #{venueAreaId}
+            AND
+            activity_id = #{activityId}
+    </update>
+
+    <select id="findByVenueAreaIdAndActivityId"
+            resultType="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            activity_area_price
+        WHERE
+            venue_area_id = #{venueAreaId}
+            AND
+            activity_id = #{activityId}
+    </select>
+<!-- method-->
+
+</mapper>

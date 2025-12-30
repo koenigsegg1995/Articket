@@ -90,7 +90,7 @@ public class CartService {
 
          Commodity commodity = commodityService.getOneCommodity(commodityID);
          CartItem cartItem = cart.getCartItems().stream()
-                 .filter(item -> item.getCommodity().getCommodityID().equals(commodityID))
+                 .filter(item -> item.getCommodity().getCommodityId().equals(commodityID))
                  .findFirst()
                  .orElse(null);
 

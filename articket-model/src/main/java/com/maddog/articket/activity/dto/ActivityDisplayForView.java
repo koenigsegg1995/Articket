@@ -1,5 +1,13 @@
 package com.maddog.articket.activity.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * 廠商後臺活動資訊 VO
+ */
+@Setter
+@Getter
 public class ActivityDisplayForView {
 
     /**
@@ -21,77 +29,5 @@ public class ActivityDisplayForView {
      * 類型
      */
     private String activityTag;
-
-    /**
-     *
-     * @return activityId
-     *          Integer
-     */
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    /**
-     *
-     * @param activityId
-     *          Integer
-     */
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    /**
-     *
-     * @return activityName
-     *          String
-     */
-    public String getActivityName() {
-        return activityName;
-    }
-
-    /**
-     *
-     * @param activityName
-     *          String
-     */
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
-
-    /**
-     *
-     * @return venueName
-     *          String
-     */
-    public String getVenueName() {
-        return venueName;
-    }
-
-    /**
-     *
-     * @param venueName
-     *          String
-     */
-    public void setVenueName(String venueName) {
-        this.venueName = venueName;
-    }
-
-    /**
-     *
-     * @return activityTag
-     *          String
-     */
-    public String getActivityTag() {
-        return activityTag;
-    }
-
-    /**
-     *
-     * @param activityTag
-     *          String
-     */
-    public void setActivityTag(String activityTag) {
-        this.activityTag = activityTag;
-    }
 
 }

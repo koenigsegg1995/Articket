@@ -142,7 +142,7 @@ CREATE TABLE seat_status(
 	seat_status_id                   INT          AUTO_INCREMENT     COMMENT "座位狀態ID",
 	activity_time_slot_id            INT          NOT NULL           COMMENT "活動時段ID",
 	seat_id                          INT          NOT NULL           COMMENT "座位ID",
-	seat_status                      INT          NOT NULL           COMMENT "座位狀態 0: 空位 1: 已經購買 2: 廠商保留位 3: 不可使用(目前沒有用到這個資料，考慮未來可能會加入這個狀態)",
+	seat_status                      INT          NOT NULL           COMMENT "座位狀態 0: 空位 1: 已經購買 2: 廠商保留位 3: 不可使用",
     
 	CONSTRAINT pk_seat_status_id PRIMARY KEY (seat_status_id)
 ) COMMENT "座位狀態";
@@ -212,9 +212,9 @@ CREATE TABLE activity_time_slot(
 -- 票券相關 ---------------------------------------------------------------
 CREATE TABLE book_ticket(
 	book_ticket_id                   INT          AUTO_INCREMENT     COMMENT "票券訂單ID",
-    member_id                        INT          NOT NULL           COMMENT "會員ID(買家)",
+    member_id                        INT          NOT NULL           COMMENT "一般會員ID(買家)",
     activity_id                      INT          NOT NULL           COMMENT "活動ID",
-    activity_time_slot_id            INT          NOT NULL           COMMENT "時段ID",
+    activity_time_slot_id            INT          NOT NULL           COMMENT "活動時段ID",
     member_coupon_id                 INT                             COMMENT "會員優惠券ID",
     book_time                        DATETIME
                                                   DEFAULT CURRENT_TIMESTAMP
@@ -228,11 +228,11 @@ CREATE TABLE book_ticket(
 
 CREATE TABLE ticket(
 	ticket_id                        INT          AUTO_INCREMENT     COMMENT "票券ID",
-    member_id                        INT          NOT NULL           COMMENT "會員(擁有者)",
+    member_id                        INT          NOT NULL           COMMENT "一般會員(擁有者)ID",
     seat_status_id                   INT          NOT NULL           COMMENT "座位狀態ID",
     activity_area_price_id           INT          NOT NULL           COMMENT "活動區域價格ID",
     book_ticket_id                   INT          NOT NULL           COMMENT "票券訂單ID",
-    activity_time_slot_id            INT          NOT NULL           COMMENT "時段ID",
+    activity_time_slot_id            INT          NOT NULL           COMMENT "活動時段ID",
     
     CONSTRAINT pk_ticket PRIMARY KEY (ticket_id)
 ) COMMENT "票券";

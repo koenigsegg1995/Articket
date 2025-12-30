@@ -61,19 +61,19 @@ public class SeatSelectController {
 		Integer venueAreaId1 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName1);
 		log.info("venueAreaId1================================={}", venueAreaId1);
 		log.info("activityId================================={}", activityId);
-		ActivityAreaPrice activityAreaPrice1 = activityAreaPriceService.findActivityAreaPrice(venueAreaId1, activityId);
+		ActivityAreaPrice activityAreaPrice1 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId1, activityId);
 		
 		String venueAreaName2 = "A";
 		Integer venueAreaId2 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName2);
 		log.info("venueAreaId2================================={}", venueAreaId2);
 		log.info("activityId================================={}", activityId);
-		ActivityAreaPrice activityAreaPrice2 = activityAreaPriceService.findActivityAreaPrice(venueAreaId2, activityId);
+		ActivityAreaPrice activityAreaPrice2 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId2, activityId);
 		
 		String venueAreaName3 = "B";
 		Integer venueAreaId3 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName3);
 		log.info("venueAreaId3========================================={}", venueAreaId3);
 		log.info("activityId========================================={}", activityId);
-		ActivityAreaPrice activityAreaPrice3 = activityAreaPriceService.findActivityAreaPrice(venueAreaId3, activityId);
+		ActivityAreaPrice activityAreaPrice3 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId3, activityId);
 		
 		model.addAttribute("activityTimeSlot", activityTimeSlot);
 		model.addAttribute("activityAreaPrice1", activityAreaPrice1.getActivityAreaPrice());
@@ -138,7 +138,7 @@ public class SeatSelectController {
 				log.info("找到區域ID: {} 對應區域名稱: {}", venueAreaId, venueAreaName);
 
 				// 使用 ActivityAreaPriceService 查找 ActivityAreaPrice
-				ActivityAreaPrice activityAreaPrice = activityAreaPriceService.findActivityAreaPrice(venueAreaId,
+				ActivityAreaPrice activityAreaPrice = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId,
 						activityId);
 				if (activityAreaPrice == null) {
 					log.info("未找到活動區域價格: 區域ID {}, 活動ID {}", venueAreaId, activityId);
@@ -162,7 +162,7 @@ public class SeatSelectController {
 						Ticket ticket = new Ticket();
 						ticket.setSeatStatus(seatStatus);
 						ticket.setActivityAreaPrice(activityAreaPrice);
-						ticket.setActivityTimeSlot(activityTimeSlot);
+						ticket.setActivityTimeSlotId(activityTimeSlotId);
 						ticketList.add(ticket);
 					} else {
 						log.info("未找到座位狀態: {} 在區域ID: {}", seatName, venueAreaId);

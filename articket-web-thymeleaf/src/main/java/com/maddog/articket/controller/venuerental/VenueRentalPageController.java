@@ -1,12 +1,12 @@
 package com.maddog.articket.controller.venuerental;
 
-import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.venue.entity.Venue;
 import com.maddog.articket.venue.service.impl.VenueService;
 import com.maddog.articket.venuerental.entity.VenueRental;
-import com.maddog.articket.venuerental.service.impl.VenueRentalService;
+import com.maddog.articket.venuerental.service.pri.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,36 +20,40 @@ import java.util.List;
 @Controller
 @RequestMapping("/venueRentalPage")
 public class VenueRentalPageController {
+
 	@Autowired
-	VenueRentalService venueRentalService;
+	private VenueRentalService venueRentalService;
+
 	@Autowired
-	VenueService venueService;
+	private VenueService venueService;
 
 	@GetMapping
-	public String addVenueRental(ModelMap model) {
+	public String addVenueRental(Model model) {
 		VenueRental venueRental = new VenueRental();
-		Venue venue = new Venue();
-		venue.setVenueID(1);
+//		Venue venue = new Venue();
+//		venue.setVenueID(1);
 //        PartnerMember partnerMember = new PartnerMember();
 //        partnerMember.setPartnerID(1);
 //        venueRental.setPartnerMember(partnerMember);
-		venueRental.setVenue(venue);
+		venueRental.setVenueId(1);
 		venueRental.setActivityName("");
 		venueRental.setVenueRentalStatus(2);
 		venueRental.setVenueRentalStartDate(java.sql.Date.valueOf("2024-09-19"));
 		venueRental.setVenueRentalEndDate(java.sql.Date.valueOf("2024-09-19"));
 
 		model.addAttribute("venueRental", venueRental);
+
 		return "/back-end-partner/venue/venueRentalPage";
 	}
 
 //  根據 partnerID 顯示場地租借資料，這是給廠商查看已申請的場地用的
 	@GetMapping("/partnerVenueRentalList")
-	public String getVenueRentalsByPartnerID(ModelMap model, HttpSession session) {
+	public String getVenueRentalsByPartnerId(Model model, HttpSession session) {
 		// 從 session 中獲取 partnerID
 		Integer partnerId = (Integer) session.getAttribute("partnerID");
 		List<VenueRental> list = venueRentalService.findByPartnerId(partnerId);
 		model.addAttribute("venueRentalListData", list);
+
 		return "/back-end-partner/venue/listAllPartnerVenueRental";
 	}
 
@@ -60,12 +64,15 @@ public class VenueRentalPageController {
 	}
 
 	@PostMapping("insert")
-	public String insert(@Valid VenueRental venueRental, BindingResult result,
-			@RequestParam("proposalFile") MultipartFile proposalFile, ModelMap model, HttpSession session) {
+	public String insert(@Valid VenueRental venueRental,
+						 BindingResult result,
+						 @RequestParam("proposalFile") MultipartFile proposalFile,
+						 ModelMap model,
+						 HttpSession session) {
 
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-		if (venueRental.getVenue().getVenueID() < 1 || venueRental.getVenue().getVenueID() > 3) {
-			result.rejectValue("venue.venueID", "error.venueRental", "Venue ID 必須在 1 和 3 之間");
+		if (venueRental.getVenueId() < 1 || venueRental.getVenueId() > 3) {
+			result.rejectValue("venue.venueId", "error.venueRental", "Venue ID 必須在 1 和 3 之間");
 		}
 
 //        if (venueRental.getPartnerMember().getPartnerID() < 1 || venueRental.getPartnerMember().getPartnerID() > 5) {
@@ -97,9 +104,7 @@ public class VenueRentalPageController {
 		// 先設定一個臨時的代碼
 		venueRental.setVenueRentalCode("temp_code");
 
-		PartnerMember partnerMember = new PartnerMember();
-		partnerMember.setPartnerID((Integer) session.getAttribute("partnerID"));
-		venueRental.setPartnerMember(partnerMember);
+		venueRental.setPartnerId((Integer) session.getAttribute("partnerID"));
 		/***************************
 		 * 2.先保存資料，生成主鍵
 		 *****************************************/
@@ -108,7 +113,7 @@ public class VenueRentalPageController {
 		/***************************
 		 * 3.根據主鍵生成 venueRentalCode，並更新
 		 *****************************************/
-		String generatedCode = generateVenueRentalCode(venueRental.getVenueRentalID());
+		String generatedCode = generateVenueRentalCode(venueRental.getVenueRentalId());
 		venueRental.setVenueRentalCode(generatedCode);
 
 		// 更新 venueRental
@@ -119,9 +124,9 @@ public class VenueRentalPageController {
 	}
 
 	// 生成 venueRentalCode 的方法
-	private String generateVenueRentalCode(Integer venueRentalID) {
+	private String generateVenueRentalCode(Integer venueRentalId) {
 		int baseNumber = 3001000;
-		int generatedNumber = baseNumber + venueRentalID;
+		int generatedNumber = baseNumber + venueRentalId;
 		return "G" + generatedNumber;
 	}
 }

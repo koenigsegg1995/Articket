@@ -2,6 +2,7 @@ package com.maddog.articket.controller.ticket;
 
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
+import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
@@ -29,19 +30,16 @@ import java.util.Set;
 public class TicketController {
 	
 	@Autowired
-	ActivityService activitySvc;
+	private ActivityTimeSlotService activityTimeSlotService;
 	
 	@Autowired
-	TicketService ticketSvc;
+	private GeneralMemberService memberSvc;
 	
 	@Autowired
-	GeneralMemberService memberSvc;
+	private BookTicketService bookTicketSvc;
 	
 	@Autowired
-	BookTicketService bookTicketSvc;
-	
-	@Autowired
-	PartnerMemberService partnerSvc;
+	private PartnerMemberService partnerSvc;
 	
 /********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
@@ -100,7 +98,7 @@ public class TicketController {
 		}
 		
 		List<Ticket> ticketList = (List<Ticket>)session.getAttribute("ticketList");
-		Integer id = ticketList.get(0).getActivityTimeSlot().getActivityTimeSlotId();
+		Integer id = ticketList.get(0).getActivityTimeSlotId();
 		
 		ticketList.remove(count - 1);
 		
@@ -165,9 +163,9 @@ public class TicketController {
 		//設置訂單資料
 		bookTicket.setGeneralMember(memberSvc.getOneGeneralMember(Integer.valueOf(memberID))); //未從 session 取帳號
 		
-		ActivityTimeSlot activityTimeSlot = ticketList.get(0).getActivityTimeSlot();
-		bookTicket.setActivity(activityTimeSlot.getActivity());
-		bookTicket.setActivityTimeSlot(activityTimeSlot);
+		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.get(0).getActivityTimeSlotId());
+		bookTicket.setActivityId(activityTimeSlot.getActivityId());
+		bookTicket.setActivityTimeSlotId(activityTimeSlot.getActivityTimeSlotId());
 		
 		bookTicket.setTicketQuantity(ticketList.size());
 		bookTicket.setTotalPrice(new BigDecimal(totalPrice));

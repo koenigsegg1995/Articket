@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 活動 DAO
+ */
 @Mapper
 public interface ActivityDao {
 

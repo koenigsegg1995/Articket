@@ -20,6 +20,7 @@
 <!-- resultMap-->
 
 <!-- method-->
+    <!-- 新增活動圖片 -->
     <insert id="insert"
             parameterType="com.maddog.articket.activitypicture.entity.ActivityPicture">
         INSERT INTO activity_picture
@@ -46,6 +47,7 @@
             activity_picture_id = #{activityPictureId}
     </select>
 
+    <!-- 刪除活動圖片-->
     <delete id="delete"
             parameterType="java.util.Set">
         DELETE FROM

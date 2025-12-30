@@ -1,72 +1,128 @@
 package com.maddog.articket.venuetimeslot.entity;
 
-import com.maddog.articket.venuerental.entity.VenueRental;
-import jakarta.persistence.*;
-import java.sql.Date;
+import java.io.Serial;
+import java.util.Date;
 
-@Entity
-@Table(name = "venuetimeslot")
+/**
+ * 場館時段
+ */
 public class VenueTimeSlot implements java.io.Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "venueTimeSlotID")
-	private Integer venueTimeSlotID;  // 修改為 Integer
+	/**
+	 * 場館時段 ID
+	 */
+	private Integer venueTimeSlotId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venueRentalID", referencedColumnName = "venueRentalID")
-	private VenueRental venueRental;
+	/**
+	 * 場地申請資料 ID
+	 */
+	private Integer venueRentalId;
 
-	@Column(name = "venueTimeSlotDate")
+	/**
+	 * 日期
+	 */
 	private Date venueTimeSlotDate;
 
-	@Column(name = "venueTimeSlot")
-	private Integer venueTimeSlot;  // 修改為 Integer
+	/**
+	 * 時段 1:早 2:午 3:晚
+	 */
+	private Integer venueTimeSlot;
 
-	@Column(name = "venueTimeSlotStatus")
-	private Integer venueTimeSlotStatus;  // 修改為 Integer
+	/**
+	 * 時段狀態 0: 未被租借 1: 已被租借 2: 不提供租借 3: 活動
+	 */
+	private Integer venueTimeSlotStatus;
 
-	public VenueTimeSlot() {
+	/**
+	 *
+	 * @return venueTimeSlotId
+	 * 			Integer
+	 */
+	public Integer getVenueTimeSlotId() {
+		return venueTimeSlotId;
 	}
 
-	public Integer getVenueTimeSlotID() {  // 修改為 Integer
-		return venueTimeSlotID;
+	/**
+	 *
+	 * @param venueTimeSlotId
+	 * 			Integer
+	 */
+	public void setVenueTimeSlotId(Integer venueTimeSlotId) {
+		this.venueTimeSlotId = venueTimeSlotId;
 	}
 
-	public void setVenueTimeSlotID(Integer venueTimeSlotID) {  // 修改為 Integer
-		this.venueTimeSlotID = venueTimeSlotID;
+	/**
+	 *
+	 * @return venueRentalId
+	 * 			Integer
+	 */
+	public Integer getVenueRentalId() {
+		return venueRentalId;
 	}
 
-	public VenueRental getVenueRental() {
-		return venueRental;
+	/**
+	 *
+	 * @param venueRentalId
+	 * 			Integer
+	 */
+	public void setVenueRentalId(Integer venueRentalId) {
+		this.venueRentalId = venueRentalId;
 	}
 
-	public void setVenueRental(VenueRental venueRental) {
-		this.venueRental = venueRental;
-	}
-
+	/**
+	 *
+	 * @return venueTimeSlotDate
+	 * 			Date
+	 */
 	public Date getVenueTimeSlotDate() {
 		return venueTimeSlotDate;
 	}
 
+	/**
+	 *
+	 * @param venueTimeSlotDate
+	 * 			Date
+	 */
 	public void setVenueTimeSlotDate(Date venueTimeSlotDate) {
 		this.venueTimeSlotDate = venueTimeSlotDate;
 	}
 
-	public Integer getVenueTimeSlot() {  // 修改為 Integer
+	/**
+	 *
+	 * @return venueTimeSlot
+	 * 			Integer
+	 */
+	public Integer getVenueTimeSlot() {
 		return venueTimeSlot;
 	}
 
-	public void setVenueTimeSlot(Integer venueTimeSlot) {  // 修改為 Integer
+	/**
+	 *
+	 * @param venueTimeSlot
+	 * 			Integer
+	 */
+	public void setVenueTimeSlot(Integer venueTimeSlot) {
 		this.venueTimeSlot = venueTimeSlot;
 	}
 
-	public Integer getVenueTimeSlotStatus() {  // 修改為 Integer
+	/**
+	 *
+	 * @return venueTimeSlotStatus
+	 * 			Integer
+	 */
+	public Integer getVenueTimeSlotStatus() {
 		return venueTimeSlotStatus;
 	}
 
-	public void setVenueTimeSlotStatus(Integer venueTimeSlotStatus) {  // 修改為 Integer
+	/**
+	 *
+	 * @param venueTimeSlotStatus
+	 * 			Integer
+	 */
+	public void setVenueTimeSlotStatus(Integer venueTimeSlotStatus) {
 		this.venueTimeSlotStatus = venueTimeSlotStatus;
 	}
 

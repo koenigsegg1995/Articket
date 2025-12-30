@@ -19,13 +19,10 @@ import java.util.function.Function;
 public class CommodityService {
 
     @Autowired
-    CommodityRepository repository;
+    private CommodityRepository repository;
 
     @Autowired
     private ActivityDao activityDao;
-    
-    @Autowired
-    private SessionFactory sessionFactory;
 
     public void addCommodity(Commodity commodity) {
         repository.save(commodity);
@@ -48,7 +45,7 @@ public class CommodityService {
     
     public Activity getActivityById(Integer id) {
         return repository.findById(id)
-                .map(Commodity::getActivity)
+                .map(commodity -> activityDao.findById(commodity.getActivityId()))
                 .orElse(null);
     }
 
@@ -72,7 +69,7 @@ public class CommodityService {
 //    
   public Optional<Commodity> getActivityByCommodityId(Integer commodityId) {
 	    Commodity commodity = repository.findById(commodityId).orElseThrow();
-	    return repository.findById(commodity.getActivity().getActivityId());
+	    return repository.findById(commodity.getActivityId());
 	}
 
 
@@ -80,10 +77,6 @@ public class CommodityService {
 //    public List<Commodity> getAll(Map<String, String[]> map) {
 //        return HibernateUtil_CompositeQuery_Commodity3.getAllC(map, sessionFactory.openSession());
 //    }
-
-    public Set<CommodityPicture> getCommodityPicturesByCommodityID(Integer commodityID) {
-        return getOneCommodity(commodityID).getCommodityPictures();
-    }
 
     public List<Activity> getAllActivities() {
         return repository.findAllDistinctActivities();

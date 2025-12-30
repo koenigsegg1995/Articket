@@ -137,15 +137,17 @@ public class SeatReservationAndPricingController {
 					Integer price = entry.getValue();
 					log.info(" - {} area: ${}", venueAreaName, price);
 
-					Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId,
-							venueAreaName);
+					Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName);
 					if (venueAreaId != null) {
 						try {
-							ActivityAreaPrice updatedPrice = activityAreaPriceService
-									.updateOrCreateActivityAreaPrice(venueAreaId, activityID, new BigDecimal(price));
+							ActivityAreaPrice activityAreaPrice = new ActivityAreaPrice();
+							activityAreaPrice.setVenueAreaId(venueAreaId);
+							activityAreaPrice.setActivityId(activityID);
+							activityAreaPrice.setActivityAreaPrice(new BigDecimal(price));
+							activityAreaPriceService.updateOrCreateActivityAreaPrice(activityAreaPrice);
 							log.info(
 									"   Updated/Created price for Venue Area ID: {}, Activity ID: {}, New Price: ${}",
-									venueAreaId, activityID, updatedPrice.getActivityAreaPrice());
+									venueAreaId, activityID, new BigDecimal(price));
 						} catch (Exception e) {
 							log.error("Error updating/creating price for Venue Area ID: {}, Activity ID: {}",
 									venueAreaId, activityID, e);
@@ -249,7 +251,7 @@ public class SeatReservationAndPricingController {
 
 		Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, areaName);
 		if (venueAreaId != null) {
-			ActivityAreaPrice price = activityAreaPriceService.findActivityAreaPrice(venueAreaId, activityID);
+			ActivityAreaPrice price = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId, activityID);
 			if (price != null) {
 				return price.getActivityAreaPrice().setScale(0, RoundingMode.HALF_UP);
 			}

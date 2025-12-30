@@ -135,7 +135,7 @@ public class PartnerController {
 
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
-		partnerMember = partnerSvc.getOnePartnerMember(Integer.valueOf(partnerMember.getPartnerID()));
+		partnerMember = partnerSvc.getOnePartnerMember(partnerMember.getPartnerId());
 		model.addAttribute("partnerMember", partnerMember);
 		return "back-end/partnermember/listOnePartnerMember"; // 修改成功後轉交listOneEmp.html
 	}

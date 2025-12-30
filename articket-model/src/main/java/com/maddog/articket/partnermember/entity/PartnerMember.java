@@ -1,206 +1,268 @@
 package com.maddog.articket.partnermember.entity;
 
-import com.maddog.articket.activity.entity.Activity;
-import com.maddog.articket.commodity.entity.Commodity;
-import com.maddog.articket.venuerental.entity.VenueRental;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
-@Entity
-@Table(name = "partnermember")
-public class PartnerMember {
+/**
+ * 廠商會員 DO
+ */
+public class PartnerMember implements Serializable {
 
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "partnerID", updatable = false) // "廠商ID"
-	private Integer partnerID;
-	
-	@NotEmpty(message="統一編號: 請勿空白")
-	@Column(name = "taxID") // "統一編號(登入帳號)"
-	private String taxID;
-	
-	@NotEmpty(message="公司名稱: 請勿空白")
-	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "公司名稱: 只能是中、英文字母、數字和")
-	@Column(name = "partnerName") // "公司名稱"
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 廠商 ID
+	 */
+	private Integer partnerId;
+
+	/**
+	 * 統一編號
+	 */
+	private String taxId;
+
+	/**
+	 * 公司名稱
+	 */
 	private String partnerName;
-	
-	@NotEmpty(message="抬頭: 請勿空白")
-	@Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "抬頭: 只能是中、英文字母")
-	@Column(name = "partnerHeading") // "抬頭"
+
+	/**
+	 * 抬頭
+	 */
 	private String partnerHeading;
-	
-	@NotEmpty(message="地址: 請勿空白")
-	@Pattern(regexp = "^[a-zA-Z0-9\\u4e00-\\u9fa5]+$", message = "地址: 只能是中、英文字母、數字")
-	@Column(name = "partnerAddress") // "地址"
+
+	/**
+	 * 地址
+	 */
 	private String partnerAddress;
-	
-	@NotEmpty(message="連絡電話: 請勿空白")
-	@Column(name = "partnerPhone") // "連絡電話"
+
+	/**
+	 * 連絡電話
+	 */
 	private String partnerPhone;
-	
-	@NotEmpty(message="聯絡人: 請勿空白")
-	@Column(name = "partnerContactPerson") // "聯絡人"
+
+	/**
+	 * 聯絡人
+	 */
 	private String partnerContactPerson;
-	
-	@NotEmpty(message="密碼: 請勿空白")
-	@Column(name = "partnerPassword") // "密碼"
+
+	/**
+	 * 密碼
+	 */
 	private String partnerPassword;
-	
-	@NotEmpty(message="電子信箱: 請勿空白")
-	@Column(name = "partnerEmail") // "電子信箱"
+
+	/**
+	 * 電子信箱
+	 */
 	private String partnerEmail;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "partnerCreateTime", updatable = false, insertable = false) // "帳號建立時間"
+
+	/**
+	 * 帳號建立時間
+	 */
 	private Date partnerCreateTime;
-	
-	@Column(name = "partnerAccountStatus") // "帳號狀態 0:黑名單 1.使用中 2.申請中"
+
+	/**
+	 * 帳號狀態 0:黑名單 1.使用中 2.申請中
+	 */
 	private Integer partnerAccountStatus = 2;
-	
-	
-	@OneToMany(mappedBy = "partnerMember", cascade = CascadeType.ALL)
-	@OrderBy("commodityID asc")
-	private Set<Commodity> commodities;
-	
-	@OneToMany(mappedBy = "partnerMember", cascade = CascadeType.ALL)
-	@OrderBy("activityID asc")
-	private Set<Activity> activities;
-	
-	@OneToMany(mappedBy = "partnerMember", cascade = CascadeType.ALL)
-	@OrderBy("venueRentalID asc")
-	private Set<VenueRental> venueRentals;
 
-	public PartnerMember() {
-		super();
+	/**
+	 *
+	 * @return partnerId
+	 * 			Integer
+	 */
+	public Integer getPartnerId() {
+		return partnerId;
 	}
 
-	public Integer getPartnerID() {
-		return partnerID;
+	/**
+	 *
+	 * @param partnerId
+	 * 			Integer
+	 */
+	public void setPartnerId(Integer partnerId) {
+		this.partnerId = partnerId;
 	}
 
-	public void setPartnerID(Integer partnerID) {
-		this.partnerID = partnerID;
+	/**
+	 *
+	 * @return taxId
+	 * 			String
+	 */
+	public String getTaxId() {
+		return taxId;
 	}
 
-	public String getTaxID() {
-		return taxID;
+	/**
+	 *
+	 * @param taxId
+	 * 			String
+	 */
+	public void setTaxId(String taxId) {
+		this.taxId = taxId;
 	}
 
-	public void setTaxID(String taxID) {
-		this.taxID = taxID;
-	}
-
+	/**
+	 *
+	 * @return partnerName
+	 * 			String
+	 */
 	public String getPartnerName() {
 		return partnerName;
 	}
 
+	/**
+	 *
+	 * @param partnerName
+	 * 			String
+	 */
 	public void setPartnerName(String partnerName) {
 		this.partnerName = partnerName;
 	}
 
+	/**
+	 *
+	 * @return partnerHeading
+	 * 			String
+	 */
 	public String getPartnerHeading() {
 		return partnerHeading;
 	}
 
+	/**
+	 *
+	 * @param partnerHeading
+	 * 			String
+	 */
 	public void setPartnerHeading(String partnerHeading) {
 		this.partnerHeading = partnerHeading;
 	}
 
+	/**
+	 *
+	 * @return partnerAddress
+	 * 			String
+	 */
 	public String getPartnerAddress() {
 		return partnerAddress;
 	}
 
+	/**
+	 *
+	 * @param partnerAddress
+	 * 			String
+	 */
 	public void setPartnerAddress(String partnerAddress) {
 		this.partnerAddress = partnerAddress;
 	}
 
+	/**
+	 *
+	 * @return partnerPhone
+	 * 			String
+	 */
 	public String getPartnerPhone() {
 		return partnerPhone;
 	}
 
+	/**
+	 *
+	 * @param partnerPhone
+	 * 			String
+	 */
 	public void setPartnerPhone(String partnerPhone) {
 		this.partnerPhone = partnerPhone;
 	}
 
+	/**
+	 *
+	 * @return partnerContactPerson
+	 * 			String
+	 */
 	public String getPartnerContactPerson() {
 		return partnerContactPerson;
 	}
 
+	/**
+	 *
+	 * @param partnerContactPerson
+	 * 			String
+	 */
 	public void setPartnerContactPerson(String partnerContactPerson) {
 		this.partnerContactPerson = partnerContactPerson;
 	}
 
+	/**
+	 *
+	 * @return partnerPassword
+	 * 			String
+	 */
 	public String getPartnerPassword() {
 		return partnerPassword;
 	}
 
+	/**
+	 *
+	 * @param partnerPassword
+	 * 			String
+	 */
 	public void setPartnerPassword(String partnerPassword) {
 		this.partnerPassword = partnerPassword;
 	}
 
+	/**
+	 *
+	 * @return partnerEmail
+	 * 			String
+	 */
 	public String getPartnerEmail() {
 		return partnerEmail;
 	}
 
+	/**
+	 *
+	 * @param partnerEmail
+	 * 			String
+	 */
 	public void setPartnerEmail(String partnerEmail) {
 		this.partnerEmail = partnerEmail;
 	}
 
+	/**
+	 *
+	 * @return partnerCreateTime
+	 * 			Date
+	 */
 	public Date getPartnerCreateTime() {
 		return partnerCreateTime;
 	}
 
+	/**
+	 *
+	 * @param partnerCreateTime
+	 * 			Date
+	 */
 	public void setPartnerCreateTime(Date partnerCreateTime) {
 		this.partnerCreateTime = partnerCreateTime;
 	}
 
+	/**
+	 *
+	 * @return partnerAccountStatus
+	 * 			Integer
+	 */
 	public Integer getPartnerAccountStatus() {
 		return partnerAccountStatus;
 	}
 
+	/**
+	 *
+	 * @param partnerAccountStatus
+	 * 			Integer
+	 */
 	public void setPartnerAccountStatus(Integer partnerAccountStatus) {
 		this.partnerAccountStatus = partnerAccountStatus;
 	}
 
-	public Set<Commodity> getCommodities() {
-		return commodities;
-	}
-
-	public void setCommodities(Set<Commodity> commodities) {
-		this.commodities = commodities;
-	}
-
-	public Set<Activity> getActivities() {
-		return activities;
-	}
-
-	public void setActivities(Set<Activity> activities) {
-		this.activities = activities;
-	}
-
-	public Set<VenueRental> getVenueRentals() {
-		return venueRentals;
-	}
-
-	public void setVenueRentals(Set<VenueRental> venueRentals) {
-		this.venueRentals = venueRentals;
-	}
-
-//	@Override
-//	public String toString() {
-//		return "PartnerMember [partnerID=" + partnerID + ", taxID=" + taxID + ", partnerName=" + partnerName
-//				+ ", partnerHeading=" + partnerHeading + ", partnerAddress=" + partnerAddress + ", partnerPhone="
-//				+ partnerPhone + ", partnerContactPerson=" + partnerContactPerson + ", partnerPassword="
-//				+ partnerPassword + ", partnerEmail=" + partnerEmail + ", partnerCreateTime=" + partnerCreateTime
-//				+ ", partnerAccountStatus=" + partnerAccountStatus + ", commodities=" + commodities + ", activities="
-//				+ activities + ", venueRentals=" + venueRentals + "]";
-//	}
-
-	
-	
-	
 }

@@ -76,7 +76,7 @@ public class Cart implements java.io.Serializable {
 	
 	public void addItem(Commodity commodity, int quantity) {
         CartItem item = cartItems.stream()
-                .filter(i -> i.getCommodity().getCommodityID().equals(commodity.getCommodityID()))
+                .filter(i -> i.getCommodity().getCommodityId().equals(commodity.getCommodityId()))
                 .findFirst()
                 .orElse(null);
 
@@ -92,7 +92,7 @@ public class Cart implements java.io.Serializable {
     }
 
     public void removeItem(Commodity commodity) {
-        cartItems.removeIf(item -> item.getCommodity().getCommodityID().equals(commodity.getCommodityID()));
+        cartItems.removeIf(item -> item.getCommodity().getCommodityId().equals(commodity.getCommodityId()));
     }
 
 //    public double getTotalPrice() {

@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 活動圖片
+ * 活動圖片 DO
  */
 public class ActivityPicture implements Serializable {
 

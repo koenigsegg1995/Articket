@@ -1,76 +1,106 @@
 package com.maddog.articket.activitycollection.entity;
 
-import com.maddog.articket.activity.entity.Activity;
-import com.maddog.articket.generalmember.entity.GeneralMember;
-import jakarta.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
-@Entity
-@Table(name = "activitycollection")
-//活動收藏
+/**
+ * 活動收藏 DO
+ */
 public class ActivityCollection implements Serializable{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "activityCollectionID", updatable = false)
-	private Integer activityCollectionID; //活動收藏ID
-	
-	@ManyToOne
-	@JoinColumn(name = "memberID", referencedColumnName = "memberID")
-	private GeneralMember generalMember; // 一般會員
-	
-	@ManyToOne
-	@JoinColumn(name = "activityID", referencedColumnName = "activityID")
-	private Activity activity; // 活動
-	
-	@Column(name = "activityCollectionTime", updatable = false, insertable = false)
-	private Timestamp activityCollectionTime; //活動收藏時間
-	
-	//建構子
-	public ActivityCollection() {
-		super();
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 活動收藏ID
+	 */
+	private Integer activityCollectionId;
+
+	/**
+	 * 一般會員ID
+	 */
+	private Integer memberId;
+
+	/**
+	 * 活動ID
+	 */
+	private Integer activityId;
+
+	/**
+	 * 活動收藏時間
+	 */
+	private Date activityCollectionTime;
+
+	/**
+	 *
+	 * @return activityCollectionId
+	 * 			Integer
+	 */
+	public Integer getActivityCollectionId() {
+		return activityCollectionId;
 	}
 
-	public ActivityCollection(Integer activityCollectionID, GeneralMember generalMember, Activity activity,
-			Timestamp activityCollectionTime) {
-		super();
-		this.activityCollectionID = activityCollectionID;
-		this.generalMember = generalMember;
-		this.activity = activity;
-		this.activityCollectionTime = activityCollectionTime;
+	/**
+	 *
+	 * @param activityCollectionId
+	 * 			Integer
+	 */
+	public void setActivityCollectionId(Integer activityCollectionId) {
+		this.activityCollectionId = activityCollectionId;
 	}
 
-	// Getter & Setter
-	public Integer getActivityCollectionID() {
-		return activityCollectionID;
+	/**
+	 *
+	 * @return memberId
+	 * 			Integer
+	 */
+	public Integer getMemberId() {
+		return memberId;
 	}
 
-	public void setActivityCollectionID(Integer activityCollectionID) {
-		this.activityCollectionID = activityCollectionID;
+	/**
+	 *
+	 * @param memberId
+	 * 			Integer
+	 */
+	public void setMemberId(Integer memberId) {
+		this.memberId = memberId;
 	}
 
-	public GeneralMember getGeneralMember() {
-		return generalMember;
+	/**
+	 *
+	 * @return activityId
+	 * 			Integer
+	 */
+	public Integer getActivityId() {
+		return activityId;
 	}
 
-	public void setGeneralMember(GeneralMember generalMember) {
-		this.generalMember = generalMember;
+	/**
+	 *
+	 * @param activityId
+	 * 			Integer
+	 */
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
 	}
 
-	public Activity getActivity() {
-		return activity;
-	}
-
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
-
-	public Timestamp getActivityCollectionTime() {
+	/**
+	 *
+	 * @return activityCollectionTime
+	 * 			Date
+	 */
+	public Date getActivityCollectionTime() {
 		return activityCollectionTime;
 	}
 
-	public void setActivityCollectionTime(Timestamp activityCollectionTime) {
+	/**
+	 *
+	 * @param activityCollectionTime
+	 * 			Date
+	 */
+	public void setActivityCollectionTime(Date activityCollectionTime) {
 		this.activityCollectionTime = activityCollectionTime;
 	}
 

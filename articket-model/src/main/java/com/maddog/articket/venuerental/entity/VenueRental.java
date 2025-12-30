@@ -3,6 +3,9 @@ package com.maddog.articket.venuerental.entity;
 import java.io.Serial;
 import java.util.Date;
 
+/**
+ * 場地申請資料 DO
+ */
 public class VenueRental implements java.io.Serializable {
 
 	@Serial

@@ -3,10 +3,6 @@
 
 <mapper namespace="com.maddog.articket.venuerental.dao.VenueRentalDao">
 
-<!-- sql -->
-
-<!-- sql -->
-
 <!-- resultMap-->
     <resultMap id="resultMapForSelect" type="com.maddog.articket.venuerental.entity.VenueRental">
         <id column="venue_rental_id" property="venueRentalId" />
@@ -23,6 +19,51 @@
 <!-- resultMap-->
 
 <!-- method-->
+    <!-- 新增場地申請資料 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.venuerental.entity.VenueRental">
+        INSERT INTO venue_rental
+        (
+            venue_id,
+            partner_id,
+            activity_name,
+            proposal,
+            venue_rental_status,
+            venue_rental_start_date,
+            venue_rental_end_date,
+            venue_rental_code
+        )
+        VALUES
+        (
+            #{venueId},
+            #{partnerId},
+            #{activityName},
+            #{proposal},
+            #{venueRentalStatus},
+            #{venueRentalStartDate},
+            #{venueRentalEndDate},
+            #{venueRentalCode}
+        )
+    </insert>
+
+    <!-- 更新場地申請資料 -->
+    <update id="update"
+            parameterType="com.maddog.articket.venuerental.entity.VenueRental">
+        UPDATE
+            venue_rental
+        SET
+            venue_id = #{venueId},
+            partner_id = #{partnerId},
+            activity_name = #{activityName},
+            proposal = #{proposal},
+            venue_rental_status = #{venueRentalStatus},
+            venue_rental_start_date = #{venueRentalStartDate},
+            venue_rental_end_date = #{venueRentalEndDate},
+            venue_rental_code = #{venueRentalCode}
+        WHERE
+            venue_rental_id = #{venueRentalId}
+    </update>
+
     <!-- 依 ID 查詢場地申請資料 -->
     <select id="findById"
             parameterType="java.lang.Integer"

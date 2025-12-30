@@ -10,11 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+/**
+ * 活動圖片 Service Implementation
+ */
 @Service("activityPictureService")
 public class ActivityPictureServiceImpl implements ActivityPictureService {
 
+	/**
+	 * 活動圖片 DAO
+	 */
 	@Autowired
-	ActivityPictureDao activityPictureDao;
+	private ActivityPictureDao activityPictureDao;
 
 	/**
 	 * 新增活動圖片

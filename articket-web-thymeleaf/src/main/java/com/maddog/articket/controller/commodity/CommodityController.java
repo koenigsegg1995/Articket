@@ -254,22 +254,22 @@ public class CommodityController {
 	public String addCommodity(@RequestParam Integer activityID, 
 	                           ModelMap model, 
 	                           HttpSession session) {
-	    Integer partnerID = (Integer) session.getAttribute("partnerID");
-	    if (partnerID == null) {
+	    Integer partnerId = (Integer) session.getAttribute("partnerID");
+	    if (partnerId == null) {
 	        return "redirect:/partnermember/partnerLogin";
 	    }
 
 	    Commodity commodity = new Commodity();
-	    PartnerMember partnerMember = partnerMemberSvc.getOnePartnerMember(partnerID);
+	    PartnerMember partnerMember = partnerMemberSvc.getOnePartnerMember(partnerId);
 	    Activity activity = activitySvc.getOneActivity(activityID);
 
-	    if (activity == null || !activity.getPartnerMember().getPartnerID().equals(partnerID)) {
+	    if (activity == null || !activity.getPartnerId().equals(partnerId)) {
 	        model.addAttribute("error", "無效的活動ID");
 	        return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
 	    }
 
 	    commodity.setPartnerMember(partnerMember);
-	    commodity.setActivity(activity);
+	    commodity.setActivityId(activityID);
 	    model.addAttribute("commodity", commodity);
 	    model.addAttribute("activityID", activityID);
 
@@ -294,9 +294,8 @@ public class CommodityController {
 
 	    // 確保商品關聯到正確的合作夥伴和活動
 	    PartnerMember partnerMember = partnerMemberSvc.getOnePartnerMember(partnerID);
-	    Activity activity = activitySvc.getOneActivity(activityID);
 	    commodity.setPartnerMember(partnerMember);
-	    commodity.setActivity(activity);
+	    commodity.setActivityId(activityID);
 
 	    // 保存商品
 	    commoditySvc.addCommodity(commodity);
@@ -377,7 +376,7 @@ public class CommodityController {
 	        }
 
 	        // 確保活動ID和合作夥伴ID不變
-	        commodity.setActivity(originalCommodity.getActivity());
+	        commodity.setActivityId(originalCommodity.getActivityId());
 	        commodity.setPartnerMember(originalCommodity.getPartnerMember());
 
 	        // 處理圖片更新邏輯

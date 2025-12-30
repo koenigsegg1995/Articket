@@ -4,6 +4,9 @@ import com.maddog.articket.activitypicture.entity.ActivityPicture;
 
 import java.util.Set;
 
+/**
+ * 活動圖片 Service Interface
+ */
 public interface ActivityPictureService {
 
 	/**

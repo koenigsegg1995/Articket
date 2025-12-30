@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Set;
 
+/**
+ * 活動圖片 DAO
+ */
 @Mapper
 public interface ActivityPictureDao {
 
@@ -29,7 +32,7 @@ public interface ActivityPictureDao {
 	ActivityPicture findById(Integer activityPictureId);
 
 	/**
-	 * 刪除圖片
+	 * 刪除活動圖片
 	 *
 	 * @param activityPictureId
 	 * 		 	Set<Integer>

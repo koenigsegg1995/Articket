@@ -2,7 +2,7 @@ package com.maddog.articket.controller.venuerental;
 
 import com.maddog.articket.venue.service.impl.VenueService;
 import com.maddog.articket.venuerental.entity.VenueRental;
-import com.maddog.articket.venuerental.service.impl.VenueRentalService;
+import com.maddog.articket.venuerental.service.pri.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
