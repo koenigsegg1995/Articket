@@ -50,11 +50,19 @@
             parameterType="java.util.Set">
         DELETE FROM
             activity_picture
-        WHERE
-            activity_picture_id IN
-            <foreach collection="collection" open="(" separator="," close=")">
-                #{activityPictureId}
-            </foreach>
+        <where>
+            <choose>
+                <when test=" collection != null and collection.size() > 0 ">
+                    activity_picture_id IN
+                    <foreach collection="collection" item="activityPictureId" open="(" separator="," close=")">
+                        #{activityPictureId}
+                    </foreach>
+                </when>
+                <otherwise>
+                    1 = 0
+                </otherwise>
+            </choose>
+        </where>
     </delete>
 <!-- method-->
 
