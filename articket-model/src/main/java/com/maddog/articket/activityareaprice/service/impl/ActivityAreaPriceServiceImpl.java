@@ -2,12 +2,17 @@ package com.maddog.articket.activityareaprice.service.impl;
 
 import com.maddog.articket.activityareaprice.dao.ActivityAreaPriceDao;
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
+import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class ActivityAreaPriceService {
+/**
+ * 活動區域價格 Service Implementation
+ */
+@Service("activityAreaPriceService")
+public class ActivityAreaPriceServiceImpl implements ActivityAreaPriceService {
 
     /**
      * 活動區域價格 DAO
@@ -25,6 +30,7 @@ public class ActivityAreaPriceService {
      * @return 活動區域價格
      * 			ActivityAreaPrice
      */
+    @Override
     @Transactional(readOnly = true)
     public ActivityAreaPrice findByVenueAreaIdAndActivityId(Integer venueAreaId, Integer activityId) {
         return activityAreaPriceDao.findByVenueAreaIdAndActivityId(venueAreaId, activityId);
@@ -38,7 +44,8 @@ public class ActivityAreaPriceService {
      * @return 成功筆數
      *          int
      */
-    @Transactional
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updateOrCreateActivityAreaPrice(ActivityAreaPrice activityAreaPrice) {
         int updatedRows = activityAreaPriceDao.update(activityAreaPrice);
         

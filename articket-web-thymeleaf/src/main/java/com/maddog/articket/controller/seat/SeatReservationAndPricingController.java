@@ -3,7 +3,7 @@ package com.maddog.articket.controller.seat;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
-import com.maddog.articket.activityareaprice.service.impl.ActivityAreaPriceService;
+import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.seat.model.PriceForm;

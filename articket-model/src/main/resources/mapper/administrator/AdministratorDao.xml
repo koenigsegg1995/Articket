@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.administrator.dao.AdministratorDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.administrator.entity.Administrator">
+        <id column="administrator_id" property="administratorId" />
+        <result column="administrator_account" property="administratorAccount" />
+        <result column="administrator_password" property="administratorPassword" />
+        <result column="administrator_create_time" property="administratorCreateTime" />
+        <result column="administrator_status" property="administratorStatus" />
+    </resultMap>
+    <!-- resultMap-->
+
+<!-- method-->
+    <!-- 依帳號查詢管理員 -->
+    <select id="findByAdministratorAccount"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            administrator
+        WHERE
+            administrator_account = #{administratorAccount}
+    </select>
+<!-- method-->
+
+</mapper>

@@ -1,6 +1,6 @@
 package com.maddog.articket.hibernate.util.compositequery;
 
-import com.maddog.articket.announcement.model.entity.Announcement;
+import com.maddog.articket.announcement.entity.Announcement;
 import com.maddog.articket.administrator.entity.Administrator;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;

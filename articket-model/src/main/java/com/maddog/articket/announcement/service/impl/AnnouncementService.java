@@ -1,7 +1,7 @@
-package com.maddog.articket.announcement.model.service.impl;
+package com.maddog.articket.announcement.service.impl;
 
-import com.maddog.articket.announcement.model.dao.AnnouncementRepository;
-import com.maddog.articket.announcement.model.entity.Announcement;
+import com.maddog.articket.announcement.dao.AnnouncementRepository;
+import com.maddog.articket.announcement.entity.Announcement;
 import com.maddog.articket.hibernate.util.compositequery.HibernateUtil_CompositeQuery_Announcement3;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

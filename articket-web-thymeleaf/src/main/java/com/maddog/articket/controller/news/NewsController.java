@@ -1,7 +1,6 @@
 package com.maddog.articket.controller.news;
 
 import com.maddog.articket.administrator.entity.Administrator;
-import com.maddog.articket.administrator.service.impl.AdministratorService;
 import com.maddog.articket.news.entity.News;
 import com.maddog.articket.news.service.impl.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +34,7 @@ import java.util.Set;
 public class NewsController {
 
     @Autowired
-    NewsService newsSvc;
-
-    @Autowired
-    AdministratorService administratorSvc;
-
-//    @GetMapping("/select_page")
-//    public String select_page(Model model) {
-//        return "front-end/news/select_page";
-//    }
+    private NewsService newsSvc;
 
     // 管理員消息頁面 沒有側邊攔
     @GetMapping("/listAllNews")
@@ -92,14 +83,14 @@ public class NewsController {
     @GetMapping("addNews")
     public String addNews(HttpSession session, ModelMap model) {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
         News news = new News();
         Administrator admin = new Administrator();
-        admin.setAdministratorID(administratorID);
+        admin.setAdministratorId(administratorId);
         news.setAdministrator(admin);
         model.addAttribute("news", news);
 
@@ -110,8 +101,8 @@ public class NewsController {
     @PostMapping("insert")
     public String insert(@Valid News news, BindingResult result, HttpSession session, ModelMap model) throws IOException {
         // 再次檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
@@ -120,7 +111,7 @@ public class NewsController {
         }
 
         // 設置管理員ID
-        news.getAdministrator().setAdministratorID(administratorID);
+        news.getAdministrator().setAdministratorId(administratorId);
 
         newsSvc.addNews(news);
 
@@ -132,15 +123,15 @@ public class NewsController {
     @PostMapping("getOne_For_Update")
     public String getOne_For_Update(@RequestParam("newsID") String newsIDStr, HttpSession session, ModelMap model) {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
-        Integer newsID = Integer.valueOf(newsIDStr);
-        News news = newsSvc.getOneNews(newsID);
+        Integer newsId = Integer.valueOf(newsIDStr);
+        News news = newsSvc.getOneNews(newsId);
 
-        if (!news.getAdministrator().getAdministratorID().equals(administratorID)) {
+        if (!news.getAdministrator().getAdministratorId().equals(administratorId)) {
             model.addAttribute("error", "您沒有權限更新這個公告");
             return "back-end-admin/announcement-news/news"; // 返回列表頁面
         }
@@ -153,8 +144,8 @@ public class NewsController {
     @PostMapping("update")
     public String update(@Valid News news, BindingResult result, HttpSession session, ModelMap model) throws IOException {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
@@ -163,7 +154,7 @@ public class NewsController {
         }
 
         // 設置當前登入的管理員ID
-        news.getAdministrator().setAdministratorID(administratorID);
+        news.getAdministrator().setAdministratorId(administratorId);
 
         newsSvc.updateNews(news);
 

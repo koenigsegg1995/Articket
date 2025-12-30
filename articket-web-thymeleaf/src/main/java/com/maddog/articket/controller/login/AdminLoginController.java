@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.login;
 
 import com.maddog.articket.administrator.entity.Administrator;
-import com.maddog.articket.administrator.service.impl.AdministratorService;
+import com.maddog.articket.administrator.service.pri.AdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +15,9 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping
 public class AdminLoginController {
-
 	
 	@Autowired
-	AdministratorService adminSvc;
+	private AdministratorService adminSvc;
 	
 	@GetMapping("/adminLogin")
 	public String getAdminLogin() {
@@ -48,7 +47,7 @@ public class AdminLoginController {
 			// 檢查密碼
 			if (administratorPasswordStr.equals(administrator.getAdministratorPassword())) {
 				model.addAttribute("administratorAccount", administratorAccountStr);
-				session.setAttribute("administratorID", administrator.getAdministratorID());
+				session.setAttribute("administratorID", administrator.getAdministratorId());
 				return "/back-end-admin/admin"; // 登入成功
 			} else {
 				model.addAttribute("errorMessage", "密碼錯誤，登入失敗!!!");

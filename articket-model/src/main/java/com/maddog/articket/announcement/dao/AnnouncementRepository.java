@@ -1,6 +1,6 @@
-package com.maddog.articket.announcement.model.dao;
+package com.maddog.articket.announcement.dao;
 
-import com.maddog.articket.announcement.model.entity.Announcement;
+import com.maddog.articket.announcement.entity.Announcement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-
 
 public interface AnnouncementRepository extends JpaRepository<Announcement, Integer>{
 	
@@ -23,4 +22,5 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
 
 	// 添加按創建時間範圍查詢的方法
 	Page<Announcement> findByAnnouncementCreateTimeBetween(Date startDate, Date endDate, Pageable pageable);
+
 }

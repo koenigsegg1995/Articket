@@ -3,25 +3,27 @@
 
 <mapper namespace="com.maddog.articket.activitytimeslot.dao.ActivityTimeSlotDao">
 
-<!-- sql -->
-
-<!-- sql -->
-
 <!-- resultMap-->
-
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot">
+        <id column="activity_time_slot_id" property="activityTimeSlotId" />
+        <result column="activity_id" property="activityId" />
+        <result column="activity_time_slot_date" property="activityTimeSlotDate" />
+        <result column="activity_time_slot" property="activityTimeSlot" />
+        <result column="activity_time_slot_seat_amount" property="activityTimeSlotSeatAmount" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
     <!-- 依時段 ID 查詢 -->
     <select id="findById"
             parameterType="java.lang.Integer"
-            resultType="com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot">
+            resultMap="resultMapForSelect">
         SELECT
-            *
+        *
         FROM
-            activity_time_slot
+        activity_time_slot
         WHERE
-            activity_time_slot_id = #{activity_time_slot_id}
+        activity_time_slot_id = #{activity_time_slot_id}
     </select>
 <!-- method-->
 

@@ -3,7 +3,7 @@ package com.maddog.articket.controller.seat;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
-import com.maddog.articket.activityareaprice.service.impl.ActivityAreaPriceService;
+import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.seat.model.service.pri.SeatService;
@@ -146,7 +146,7 @@ public class SeatSelectController {
 					return "redirect:/error";
 				}
 
-				log.info("找到活動區域價格ID: {} 對應區域ID: {}, 活動ID: {}", activityAreaPrice.getActivityAreaPriceID(), venueAreaId, activityId);
+				log.info("找到活動區域價格ID: {} 對應區域ID: {}, 活動ID: {}", activityAreaPrice.getActivityAreaPriceId(), venueAreaId, activityId);
 
 				// 使用 venueId 和 seatName 找出 seatId
 				Integer seatId = seatService.findSeatId(venueId, seatName);
@@ -156,7 +156,7 @@ public class SeatSelectController {
 					SeatStatus seatStatus = seatStatusService
 							.getSeatStatusByActivityTimeSlotIdAndSeatId(activityTimeSlotId, seatId);
 					if (seatStatus != null) {
-						log.info("找到座位狀態ID: {} 對應座位ID: {} 在區域ID: {}", seatStatus.getSeatStatusID(), seatId, venueAreaId);
+						log.info("找到座位狀態ID: {} 對應座位ID: {} 在區域ID: {}", seatStatus.getSeatStatusId(), seatId, venueAreaId);
 
 						// Create a new Ticket object and add it to the list
 						Ticket ticket = new Ticket();

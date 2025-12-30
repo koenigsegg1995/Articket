@@ -1,12 +1,17 @@
 package com.maddog.articket.activitytimeslot.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 活動時段
+ * 活動時段 DO
  */
+@Getter
+@Setter
 public class ActivityTimeSlot implements Serializable {
 
     /**
@@ -39,95 +44,5 @@ public class ActivityTimeSlot implements Serializable {
      * 時段剩餘座位數
      */
 	private Integer activityTimeSlotSeatAmount;
-
-    /**
-     *
-     * @return activityTimeSlotId
-     *          Integer
-     */
-    public Integer getActivityTimeSlotId() {
-        return activityTimeSlotId;
-    }
-
-    /**
-     *
-     * @param activityTimeSlotId
-     *          Integer
-     */
-    public void setActivityTimeSlotId(Integer activityTimeSlotId) {
-        this.activityTimeSlotId = activityTimeSlotId;
-    }
-
-    /**
-     *
-     * @return activityId
-     *          Integer
-     */
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    /**
-     *
-     * @param activityId
-     *          Integer
-     */
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    /**
-     *
-     * @return activityTimeSlotDate
-     *          Date
-     */
-    public Date getActivityTimeSlotDate() {
-        return activityTimeSlotDate;
-    }
-
-    /**
-     *
-     * @param activityTimeSlotDate
-     *          Date
-     */
-    public void setActivityTimeSlotDate(Date activityTimeSlotDate) {
-        this.activityTimeSlotDate = activityTimeSlotDate;
-    }
-
-    /**
-     *
-     * @return activityTimeSlot
-     *          Integer
-     */
-    public Integer getActivityTimeSlot() {
-        return activityTimeSlot;
-    }
-
-    /**
-     *
-     * @param activityTimeSlot
-     *          Integer
-     */
-    public void setActivityTimeSlot(Integer activityTimeSlot) {
-        this.activityTimeSlot = activityTimeSlot;
-    }
-
-    /**
-     *
-     * @return activityTimeSlotSeatAmount
-     *          Integer
-     */
-    public Integer getActivityTimeSlotSeatAmount() {
-        return activityTimeSlotSeatAmount;
-    }
-
-    /**
-     *
-     * @param activityTimeSlotSeatAmount
-     *          Integer
-     */
-    public void setActivityTimeSlotSeatAmount(Integer activityTimeSlotSeatAmount) {
-        this.activityTimeSlotSeatAmount = activityTimeSlotSeatAmount;
-    }
 
 }

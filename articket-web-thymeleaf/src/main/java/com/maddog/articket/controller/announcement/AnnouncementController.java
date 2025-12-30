@@ -1,9 +1,8 @@
 package com.maddog.articket.controller.announcement;
 
-import com.maddog.articket.announcement.model.entity.Announcement;
-import com.maddog.articket.announcement.model.service.impl.AnnouncementService;
+import com.maddog.articket.announcement.entity.Announcement;
+import com.maddog.articket.announcement.service.impl.AnnouncementService;
 import com.maddog.articket.administrator.entity.Administrator;
-import com.maddog.articket.administrator.service.impl.AdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,11 +34,7 @@ import java.util.Set;
 public class AnnouncementController {
 
     @Autowired
-    AnnouncementService announcementSvc;
-
-    @Autowired
-    AdministratorService administratorSvc;
-
+    private AnnouncementService announcementSvc;
 
     // 管理員公告頁面 沒有側邊攔
     @GetMapping("/listAllAnnouncement")
@@ -87,14 +82,14 @@ public class AnnouncementController {
     @GetMapping("addAnnouncement")
     public String addAnnouncement(HttpSession session, ModelMap model) {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
         Announcement announcement = new Announcement();
         Administrator admin = new Administrator();
-        admin.setAdministratorID(administratorID);
+        admin.setAdministratorId(administratorId);
         announcement.setAdministrator(admin);
         model.addAttribute("announcement", announcement);
 
@@ -105,8 +100,8 @@ public class AnnouncementController {
     @PostMapping("insert")
     public String insert(@Valid Announcement announcement, BindingResult result, HttpSession session, ModelMap model) throws IOException {
         // 再次檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
@@ -115,7 +110,7 @@ public class AnnouncementController {
         }
 
         // 設置管理員ID
-        announcement.getAdministrator().setAdministratorID(administratorID);
+        announcement.getAdministrator().setAdministratorId(administratorId);
 
         announcementSvc.addAnnouncement(announcement);
 
@@ -127,15 +122,15 @@ public class AnnouncementController {
     @PostMapping("getOne_For_Update")
     public String getOne_For_Update(@RequestParam("announcementID") String announcementIDStr, HttpSession session, ModelMap model) {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
         Integer announcementID = Integer.valueOf(announcementIDStr);
         Announcement announcement = announcementSvc.getOneAnnouncement(announcementID);
 
-        if (!announcement.getAdministrator().getAdministratorID().equals(administratorID)) {
+        if (!announcement.getAdministrator().getAdministratorId().equals(administratorId)) {
             model.addAttribute("error", "您沒有權限更新這個公告");
             return "back-end-admin/announcement-news/announcement"; // 返回列表頁面
         }
@@ -148,8 +143,8 @@ public class AnnouncementController {
     @PostMapping("update")
     public String update(@Valid Announcement announcement, BindingResult result, HttpSession session, ModelMap model) throws IOException {
         // 檢查是否登入
-        Integer administratorID = (Integer) session.getAttribute("administratorID");
-        if (administratorID == null) {
+        Integer administratorId = (Integer) session.getAttribute("administratorID");
+        if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
@@ -158,7 +153,7 @@ public class AnnouncementController {
         }
 
         // 設置當前登入的管理員ID
-        announcement.getAdministrator().setAdministratorID(administratorID);
+        announcement.getAdministrator().setAdministratorId(administratorId);
 
         announcementSvc.updateAnnouncement(announcement);
 
@@ -181,8 +176,7 @@ public class AnnouncementController {
 
     @ModelAttribute("announcementListData")
     protected List<Announcement> referenceListData(Model model) {
-        List<Announcement> list = announcementSvc.getAll();
-        return list;
+        return announcementSvc.getAll();
     }
 
 

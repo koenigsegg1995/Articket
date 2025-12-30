@@ -1,11 +1,16 @@
 package com.maddog.articket.activitypicture.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 活動圖片 DO
  */
+@Getter
+@Setter
 public class ActivityPicture implements Serializable {
 
 	/**
@@ -28,59 +33,5 @@ public class ActivityPicture implements Serializable {
 	 * 活動圖片
 	 */
 	private byte[] activityPicture;
-
-	/**
-	 *
-	 * @return activityPictureId
-	 * 			Integer
-	 */
-	public Integer getActivityPictureId() {
-		return activityPictureId;
-	}
-
-	/**
-	 *
-	 * @param activityPictureId
-	 * 			Integer
-	 */
-	public void setActivityPictureId(Integer activityPictureId) {
-		this.activityPictureId = activityPictureId;
-	}
-
-	/**
-	 *
-	 * @return activityId
-	 * 			Integer
-	 */
-	public Integer getActivityId() {
-		return activityId;
-	}
-
-	/**
-	 *
-	 * @param activityId
-	 * 			Integer
-	 */
-	public void setActivityId(Integer activityId) {
-		this.activityId = activityId;
-	}
-
-	/**
-	 *
-	 * @return activityPicture
-	 * 			byte[]
-	 */
-	public byte[] getActivityPicture() {
-		return activityPicture;
-	}
-
-	/**
-	 *
-	 * @param activityPicture
-	 * 			byte[]
-	 */
-	public void setActivityPicture(byte[] activityPicture) {
-		this.activityPicture = activityPicture;
-	}
 
 }

@@ -1,4 +1,4 @@
-package com.maddog.articket.announcement.model.entity;
+package com.maddog.articket.announcement.entity;
 
 import com.maddog.articket.administrator.entity.Administrator;
 import jakarta.persistence.*;
