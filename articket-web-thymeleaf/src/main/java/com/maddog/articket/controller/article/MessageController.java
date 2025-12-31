@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.article;
 
 import com.maddog.articket.article.entity.Article;
-import com.maddog.articket.article.service.impl.ArticleService;
+import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.message.entity.Message;
@@ -37,24 +37,15 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
-
 	
 	@Autowired
-	MessageService messageSvc;
+	private MessageService messageSvc;
 	
 	@Autowired
-	ArticleService articleSvc;
-	
-	@Autowired
-	ArticleImgService articleImgSvc;
-	
-	@Autowired
-	GeneralMemberService generalMemberSvc;
+	private GeneralMemberService generalMemberSvc;
 
 	@Autowired
-	BoardService boardSvc;
-	
-
+	private BoardService boardSvc;
 
 	//獲取所有會員
 	@GetMapping("/members")
@@ -91,7 +82,7 @@ public class MessageController {
 	@PostMapping("insert")
 	@ResponseBody
 	public ResponseEntity<?> insert(@Valid @RequestBody Message message, HttpSession session) {
-	    if (message.getArticle() == null || message.getArticle().getArticleID() == null) {
+	    if (message.getArticle() == null || message.getArticleId() == null) {
 	        return ResponseEntity.badRequest().body("Article ID cannot be null");
 	    }
 	    // 獲取當前登入的會員信息

@@ -2,7 +2,7 @@ package com.maddog.articket.controller.article;
 
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
-import com.maddog.articket.article.service.impl.ArticleService;
+import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.articleimg.entity.ArticleImg;
@@ -38,19 +38,16 @@ import java.util.stream.Collectors;
 public class ArticleController {
 
 	@Autowired
-	ArticleService articleSvc;
+	private ArticleService articleSvc;
 	
 	@Autowired
-	ArticleImgService articleImgSvc;
+	private ArticleImgService articleImgSvc;
 	
 	@Autowired
-	GeneralMemberService generalMemberSvc;
-
+	private GeneralMemberService generalMemberSvc;
 	
 	@Autowired
-	BoardService boardSvc;
-
-
+	private BoardService boardSvc;
     
 	@GetMapping("/forum")
 	public String showForumPage(@RequestParam(required = false) Integer boardID, Model model) {
@@ -60,7 +57,7 @@ public class ArticleController {
 	    // 如果有指定 boardID，則篩選文章
 	    if (boardID != null) {
 	        allArticles = allArticles.stream()
-	            .filter(article -> article.getBoard().getBoardID().equals(boardID))
+	            .filter(article -> article.getBoardId().equals(boardID))
 	            .collect(Collectors.toList());
 	    }
 	    allArticles.sort(Comparator.comparing(Article::getArticleCreateTime).reversed()); //按文章時間排序
@@ -195,21 +192,20 @@ public class ArticleController {
 			HttpSession session) throws IOException {
 		
 	       // 獲取當前登入的會員信息
-        String memberAccount = (String) session.getAttribute("memberAccount");
-        if (memberAccount == null || memberAccount.isEmpty()) {
+        Integer memberID = (Integer) session.getAttribute("memberID");
+        if (memberID == null) {
             model.addAttribute("error", "會話已過期，請重新登入");
             return "redirect:/generalmember/login";
         }
 
-        GeneralMember generalMember = generalMemberSvc.getByMemberAccount(memberAccount);
+        GeneralMember generalMember = generalMemberSvc.getOneGeneralMember(memberID);
         if (generalMember == null) {
             model.addAttribute("error", "無法找到會員信息，請重新登入");
             return "redirect:/generalmember/login";
         }
 
         // 設置文章的作者
-        article.setGeneralMember(generalMember);
-
+        article.setMemberId(memberID);
 
 		    if (result.hasErrors()) {
 		    	setCommonModelAttributes(model);
@@ -356,7 +352,7 @@ public class ArticleController {
 		// 處理圖片
 	    if (parts != null && parts.length > 0 && !parts[0].isEmpty()) {
 	        // 如果有新圖片上傳,先刪除舊圖片
-	        articleImgSvc.deleteArticleImg(article.getArticleID());
+	        articleImgSvc.deleteArticleImg(article.getArticleId());
 
 	        for (MultipartFile pic : parts) {
 	            if (pic != null && !pic.isEmpty()) {
@@ -378,7 +374,7 @@ public class ArticleController {
 
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
-		article = articleSvc.getOneArticle(Integer.valueOf(article.getArticleID()));
+		article = articleSvc.getOneArticle(Integer.valueOf(article.getArticleId()));
 		model.addAttribute("article", article);
 		return "front-end/forum/OneArticle"; // 修改成功後轉交listOneArticle.html
 	}
@@ -552,8 +548,7 @@ public class ArticleController {
 	          strBuilder.append(violation.getMessage() + "<br>");
 	    }
 	    //==== 以下第267~271行是當前面第252行返回 /src/main/resources/templates/front-end/forum/select_page.html用的 ====   
-    	ArticleService articleSvc = new ArticleService();
-    	model.addAttribute("article", new ArticleService());
+    	model.addAttribute("article", articleSvc);
     	
 	    // 加載所有文章
 		List<Article> list = articleSvc.findByCondition();

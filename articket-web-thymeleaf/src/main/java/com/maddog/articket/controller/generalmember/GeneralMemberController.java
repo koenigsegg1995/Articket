@@ -1,6 +1,6 @@
 package com.maddog.articket.controller.generalmember;
 
-import com.maddog.articket.article.service.impl.ArticleService;
+import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.email.MailService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
@@ -45,25 +45,22 @@ import java.util.stream.Collectors;
 public class GeneralMemberController {
 
 	@Autowired
-	GeneralMemberService gmemberSvc;
+	private GeneralMemberService gmemberSvc;
 
 	@Autowired
-	MailService mailService;
+	private MailService mailService;
 
 	@Autowired
-	ArticleService articeSvc;
+	private ArticleCollectionService artCollSvc;
 
 	@Autowired
-	ArticleCollectionService artCollSvc;
+	private BookTicketService bookTicketService;
 
 	@Autowired
-	BookTicketService bookTicketService;
-
-	@Autowired
-	TicketService ticketSvc;
+	private TicketService ticketSvc;
 	
 	@Autowired
-	OrdersService ordersSvc;
+	private OrdersService ordersSvc;
 
 	/*
 	 * This method will serve as addEmp.html handler.

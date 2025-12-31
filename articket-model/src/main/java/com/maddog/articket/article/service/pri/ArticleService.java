@@ -1,16 +1,11 @@
-package com.maddog.articket.article.dao;
+package com.maddog.articket.article.service.pri;
 
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-/**
- * 文章 DAO
- */
-@Mapper
-public interface ArticleDao {
+public interface ArticleService {
 
 	/**
 	 * 新增
@@ -20,7 +15,7 @@ public interface ArticleDao {
 	 * @return 成功筆數
 	 * 			int
 	 */
-	int insert(Article article);
+	int addArticle(Article article);
 
 	/**
 	 * 更新
@@ -30,7 +25,7 @@ public interface ArticleDao {
 	 * @return 成功筆數
 	 * 			int
 	 */
-	int update(Article article);
+	int updateArticle(Article article);
 
 	/**
 	 * 刪除
@@ -40,7 +35,7 @@ public interface ArticleDao {
 	 * @return 成功筆數
 	 * 			int
 	 */
-	int deleteById(Integer articleId);
+	int deleteArticle(Integer articleId);
 
 	/**
 	 * 依 ID 查詢
@@ -50,7 +45,7 @@ public interface ArticleDao {
 	 * @return 文章
 	 * 			Article
 	 */
-	Article findById(Integer articleId);
+	Article getOneArticle(Integer articleId);
 
 	/**
 	 * 查詢所有文章，依創建時間降序排序
@@ -58,7 +53,7 @@ public interface ArticleDao {
 	 * @return 文章清單
 	 * 			List<Article>
 	 */
-	List<Article> findAll();
+	List<Article> findByCondition();
 
 	/**
 	 * 依標題查詢，依創建時間降序排序
@@ -79,13 +74,12 @@ public interface ArticleDao {
 	 * 			List<Article>
 	 */
 	List<Article> findByCondition(ArticleQueryCondition condition);
-
 	/**
 	 * 查詢現有文章類別
 	 *
 	 * @return 現有文章類別清單
 	 * 			List<String>
 	 */
-    List<String> findAllCategories();
+    List<String> getAllCategories();
 
 }

@@ -1,7 +1,7 @@
 package com.maddog.articket.prosecute.service.impl;
 
 import com.maddog.articket.article.entity.Article;
-import com.maddog.articket.article.service.impl.ArticleService;
+import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.service.impl.MessageService;
 import com.maddog.articket.prosecute.dao.ProsecuteRepository;
@@ -20,23 +20,22 @@ import java.util.Map;
 
 @Service("prosecuteService")
 public class ProsecuteService {
+
 	private static final String PROSECUTE_HASH_KEY = "prosecute:";
 	private static final String REPORTED_ARTICLES_SET = "reported:articles";
 	private static final String REPORTED_MESSAGES_SET = "reported:messages";
 
 	@Autowired
-	ProsecuteRepository repository;
+	private ProsecuteRepository repository;
 
 //	@Autowired
 //	private StringRedisTemplate redisTemplate;
 	
 	@Autowired
-	ArticleService articleSvc;
+	private ArticleService articleSvc;
 	
 	@Autowired
-	MessageService messageSvc;
-	
-
+	private MessageService messageSvc;
 
 	@Transactional
 	public void prosecuteContent(Prosecute prosecute) {
@@ -48,10 +47,10 @@ public class ProsecuteService {
 	    }
 	    // 檢查是檢舉文章還是留言
 	       if (prosecute.getArticle() != null) {
-	            if (prosecute.getArticle().getArticleID() == null) {
+	            if (prosecute.getArticleId() == null) {
 	                throw new IllegalArgumentException("被檢舉文章信息不完整");
 	            }
-	            if (isArticleReported(prosecute.getArticle().getArticleID())) {
+	            if (isArticleReported(prosecute.getArticleId())) {
 	                throw new IllegalStateException("此文章已被檢舉");
 	            }
 	        } else if (prosecute.getMessage() != null) {
@@ -110,7 +109,7 @@ public class ProsecuteService {
 		map.put("prosecuteStatus", prosecute.getProsecuteStatus().toString());
 
 		if (prosecute.getArticle() != null) {
-			map.put("articleID", prosecute.getArticle().getArticleID().toString());
+			map.put("articleID", prosecute.getArticleId().toString());
 		}
 		if (prosecute.getMessage() != null) {
 			map.put("messageID", prosecute.getMessage().getMessageID().toString());
