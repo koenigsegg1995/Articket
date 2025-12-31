@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.article.dao.ArticleDao">
+
+<!-- sql -->
+    <sql id="columnsForInsert">
+        article_category,
+        article_title,
+        member_id,
+        article_content,
+        board_id,
+        article_status
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.article.entity.Article">
+        <id column="article_id " property="articleId" />
+        <result column="article_category" property="articleCategory" />
+        <result column="article_title " property="articleTitle" />
+        <result column="member_id" property="memberId" />
+        <result column="article_content" property="articleContent" />
+        <result column="board_id" property="boardId" />
+        <result column="article_status" property="articleStatus" />
+        <result column="article_create_time" property="articleCreateTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.article.entity.Article">
+        INSERT INTO article
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{articleCategory},
+            #{articleTitle},
+            #{memberId},
+            #{articleContent},
+            #{boardId},
+            #{articleStatus}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.article.entity.Article">
+        UPDATE
+            article
+        <set>
+            <if test=" articleCategory != null and articleCategory != '' ">
+                article_category = #{articleCategory},
+            </if>
+
+            <if test=" articleTitle != null and articleTitle != '' ">
+                article_title = #{articleTitle},
+            </if>
+
+            <if test=" memberId != null ">
+                member_id = #{memberId},
+            </if>
+
+            <if test=" articleContent != null and articleContent != '' ">
+                article_content = #{articleContent},
+            </if>
+
+            <if test=" boardId != null ">
+                board_id = #{boardId},
+            </if>
+
+            <if test=" articleStatus != null ">
+                article_status = #{articleStatus},
+            </if>
+
+            article_create_time = NOW()
+        </set>
+        WHERE
+            article_id = #{articleId}
+    </update>
+
+    <!-- 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            article
+        WHERE
+            article_id = #{articleId}
+    </delete>
+
+    <!-- 依 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article
+        WHERE
+            article_id = #{articleId}
+    </select>
+
+    <!-- 查詢所有文章，按創建時間降序排序 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article
+        ORDER BY
+            article_create_time DESC
+    </select>
+
+    <select id="findByTitle"
+            resultType="com.maddog.articket.article.entity.Article">
+        SELECT
+            *
+        FROM
+            article
+        WHERE
+            article_title LIKE CONCAT('%', #{articleTitle}, '%')
+        ORDER BY
+            article_create_time DESC
+    </select>
+
+
+    <!-- method-->
+
+</mapper>

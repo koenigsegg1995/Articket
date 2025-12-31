@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.announcement.dao.AnnouncementDao">
+
+<!-- sql -->
+    <sql id="columnsForInsert">
+        administrator_id,
+        announcement_title,
+        announcement_content,
+        announcement_status
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.announcement.entity.Announcement">
+        <id column="announcement_id " property="announcementId" />
+        <result column="administrator_id" property="administratorId" />
+        <result column="announcement_title " property="announcementTitle" />
+        <result column="announcement_content" property="announcementContent" />
+        <result column="announcement_status" property="announcementStatus" />
+        <result column="announcement_create_time" property="announcementCreateTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.announcement.entity.Announcement">
+        INSERT INTO announcement
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{administratorId},
+            #{announcementTitle},
+            #{announcementContent},
+            #{announcementStatus}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.announcement.entity.Announcement">
+        UPDATE
+            announcement
+        <set>
+            <if test=" administratorId != null ">
+                administrator_id = #{administratorId},
+            </if>
+
+            <if test=" announcementTitle != null and announcementTitle != '' ">
+                announcement_title = #{announcementTitle},
+            </if>
+
+            <if test=" announcementContent != null and announcementContent != '' ">
+                announcement_content = #{announcementContent},
+            </if>
+
+            <if test=" announcementStatus != null ">
+                announcement_status = #{announcementStatus},
+            </if>
+
+            announcement_update_time = NOW()
+        </set>
+        WHERE
+            announcement_id = #{announcementId}
+    </update>
+
+    <!-- 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            announcement
+        WHERE
+            announcement_id = #{announcementId}
+    </delete>
+
+    <!-- 依 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            announcement
+        WHERE
+            announcement_id = #{announcementId}
+    </select>
+
+    <!-- 查詢所有公告，按創建時間降序排序 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            announcement
+        ORDER BY
+            announcement_create_time DESC
+    </select>
+
+    <select id="findAllPaginated"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            announcement
+        ORDER BY
+            announcement_create_time DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 計算總筆數 -->
+    <select id="countAll"
+            resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            announcement
+    </select>
+<!-- method-->
+
+</mapper>

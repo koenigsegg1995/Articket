@@ -1,8 +1,7 @@
 package com.maddog.articket.controller.announcement;
 
 import com.maddog.articket.announcement.entity.Announcement;
-import com.maddog.articket.announcement.service.impl.AnnouncementService;
-import com.maddog.articket.administrator.entity.Administrator;
+import com.maddog.articket.announcement.service.pri.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +24,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -39,7 +37,7 @@ public class AnnouncementController {
     // 管理員公告頁面 沒有側邊攔
     @GetMapping("/listAllAnnouncement")
     public String listAllAnnouncement(HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
-    	
+    	// 確認是否為管理員
     	if(session.getAttribute("administratorID") == null) {
     		return "redirect:/adminLogin";
     	}
@@ -78,7 +76,7 @@ public class AnnouncementController {
 
    
 
- // 新增公告頁面
+    // 新增公告頁面
     @GetMapping("addAnnouncement")
     public String addAnnouncement(HttpSession session, ModelMap model) {
         // 檢查是否登入
@@ -88,9 +86,7 @@ public class AnnouncementController {
         }
 
         Announcement announcement = new Announcement();
-        Administrator admin = new Administrator();
-        admin.setAdministratorId(administratorId);
-        announcement.setAdministrator(admin);
+        announcement.setAdministratorId(administratorId);
         model.addAttribute("announcement", announcement);
 
         return "back-end-admin/announcement-news/addAnnouncement";
@@ -110,7 +106,7 @@ public class AnnouncementController {
         }
 
         // 設置管理員ID
-        announcement.getAdministrator().setAdministratorId(administratorId);
+        announcement.setAdministratorId(administratorId);
 
         announcementSvc.addAnnouncement(announcement);
 
@@ -127,10 +123,10 @@ public class AnnouncementController {
             return "redirect:/adminLogin";
         }
 
-        Integer announcementID = Integer.valueOf(announcementIDStr);
-        Announcement announcement = announcementSvc.getOneAnnouncement(announcementID);
+        Integer announcementId = Integer.valueOf(announcementIDStr);
+        Announcement announcement = announcementSvc.getOneAnnouncement(announcementId);
 
-        if (!announcement.getAdministrator().getAdministratorId().equals(administratorId)) {
+        if (!announcement.getAdministratorId().equals(administratorId)) {
             model.addAttribute("error", "您沒有權限更新這個公告");
             return "back-end-admin/announcement-news/announcement"; // 返回列表頁面
         }
@@ -153,7 +149,7 @@ public class AnnouncementController {
         }
 
         // 設置當前登入的管理員ID
-        announcement.getAdministrator().setAdministratorId(administratorId);
+        announcement.setAdministratorId(administratorId);
 
         announcementSvc.updateAnnouncement(announcement);
 
@@ -177,19 +173,6 @@ public class AnnouncementController {
     @ModelAttribute("announcementListData")
     protected List<Announcement> referenceListData(Model model) {
         return announcementSvc.getAll();
-    }
-
-
-
-
-    @PostMapping("listAnnouncements_ByCompositeQuery")
-    public String listAllAnnouncement(HttpServletRequest req, Model model) {
-        Map<String, String[]> map = req.getParameterMap();
-        List<Announcement> list = announcementSvc.getAll(map);
-        model.addAttribute("announcementListData", list);
-//        return "back-end/announcement/listAllAnnouncement";
-        return "front-end/announcement-news/listAllAnnouncement";
-
     }
 
     @PostMapping("getOne_For_Display")
@@ -234,6 +217,5 @@ public class AnnouncementController {
         return new ModelAndView("front-end/announcement-news/select_page", "errorMessage", "請修正以下錯誤:<br>"+message);
 
     }
-    
 
 }

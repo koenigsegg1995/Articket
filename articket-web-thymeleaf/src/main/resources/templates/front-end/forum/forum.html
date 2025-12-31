@@ -28,11 +28,11 @@
 			        <hr style="margin-top: 0;">
 						<div class="list-group">
 						    <a th:each="board : ${boardList}" 
-						       th:href="@{/forum(boardID=${board.boardID})}" 
+						       th:href="@{/forum(boardId=${board.boardId})}"
 						       class="list-group-item list-group-item-action" 
-						       th:classappend="${board.boardID == selectedBoardID} ? 'active' : ''"
+						       th:classappend="${board.boardId == selectedBoardId} ? 'active' : ''"
 						       th:text="${board.boardName}"
-						       th:attr="data-board-id=${board.boardID}, data-board-name=${board.boardName}">
+						       th:attr="data-board-id=${board.boardId}, data-board-name=${board.boardName}">
 						    </a>
 						</div>
 			    </div>
@@ -102,13 +102,13 @@
 											</select>
 					                    </div>
 					                    <div class="mb-3">
-					                        <label for="boardID" class="form-label">討論板</label>
-											<select class="form-select" id="boardID" name="boardID">
+					                        <label for="boardId" class="form-label">討論板</label>
+											<select class="form-select" id="boardId" name="boardId">
 											    <option value="">所有討論板</option>
 											    <option th:each="board : ${boardList}" 
-											            th:value="${board.boardID}" 
+											            th:value="${board.boardId}"
 											            th:text="${board.boardName}"
-											            th:selected="${board.boardID == searchBoardID}">
+											            th:selected="${board.boardId == searchBoardId}">
 											    </option>
 											</select>
 					                    </div>
@@ -146,7 +146,7 @@
 					        </tr>
 					    </thead>
 					    <tbody class="list">
-							<tr th:each="article, articleStat : ${articleList}" th:attr="data-category=${article.articleCategory}, data-board-id=${article.board.boardID}">
+							<tr th:each="article, articleStat : ${articleList}" th:attr="data-category=${article.articleCategory}, data-board-id=${article.board.boardId}">
 							    <th scope="row" class="index" th:text="${articleStat.count}"></th>
 							    <td class="board" th:text="${article.board.boardName}"></td>
 								<td class="title">

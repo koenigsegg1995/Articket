@@ -1,5 +1,6 @@
 package com.maddog.articket.controller.article;
 
+import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.article.service.impl.ArticleService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
@@ -53,7 +54,7 @@ public class ArticleController {
     
 	@GetMapping("/forum")
 	public String showForumPage(@RequestParam(required = false) Integer boardID, Model model) {
-	    List<Article> allArticles = articleSvc.getAll();
+	    List<Article> allArticles = articleSvc.findByCondition();
 	    List<Board> boardList = boardSvc.getAll();
 
 	    // 如果有指定 boardID，則篩選文章
@@ -111,7 +112,7 @@ public class ArticleController {
                 return "front-end/forum/forum";
             }            
             
-    		List<Article> list = articleSvc.getAll();
+    		List<Article> list = articleSvc.findByCondition();
     		model.addAttribute("articleListData", list); 
     		model.addAttribute("board", new Board()); 
     		
@@ -152,7 +153,7 @@ public class ArticleController {
     @ModelAttribute("articleListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
 	protected List<Article> referenceListData(Model model) {
 		
-    	List<Article> list = articleSvc.getAll();
+    	List<Article> list = articleSvc.findByCondition();
 		return list;
 	}
     
@@ -260,7 +261,7 @@ public class ArticleController {
 	    }
 			
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
-		List<Article> list = articleSvc.getAll();
+		List<Article> list = articleSvc.findByCondition();
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (新增成功)");
 		return "redirect:/article/forum"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/forum/listAllArticle")
@@ -392,7 +393,7 @@ public class ArticleController {
 		// ArticleService articleSvc = new ArticleService();
 		articleSvc.deleteArticle(Integer.valueOf(articleID));
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
-		List<Article> list = articleSvc.getAll();
+		List<Article> list = articleSvc.findByCondition();
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (刪除成功)");
 		return "front-end/forum/forum"; // 刪除完成後轉交listAllEmp.html
@@ -409,12 +410,7 @@ public class ArticleController {
 	public String searchArticlesByTitle(@RequestParam(required = false) String title, Model model) {
 		System.out.println("Received search request for title: " + title);
 		
-		Map<String, String[]> map = new HashMap<>();
-	    if (title != null && !title.isEmpty()) {
-	    	map.put("articleTitle", new String[]{title});
-	    }
-	    
-	    List<Article> articleList = articleSvc.getAll(map);
+	    List<Article> articleList = articleSvc.findByTitle(title);
 	    
 //	    System.out.println("Search results count: " + articleList.size());
 //	    for (Article article : articleList) {
@@ -436,30 +432,25 @@ public class ArticleController {
 	
 	//複合查詢
 	@PostMapping("listArticles_ByCompositeQuery")
-	public String listAllArticle(HttpServletRequest req, Model model) {
-	    Map<String, String[]> map = req.getParameterMap();
+	public String listAllArticle(@ModelAttribute ArticleQueryCondition condition,
+								 Model model) {
 
-	    List<Article> articleList = articleSvc.getAll(map);
-	    model.addAttribute("articleList", articleList);  // 改為 articleList
-
-//	    System.out.println("Search results count: " + articleList.size());
-//	    for (Article article : articleList) {
-//	        System.out.println("Article found: " + article.getArticleTitle());
-//	    }
+	    List<Article> articleList = articleSvc.findByCondition(condition);
+	    model.addAttribute("articleList", articleList);
 
 	    List<Board> boardList = boardSvc.getAll();
-	    model.addAttribute("boardList", boardList);  // 改為 boardList
+	    model.addAttribute("boardList", boardList);
 
 	    List<String> categories = articleSvc.getAllCategories();
 	    model.addAttribute("articleCategories", categories);
 
 	    List<GeneralMember> generalMemberList = generalMemberSvc.getAll();
-	    model.addAttribute("generalMemberList", generalMemberList);  // 改為 generalMemberList
+	    model.addAttribute("generalMemberList", generalMemberList);
 
 	    // 添加搜索條件到模型
-	    model.addAttribute("searchTitle", req.getParameter("articleTitle"));
-	    model.addAttribute("searchCategory", req.getParameter("articleCategory"));
-	    model.addAttribute("searchBoardID", req.getParameter("boardID"));
+	    model.addAttribute("searchTitle", condition.getArticleTitle());
+	    model.addAttribute("searchCategory", condition.getArticleCategory());
+	    model.addAttribute("searchBoardId", condition.getBoardId());
 
 	    return "front-end/forum/forum";
 	}
@@ -484,7 +475,7 @@ public class ArticleController {
 //		ArticleService articleSvc = new ArticleService();
 		Article article = articleSvc.getOneArticle(Integer.valueOf(articleID));
 		
-		List<Article> list = articleSvc.getAll();
+		List<Article> list = articleSvc.findByCondition();
 		model.addAttribute("articleListData", list);     // for select_page.html 第97 109行用
 		model.addAttribute("board", new Board());  // for select_page.html 第133行用
 		
@@ -565,7 +556,7 @@ public class ArticleController {
     	model.addAttribute("article", new ArticleService());
     	
 	    // 加載所有文章
-		List<Article> list = articleSvc.getAll();
+		List<Article> list = articleSvc.findByCondition();
 		model.addAttribute("articleListData", list);     // for select_page.html 第97 109行用
 		model.addAttribute("board", new Board());  // for select_page.html 第133行用
 		
@@ -581,7 +572,7 @@ public class ArticleController {
 	
 	   //設置通用的model
 	   private void setCommonModelAttributes(ModelMap model) {
-	        model.addAttribute("articleListData", articleSvc.getAll());
+	        model.addAttribute("articleListData", articleSvc.findByCondition());
 	        model.addAttribute("boardListData", boardSvc.getAll());
 	        model.addAttribute("articleCategories", articleSvc.getAllCategories());
 	        model.addAttribute("generalMemberListData", generalMemberSvc.getAll());
