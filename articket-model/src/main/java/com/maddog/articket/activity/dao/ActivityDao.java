@@ -20,9 +20,8 @@ public interface ActivityDao {
      * 新增
      *
      * @param activity
-     *          Activity
+     *          活動 DO
      * @return 成功筆數
-     *          int
      */
     int insert(Activity activity);
 
@@ -30,9 +29,8 @@ public interface ActivityDao {
      * 更新
      *
      * @param activityForUpdate
-     *          ActivityForUpdate
+     *          活動更新 DTO
      * @return 成功筆數
-     *          int
      */
     int update(ActivityForUpdate activityForUpdate);
 
@@ -40,9 +38,8 @@ public interface ActivityDao {
      * 依 ID 查詢活動 DO
      *
      * @param activityId
-     *          Integer
-     * @return 活動
-     *          Activity
+     *          活動 ID
+     * @return 活動 DO
      */
     Activity findById(Integer activityId);
 
@@ -50,9 +47,8 @@ public interface ActivityDao {
      * 依 ID 查詢活動 VO
      *
      * @param activityId
-     *          Integer
-     * @return 活動
-     *          ActivityForView
+     *          活動 ID
+     * @return 活動 VO
      */
     ActivityFrontEndForView findByIdForView(Integer activityId);
 
@@ -60,7 +56,6 @@ public interface ActivityDao {
      * 查詢所有活動 DO
      *
      * @return 活動清單
-     *          List<Activity>
      */
     List<Activity> findAll();
 
@@ -68,9 +63,8 @@ public interface ActivityDao {
      * 依條件查詢活動 VO 清單
      *
      * @param activityQueryCondition
-     *          ActivityQueryCondition
+     *          活動查詢條件 DTO
      * @return 活動清單
-     *          List<ActivityForView>
      */
     List<ActivityFrontEndForView> findByConditionForView(ActivityQueryCondition activityQueryCondition);
 
@@ -78,11 +72,10 @@ public interface ActivityDao {
      * 確認活動是否由該廠商所有
      *
      * @param activityId
-     *          Integer
+     *          活動 ID
      * @param partnerId
-     *          Integer
+     *          廠商 ID
      * @return 是/否
-     *          boolean
      */
     boolean isActivityOwnedByPartner(Integer activityId, Integer partnerId);
 
@@ -90,9 +83,8 @@ public interface ActivityDao {
      * 依活動 ID 查詢圖片 ID 清單
      *
      * @param activityId
-     * 			Integer
+     * 			活動 ID
      * @return 圖片 ID 清單
-     * 			List<Integer>
      */
     List<Integer> findActivityPictureIdByActivityId(Integer activityId);
 
@@ -100,9 +92,8 @@ public interface ActivityDao {
      * 依活動 ID 查詢活動時段清單
      *
      * @param activityId
-     * 			Integer
+     * 			活動 ID
      * @return 活動時段清單
-     * 			List<ActivityTimeSlot>
      */
     List<ActivityTimeSlot> findActivityTimeSlotByActivityId(Integer activityId);
 
@@ -110,9 +101,8 @@ public interface ActivityDao {
      * 依廠商 ID 取得活動清單
      *
      * @param partnerId
-     * 			Integer
+     * 			廠商 ID
      * @return 活動清單
-     * 			List<ActivityDisplayForView>
      */
     List<ActivityDisplayForView> getActivityDisplayForViewByPartnerId(Integer partnerId);
 
@@ -120,9 +110,8 @@ public interface ActivityDao {
      * 將該 ID 活動設為已設定票券
      *
      * @param activityId
-     * 			Integer
+     * 			活動 ID
      * @return 成功筆數
-     * 			Integer
      */
     int setTicketSetStatusFinished(Integer activityId);
 

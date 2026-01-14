@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.articlecollection.dao.ArticleCollectionDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect" type="com.maddog.articket.articlecollection.entity.ArticleCollection">
+        <id column="article_collection_id" property="articleCollectionId" />
+        <result column="member_id" property="memberId" />
+        <result column="article_id" property="articleId" />
+        <result column="collection_create_time" property="collectionCreateTime" />
+    </resultMap>
+
+    <resultMap id="resultMapForJoinArticle" type="com.maddog.articket.articlecollection.entity.ArticleCollection">
+        <result column="article_collection_id" property="articleCollectionId" />
+        <result column="member_id" property="memberId" />
+        <result column="article_id" property="articleId" />
+        <result column="collection_create_time" property="collectionCreateTime" />
+        <result column="collection_create_time" property="collectionCreateTime" />
+    </resultMap>
+
+    article_id	                     INT          AUTO_INCREMENT     COMMENT "文章ID",
+    article_category                 VARCHAR(100) NOT NULL           COMMENT "文章類別",
+    article_title	                 VARCHAR(100) NOT NULL           COMMENT "文章標題",
+    member_id  		                 INT          NOT NULL           COMMENT "會員ID",
+    article_content                  TEXT         NOT NULL           COMMENT "文章內容",
+    board_id                         INT          NOT NULL           COMMENT "各板ID",
+    article_status                   INT          NOT NULL           COMMENT "文章狀態 0.不顯示 1.顯示",
+    article_create_time
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.articlecollection.entity.ArticleCollection">
+        INSERT INTO article_collection
+        (
+            member_id,
+            article_id,
+            collection_create_time
+        ) VALUES (
+            #{memberId},
+            #{articleId},
+            #{collectionCreateTime}
+        )
+    </insert>
+
+    <!-- 依活動收藏 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article_collection
+        WHERE
+            article_collection_id = #{articleCollectionId}
+    </select>
+
+    <!-- 依活動收藏 ID 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            article_collection
+        WHERE
+            article_collection_id = #{articleCollectionId}
+    </delete>
+
+    <!-- 會員對特定文章的收藏記錄 -->
+    <select id="findByMemberAndArticle"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article_collection
+        WHERE
+            member_id = #{memberId}
+            AND
+            article_id = #{articleId}
+    </select>
+
+    <!-- 依文章 ID 查詢收藏數量 -->
+    <select id="countByArticleId"
+            resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            article_collection
+        WHERE
+            article_id = #{articleId}
+    </select>
+
+<!-- 需修改正確 SQL -->
+    <select id="findByMemberIdWithArticle"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            ac.*,
+            a.*
+        FROM
+            article_collection ac
+        JOIN
+            article a
+            ON
+            ac.article_id = a.article_id
+        WHERE
+            ac.member_id = #{memberId}
+    </select>
+
+    <!-- method-->
+
+</mapper>

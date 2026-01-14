@@ -32,8 +32,8 @@ public class ArticleCollectionService {
 
 	public void addArticleCollection(ArticleCollection articleCollection) {
 		articleCollectionDao.insert(articleCollection);
-		incrementRedisArticleCollectionCount(articleCollection.getArticle().getArticleId());
-		syncArticleCollectionCount(articleCollection.getArticle().getArticleId());
+		incrementRedisArticleCollectionCount(articleCollection.getArticleId());
+		syncArticleCollectionCount(articleCollection.getArticleId());
 	}
 
 
@@ -41,8 +41,8 @@ public class ArticleCollectionService {
 		ArticleCollection articleCollection = articleCollectionDao.findById(articleCollectionId);
 
 		articleCollectionDao.deleteById(articleCollectionId);
-		decrementRedisArticleCollectionCount(articleCollection.getArticle().getArticleId());
-		syncArticleCollectionCount(articleCollection.getArticle().getArticleId());
+		decrementRedisArticleCollectionCount(articleCollection.getArticleId());
+		syncArticleCollectionCount(articleCollection.getArticleId());
 	}
 
 	/*檢查收藏狀態*/
@@ -72,7 +72,7 @@ public class ArticleCollectionService {
 
 			return true;
 		} else {
-			deleteArticleCollection(articleCollections.get(articleCollections.size() - 1).getArticleCollectionID());
+			deleteArticleCollection(articleCollections.getLast().getArticleCollectionId());
 			syncArticleCollectionCount(articleId);
 
 			return false;
@@ -110,7 +110,7 @@ public class ArticleCollectionService {
 	}
 
 	public List<ArticleCollection> getCollectionsByMemberID(Integer memberId) {
-        return articleCollectionDao.findByGeneralMemberMemberIDWithArticle(memberId);
+        return articleCollectionDao.findByMemberIdWithArticle(memberId);
     }
 	
 }

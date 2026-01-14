@@ -45,15 +45,14 @@ public class ActivityServiceImpl implements ActivityService {
 	 * 新增
 	 *
 	 * @param activityForAdd
-	 *            ActivityForAdd
+	 *            活動新增 DTO
 	 * @param partnerId
-	 *            Integer
+	 *            廠商 ID
 	 * @param venueId
-	 *            Integer
+	 *            場地 ID
 	 * @param activityPictureList
-	 *            List<ActivityPicture>
+	 *            活動圖片 DO 清單
 	 * @return 成功筆數
-	 *            Integer
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -94,13 +93,12 @@ public class ActivityServiceImpl implements ActivityService {
 	 * 修改
 	 *
 	 * @param activityForUpdate
-	 *            ActivityForUpdate
+	 *            活動更新 DTO
 	 * @param addActivityPictureList
-	 *            List<ActivityPicture>
+	 *            新增活動圖片 DO 清單
 	 * @param deleteActivityPictureIds
-	 *            Set<Integer>
+	 *            刪除活動圖片 ID 清單
 	 * @return 成功筆數
-	 *            int
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -123,9 +121,8 @@ public class ActivityServiceImpl implements ActivityService {
      * 依 ID 查詢活動 (deprecated)
      *
      * @param activityId
-     *          Integer
-     * @return 活動
-     *          Activity
+     *          活動 ID
+     * @return 活動 DO
      */
     @Override
     @Transactional(readOnly = true)
@@ -134,12 +131,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
     /**
-     * 依 ID 查詢活動 VO
+     * 依 ID 查詢活動前端 VO
      *
      * @param activityId
-     *          Integer
-     * @return 活動
-     *          ActivityForView
+     *          活動 ID
+     * @return 活動前端 VO
      */
     @Override
     @Transactional(readOnly = true)
@@ -150,8 +146,7 @@ public class ActivityServiceImpl implements ActivityService {
     /**
      * 查詢所有活動
      *
-     * @return 活動清單
-     *          List<Activity>
+     * @return 活動 DO 清單
      */
     @Override
     @Transactional(readOnly = true)
@@ -160,12 +155,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
     /**
-     * 依條件查詢
+     * 依條件查詢 活動前端用 VO 清單
      *
      * @param condition
-     *          ActivityQueryCondition
-     * @return 活動清單
-     *          List<ActivityForView>
+     *          活動查詢條件 DTO
+     * @return 活動前端用 VO 清單
      */
 	@Override
 	@Transactional(readOnly = true)
@@ -185,9 +179,8 @@ public class ActivityServiceImpl implements ActivityService {
 	 * 依活動 ID 查詢活動圖片 ID 清單
 	 *
 	 * @param activityId
-	 * 			Integer
+	 * 			活動 ID
 	 * @return 活動圖片 ID 清單
-	 * 			List<Integer>
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -196,12 +189,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
     /**
-     * 依活動 ID 查詢活動時段清單
+     * 依活動 ID 查詢活動時段 DO 清單
      *
      * @param activityId
-     * 			Integer
-     * @return 活動時段清單
-     * 			List<ActivityTimeSlot>
+     * 			活動 ID
+     * @return 活動時段 DO 清單
      */
     @Override
     @Transactional(readOnly = true)
@@ -210,12 +202,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
 	/**
-	 * 依場地申請 ID 取得活動新增容器
+	 * 依場地申請 ID 取得活動更新 DTO
 	 *
 	 * @param venueRentalId
-	 * 			Integer
-	 * @return 活動新增容器
-	 * 			ActivityForAdd
+	 * 			場地申請 ID
+	 * @return 活動更新 DTO
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -230,12 +221,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	/**
-	 * 依廠商 ID 取得活動清單
+	 * 依廠商 ID 取得活動顯示 VO 清單
 	 *
 	 * @param partnerId
-	 * 			Integer
-	 * @return 活動清單
-	 * 			List<ActivityDisplayForView>
+	 * 			廠商 ID
+	 * @return 活動顯示 VO 清單
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -244,12 +234,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	/**
-	 * 依活動 ID 取得活動修改容器
+	 * 依活動 ID 取得活動更新 DTO
 	 *
 	 * @param activityId
-	 * 			Integer
-	 * @return 活動修改容器
-	 * 			ActivityForUpdate
+	 * 			活動 ID
+	 * @return 活動更新 DTO
 	 */
 	public ActivityForUpdate getActivityForUpdateByActivityId(Integer activityId){
 		// 依活動 ID 取得活動 DO
@@ -271,9 +260,8 @@ public class ActivityServiceImpl implements ActivityService {
 	 * 將該 ID 活動設為已設定票券
 	 *
 	 * @param activityId
-	 * 			Integer
+	 * 			活動 ID
 	 * @return 成功筆數
-	 * 			Integer
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
