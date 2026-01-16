@@ -335,7 +335,7 @@ public class GeneralMemberController {
 			return "redirect:/login";
 		}
 
-		List<ArticleCollection> collections = artCollSvc.getCollectionsByMemberID(memberID);
+		List<ArticleCollection> collections = artCollSvc.getCollectionsByMemberId(memberID);
 		model.addAttribute("collections", collections);
 		return "front-end/generalmember/myCollections";
 	}

@@ -1,9 +1,7 @@
 package com.maddog.articket.articlecollection.service.impl;
 
-import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.articlecollection.dao.ArticleCollectionDao;
 import com.maddog.articket.articlecollection.entity.ArticleCollection;
-import com.maddog.articket.generalmember.entity.GeneralMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.core.RedisTemplate;
@@ -58,14 +56,8 @@ public class ArticleCollectionService {
 		if (articleCollections.isEmpty()) {
 			ArticleCollection articleCollection = new ArticleCollection();
 
-			GeneralMember generalmember = new GeneralMember();
-			generalmember.setMemberID(memberId);
-
-			Article article = new Article();
-			article.setArticleId(articleId);
-
-			articleCollection.setGeneralMember(generalmember);
-			articleCollection.setArticle(article);
+			articleCollection.setMemberId(memberId);
+			articleCollection.setArticleId(articleId);
 
 			addArticleCollection(articleCollection);
 			syncArticleCollectionCount(articleId);
@@ -109,7 +101,7 @@ public class ArticleCollectionService {
 	    }
 	}
 
-	public List<ArticleCollection> getCollectionsByMemberID(Integer memberId) {
+	public List<ArticleCollection> getCollectionsByMemberId(Integer memberId) {
         return articleCollectionDao.findByMemberIdWithArticle(memberId);
     }
 	
