@@ -1,5 +1,6 @@
 package com.maddog.articket.articlecollection.dao;
 
+import com.maddog.articket.articlecollection.dto.ArticleCollectionForView;
 import com.maddog.articket.articlecollection.entity.ArticleCollection;
 import org.apache.ibatis.annotations.Param;
 
@@ -56,13 +57,12 @@ public interface ArticleCollectionDao {
 	int countByArticleId(Integer articleId);
 
 	/**
-	 * 依會員 ID 查詢文章收藏 DO 清單
+	 * 依會員 ID 查詢文章收藏 VO 清單
 	 *
 	 * @param memberId
 	 * 			會員 ID
-	 * @return 文章收藏 DO 清單
+	 * @return 文章收藏 VO 清單
 	 */
-	// TODO: 需修改正確 SQL
-    List<ArticleCollection> findByMemberIdWithArticle(Integer memberId);
+    List<ArticleCollectionForView> findByMemberIdForView(Integer memberId);
 
 }

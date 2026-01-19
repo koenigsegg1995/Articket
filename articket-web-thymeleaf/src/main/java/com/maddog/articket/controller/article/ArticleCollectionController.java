@@ -2,7 +2,7 @@ package com.maddog.articket.controller.article;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
-import com.maddog.articket.articlecollection.service.impl.ArticleCollectionService;
+import com.maddog.articket.articlecollection.service.impl.ArticleCollectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 public class ArticleCollectionController {
 	
 	@Autowired
-    ArticleCollectionService articleCollectionSvc;
+    ArticleCollectionServiceImpl articleCollectionSvc;
 	
 	@Autowired
     GeneralMemberService generalMemberSvc;

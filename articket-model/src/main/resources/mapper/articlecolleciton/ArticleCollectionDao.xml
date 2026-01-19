@@ -23,14 +23,15 @@
         <result column="collection_create_time" property="collectionCreateTime" />
     </resultMap>
 
-    article_id	                     INT          AUTO_INCREMENT     COMMENT "文章ID",
-    article_category                 VARCHAR(100) NOT NULL           COMMENT "文章類別",
-    article_title	                 VARCHAR(100) NOT NULL           COMMENT "文章標題",
-    member_id  		                 INT          NOT NULL           COMMENT "會員ID",
-    article_content                  TEXT         NOT NULL           COMMENT "文章內容",
-    board_id                         INT          NOT NULL           COMMENT "各板ID",
-    article_status                   INT          NOT NULL           COMMENT "文章狀態 0.不顯示 1.顯示",
-    article_create_time
+    <resultMap id="resultMapForView"
+                type="com.maddog.articket.articlecollection.dto.ArticleCollectionForView">
+        <result column="article_id" property="articleCategory" />
+        <result  column="article_category" property="articleCategory" />
+        <result column="articleTitle" property="articleTitle" />
+        <result column="member_name" property="memberName" />
+        <result column="board_name" property="boardName" />
+        <result column="article_create_time" property="collectionCreateTime" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
@@ -94,23 +95,36 @@
             article_id = #{articleId}
     </select>
 
-<!-- 需修改正確 SQL -->
-    <select id="findByMemberIdWithArticle"
+    <!-- 依會員 ID 查詢文章收藏 VO 清單 -->
+    <select id="findByMemberIdForView"
             parameterType="java.lang.Integer"
-            resultMap="resultMapForSelect">
+            resultMap="resultMapForView">
         SELECT
-            ac.*,
-            a.*
+            ac.articleId,
+            ac.collectionCreateTime
+            a.articleCategory,
+            a.articleTitle,
+            gm.memberName,
+            b.boardName
         FROM
             article_collection ac
         JOIN
             article a
             ON
             ac.article_id = a.article_id
+        JOIN
+            general_member gm
+            ON
+            ac.member_id = gm.member_id
+        JOIN
+            board b
+            ON
+            a.board_id = b.board_id
         WHERE
             ac.member_id = #{memberId}
+        ORDER BY
+            ac.collection_create_time DESC
     </select>
-
-    <!-- method-->
+<!-- method-->
 
 </mapper>
