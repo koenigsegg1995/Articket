@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 文章圖片 Service Interface
+ * 文章圖片 Service Implementation
  */
 @Service("articleImgService")
 public class ArticleImgServiceImpl implements ArticleImgService {

@@ -1,14 +1,21 @@
 package com.maddog.articket.board.dao;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
+import com.maddog.articket.board.entity.Board;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+/**
+ * 文章各板 DAO
+ */
+@Mapper
 public interface BoardDao {
 
-	@Transactional
-	@Modifying
-	@Query(value = "delete from board where boardID =?1", nativeQuery = true)
-	void deleteByBoardID(int boardID);
+	/**
+	 * 查詢所有文章各板
+	 *
+	 * @return 文章各板清單
+	 */
+	List<Board> findAll();
 
 }

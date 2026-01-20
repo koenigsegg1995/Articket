@@ -2,49 +2,30 @@ package com.maddog.articket.board.service.impl;
 
 import com.maddog.articket.board.dao.BoardDao;
 import com.maddog.articket.board.entity.Board;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-
+/**
+ * 文章各板 Service Interface
+ */
 @Service("boardService")
 public class BoardService {
 
+	/**
+	 * 文章各板 DAO
+	 */
 	@Autowired
-	BoardDao repository;
-	
-	@Autowired
-    private SessionFactory sessionFactory;
+	private BoardDao boardDao;
 
-	public void addBoard(Board board) {
-		repository.save(board);
-	}
-
-	public void updateBoard(Board board) {
-		repository.save(board);
-	}
-
-	public void deleteBoard(Integer board) {
-		if (repository.existsById(board))
-			repository.deleteByBoardID(board);
-//		    repository.deleteById(board);
-	}
-
-	public Board getOneBoard(Integer boardID) {
-		Optional<Board> optional = repository.findById(boardID);
-//		return optional.get();
-		return optional.orElse(null);  // public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
-	}
-
+	/**
+	 * 查詢所有文章各板
+	 *
+	 * @return 文章各板清單
+	 */
 	public List<Board> getAll() {
-		return repository.findAll();
+		return boardDao.findAll();
 	}
-
-//	public List<Board> getAll(Map<String, String[]> map) {
-//		return HibernateUtil_CompositeQuery_Board3.getAllC(map,sessionFactory.openSession());
-//	}
 
 }
