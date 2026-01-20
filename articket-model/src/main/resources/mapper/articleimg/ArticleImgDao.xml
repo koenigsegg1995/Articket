@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.articleimg.dao.ArticleImgDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.articleimg.entity.ArticleImg">
+        <id column="article_img_id" property="articleId" />
+        <result column="article_id" property="articleId" />
+        <result column="article_pic" property="articlePic" />
+        <result column="article_img_create_time" property="articleImgCreateTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.articleimg.entity.ArticleImg">
+        INSERT INTO article_img
+        (
+            article_id,
+            article_pic
+        )
+        VALUES
+        (
+            #{articleId},
+            #{articlePic}
+        )
+    </insert>
+
+    <!-- 刪除 -->
+    <delete id="delete"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            article_img
+        WHERE
+            article_img_id = #{articleImgId}
+    </delete>
+
+    <!-- 依文章圖片 ID 查詢 -->
+    <select id="findById"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article_img
+        WHERE
+            article_img_id = #{articleImgId}
+    </select>
+
+    <!-- 根據文章 ID 查詢 -->
+    <select id="findByArticleId"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article_img
+        WHERE
+            article_id = #{articleId}
+        ORDER BY
+            article_img_create_time DESC
+    </select>
+
+    <!-- 查詢所有文章圖片 DO -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            article_img
+        ORDER BY
+            article_id DESC, article_img_create_time DESC
+    </select>
+<!-- method-->
+
+</mapper>

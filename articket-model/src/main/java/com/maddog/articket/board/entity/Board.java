@@ -1,68 +1,34 @@
 package com.maddog.articket.board.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 
-import com.maddog.articket.article.entity.Article;
-import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serial;
+import java.io.Serializable;
 
+/**
+ * 文章各板 DO
+ */
+@Getter
+@Setter
+public class Board implements Serializable {
 
-@Entity
-@Table(name = "board")
-public class Board implements java.io.Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 各板 ID
+	 */
+	private Integer boardId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "boardID", updatable = false)
-	private Integer boardID;
-	
-	@Column(name = "boardName")
+	/**
+	 * 各板名稱
+	 */
 	private String boardName;
-	
-	
-
-	@OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)
-	@OrderBy("articleID asc")
-	private Set<Article> articles = new HashSet<Article>();
-	
-	
-	
-	public Board() { 
-	}
-	
-	
-	public Integer getBoardID() {
-		return boardID;
-	}
-
-	public void setBoardID(Integer boardID) {
-		this.boardID = boardID;
-	}
-
-	public String getBoardName() {
-		return boardName;
-	}
-
-	public void setBoardName(String boardName) {
-		this.boardName = boardName;
-	}
-	
-	
-
-	public Set<Article> getArticles() {
-		return this.articles;
-	}
-
-	public void setArticles(Set<Article> articles) {
-		this.articles = articles;
-	}
-	
 
 	@Override
 	public String toString() {
-	    return "Board [boardID=" + boardID + ", boardName=" + boardName + ", articlesCount=" + articles.size() + "]";
+	    return "Board [boardID=" + boardId + ", boardName=" + boardName + "]";
 	}
 	
 	

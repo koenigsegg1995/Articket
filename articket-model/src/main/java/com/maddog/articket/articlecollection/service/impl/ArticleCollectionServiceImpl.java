@@ -138,12 +138,23 @@ public class ArticleCollectionServiceImpl implements ArticleCollectionService {
 //		redisTemplate.opsForValue().increment(key);
 	}
 
-	// 減少特定文章的收藏統計
+	/**
+	 * 減少特定文章的收藏統計
+	 *
+	 * @param articleId
+	 * 			文章 ID
+ 	 */
 	private void decrementRedisArticleCollectionCount(Integer articleId) {
 		String key = ARTICLE_COLLECTION_COUNT_KEY + articleId;
 //		redisTemplate.opsForValue().decrement(key);
 	}
 
+	/**
+	 * 同步文章收藏數
+	 *
+	 * @param articleId
+	 * 			文章 ID
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public void syncArticleCollectionCount(Integer articleId) {

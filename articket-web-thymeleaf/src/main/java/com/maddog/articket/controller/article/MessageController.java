@@ -1,12 +1,10 @@
 package com.maddog.articket.controller.article;
 
 import com.maddog.articket.article.entity.Article;
-import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.service.impl.MessageService;
-import com.maddog.articket.articleimg.service.impl.ArticleImgService;
 import com.maddog.articket.board.entity.Board;
 import com.maddog.articket.board.service.impl.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;

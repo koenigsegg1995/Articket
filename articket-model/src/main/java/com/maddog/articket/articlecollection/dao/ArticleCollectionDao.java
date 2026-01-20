@@ -2,10 +2,15 @@ package com.maddog.articket.articlecollection.dao;
 
 import com.maddog.articket.articlecollection.dto.ArticleCollectionForView;
 import com.maddog.articket.articlecollection.entity.ArticleCollection;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 文章收藏 DAO
+ */
+@Mapper
 public interface ArticleCollectionDao {
 
 	/**
@@ -24,7 +29,7 @@ public interface ArticleCollectionDao {
 	 * 			活動收藏 ID
 	 * @return 文章收藏 DO
 	 */
-	ArticleCollection findById(int articleCollectionId);
+	ArticleCollection findById(Integer articleCollectionId);
 
 	/**
 	 * 依活動收藏 ID 刪除
@@ -33,7 +38,7 @@ public interface ArticleCollectionDao {
 	 * 			活動收藏 ID
 	 * @return 成功筆數
 	 */
-	int deleteById(int articleCollectionId);
+	int deleteById(Integer articleCollectionId);
 
 	/**
 	 * 會員對特定文章的收藏記錄
@@ -44,8 +49,8 @@ public interface ArticleCollectionDao {
 	 * 			文章 ID
 	 * @return 文章收藏 DO 清單
 	 */
-	List<ArticleCollection> findByMemberAndArticle(@Param("memberId") int memberId,
-												   @Param("articleId") int articleId);
+	List<ArticleCollection> findByMemberAndArticle(@Param("memberId") Integer memberId,
+												   @Param("articleId") Integer articleId);
 
 	/**
 	 * 依文章 ID 查詢收藏數量

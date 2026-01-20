@@ -1,6 +1,6 @@
 package com.maddog.articket.board.service.impl;
 
-import com.maddog.articket.board.dao.BoardRepository;
+import com.maddog.articket.board.dao.BoardDao;
 import com.maddog.articket.board.entity.Board;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class BoardService {
 
 	@Autowired
-	BoardRepository repository;
+	BoardDao repository;
 	
 	@Autowired
     private SessionFactory sessionFactory;

@@ -6,7 +6,7 @@ import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.articleimg.entity.ArticleImg;
-import com.maddog.articket.articleimg.service.impl.ArticleImgService;
+import com.maddog.articket.articleimg.service.impl.ArticleImgServiceImpl;
 import com.maddog.articket.board.entity.Board;
 import com.maddog.articket.board.service.impl.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ArticleController {
 	private ArticleService articleSvc;
 	
 	@Autowired
-	private ArticleImgService articleImgSvc;
+	private ArticleImgServiceImpl articleImgSvc;
 	
 	@Autowired
 	private GeneralMemberService generalMemberSvc;

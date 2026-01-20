@@ -1,6 +1,6 @@
 package com.maddog.articket.controller.reader;
 
-import com.maddog.articket.articleimg.service.impl.ArticleImgService;
+import com.maddog.articket.articleimg.service.impl.ArticleImgServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class ArticleDBGifReaderController {
 	
 	@Autowired
-	ArticleImgService articleImgSvc;
+    ArticleImgServiceImpl articleImgSvc;
 	
 	/*
 	 * This method will serve as listOneEmp.html , listAllEmp.html handler.
