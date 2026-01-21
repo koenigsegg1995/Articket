@@ -39,7 +39,7 @@ public class CartController {
 	@GetMapping("/view")
 	public String viewCart(Model model) {
 		Integer generalMember = 1; // 假定會員ID為1
-		Cart cart = cartService.getCartByMemberID(generalMember);
+		Cart cart = cartService.getCartByMemberId(generalMember);
 		cartService.calculateTotalPrice(cart); // 添加這行
 		model.addAttribute("cart", cart);
 		return "/front-end/mall/mallCart";
@@ -115,7 +115,7 @@ public class CartController {
 	@GetMapping("/checkout")
 	public String showCheckoutPage(Model model) {
 		Integer memberID = 1; // 假設當前登錄的會員 ID
-		Cart cart = cartService.getCartByMemberID(memberID);
+		Cart cart = cartService.getCartByMemberId(memberID);
 		GeneralMember member = memberService.getOneGeneralMember(memberID);
 		Orders order = new Orders();
 		// 添加日誌

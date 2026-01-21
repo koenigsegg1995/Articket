@@ -1,11 +1,19 @@
 package com.maddog.articket.cart.dao;
 
 import com.maddog.articket.cart.entity.Cart;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CartRepository extends JpaRepository<Cart, Integer>{
+/**
+ * 購物車 DAO
+ */
+// TODO: 弄清需求考慮重做
+@Mapper
+public interface CartDao {
 	
-    Cart findByGeneralMember_MemberID(Integer memberID);
+    Cart findByGeneralMember_MemberID(Integer memberId);
+
+    int insert(Cart cart);
 
 }
 

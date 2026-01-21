@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 票券訂單
+ * 票券訂單 DO
  */
 @Getter
 @Setter

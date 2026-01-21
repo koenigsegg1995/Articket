@@ -1,8 +1,8 @@
 package com.maddog.articket.controller.article;
 
+import com.maddog.articket.articlecollection.service.pri.ArticleCollectionService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
-import com.maddog.articket.articlecollection.service.impl.ArticleCollectionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
@@ -17,14 +17,14 @@ import jakarta.servlet.http.HttpSession;
 public class ArticleCollectionController {
 	
 	@Autowired
-    ArticleCollectionServiceImpl articleCollectionSvc;
+    private ArticleCollectionService articleCollectionSvc;
 	
 	@Autowired
-    GeneralMemberService generalMemberSvc;
+    private GeneralMemberService generalMemberSvc;
 		
 	
 	/*檢查會員是否收藏此文章*/
-   @GetMapping("/status/{articleID}")
+    @GetMapping("/status/{articleID}")
     public ResponseEntity<?> getCollectionStatus(
             @PathVariable Integer articleID,
             HttpSession session) {

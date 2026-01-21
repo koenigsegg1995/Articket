@@ -3,12 +3,12 @@ package com.maddog.articket.controller.article;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.article.service.pri.ArticleService;
+import com.maddog.articket.articleimg.service.pri.ArticleImgService;
+import com.maddog.articket.board.service.pri.BoardService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.articleimg.entity.ArticleImg;
-import com.maddog.articket.articleimg.service.impl.ArticleImgServiceImpl;
 import com.maddog.articket.board.entity.Board;
-import com.maddog.articket.board.service.impl.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +41,7 @@ public class ArticleController {
 	private ArticleService articleSvc;
 	
 	@Autowired
-	private ArticleImgServiceImpl articleImgSvc;
+	private ArticleImgService articleImgSvc;
 	
 	@Autowired
 	private GeneralMemberService generalMemberSvc;

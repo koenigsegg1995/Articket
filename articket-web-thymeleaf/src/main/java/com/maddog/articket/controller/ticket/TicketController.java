@@ -1,17 +1,15 @@
 package com.maddog.articket.controller.ticket;
 
 import com.maddog.articket.activity.entity.Activity;
-import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
+import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.bookticket.entity.BookTicket;
-import com.maddog.articket.bookticket.service.impl.BookTicketService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
 import com.maddog.articket.ticket.entity.Ticket;
-import com.maddog.articket.ticket.service.impl.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

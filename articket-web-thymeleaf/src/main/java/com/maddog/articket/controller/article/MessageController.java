@@ -1,12 +1,12 @@
 package com.maddog.articket.controller.article;
 
 import com.maddog.articket.article.entity.Article;
+import com.maddog.articket.board.service.pri.BoardService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.service.impl.MessageService;
 import com.maddog.articket.board.entity.Board;
-import com.maddog.articket.board.service.impl.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

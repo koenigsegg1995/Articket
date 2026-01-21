@@ -30,8 +30,5 @@ public class Board implements Serializable {
 	public String toString() {
 	    return "Board [boardID=" + boardId + ", boardName=" + boardName + "]";
 	}
-	
-	
-
 
 }

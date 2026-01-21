@@ -1,12 +1,12 @@
 package com.maddog.articket.controller.generalmember;
 
 import com.maddog.articket.articlecollection.dto.ArticleCollectionForView;
-import com.maddog.articket.email.MailService;
+import com.maddog.articket.articlecollection.service.pri.ArticleCollectionService;
+import com.maddog.articket.bookticket.service.pri.BookTicketService;
+import com.maddog.articket.email.pri.MailService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
-import com.maddog.articket.articlecollection.service.impl.ArticleCollectionServiceImpl;
 import com.maddog.articket.bookticket.entity.BookTicket;
-import com.maddog.articket.bookticket.service.impl.BookTicketService;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.service.impl.OrdersService;
 import com.maddog.articket.passwordchangeform.PasswordChangeForm;
@@ -50,7 +50,7 @@ public class GeneralMemberController {
 	private MailService mailService;
 
 	@Autowired
-	private ArticleCollectionServiceImpl artCollSvc;
+	private ArticleCollectionService artCollSvc;
 
 	@Autowired
 	private BookTicketService bookTicketService;

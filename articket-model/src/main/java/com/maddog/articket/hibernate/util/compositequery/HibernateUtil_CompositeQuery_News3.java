@@ -32,7 +32,7 @@ public class HibernateUtil_CompositeQuery_News3 {
 
         else if ("administratorID".equals(columnName)) {
             Administrator administrator = new Administrator();
-            administrator.setAdministratorID(Integer.valueOf(value));
+            administrator.setAdministratorId(Integer.valueOf(value));
             predicate = builder.equal(root.get("administrator"), administrator);
         }
 

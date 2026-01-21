@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.bookticket.dao.BookTicketDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForView"
+                type="com.maddog.articket.bookticket.dto.BookTicketForView">
+        <id column="book_ticket_id" property="bookTicketId" />
+        <result column="activity_name" property="activityName" />
+        <result column="activity_time_slot_date" property="activityTimeSlotDate" />
+        <result column="activity_time_slot" property="activityTimeSlot" />
+        <result column="ticket_quantity" property="ticketQuantity" />
+        <result column="ticket_price" property="ticketPrice" />
+    </resultMap>
+    <!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.bookticket.entity.BookTicket">
+        INSERT INTO
+            book_ticket
+        (
+            member_id,
+            activity_id,
+            activity_time_slot_id,
+            member_coupon_id,
+            ticket_quantity,
+            total_price
+        )
+        VALUES
+        (
+            #{memberId},
+            #{activityId},
+            #{activityTimeSlotId},
+            #{memberCouponId},
+            #{ticketQuantity},
+            #{totalPrice}
+        )
+    </insert>
+
+    <!-- 依 memberId 查詢票券訂單 VO 清單 -->
+    <select id="findByMemberIdForView"
+            resultMap="resultMapForView">
+        SELECT
+            bt.book_ticket_id
+            bt.ticket_quantity
+            bt.ticket_price
+            a.activity_name
+            ats.activity_time_slot_date
+            ats.activity_time_slot
+        FROM
+            book_ticket bt
+        JOIN
+            activity a
+            ON
+            bt.activity_id = a.activity_id
+        JOIN
+            activity_time_slot ats
+            ON
+            bt.activity_time_slot_id = ats.activity_time_slot_id
+        WHERE
+            bt.member_id = #{memberId}
+        ORDER BY
+            bt.book_ticket_id DESC
+    </select>
+<!-- method-->
+
+</mapper>
