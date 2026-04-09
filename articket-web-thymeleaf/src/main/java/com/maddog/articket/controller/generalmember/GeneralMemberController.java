@@ -299,8 +299,7 @@ public class GeneralMemberController {
 	 * This method will be called on select_page.html form submission, handling POST
 	 * request
 	 */
-
-	@PostMapping("listGeneralmember_ByCompositeQuery")
+	@PostMapping("/listGeneralmember_ByCompositeQuery")
 	public String listAllGeneralMember(HttpServletRequest req, Model model) {
 		Map<String, String[]> map = req.getParameterMap();
 		List<GeneralMember> list = gmemberSvc.getAll(map);

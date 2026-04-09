@@ -34,22 +34,19 @@ public class GeneralMemberService {
 		generalMemberDao.save(generalMember);
 	}
 
-	public void deleteGeneralMember(Integer memberID) {
-		if (generalMemberDao.existsById(memberID))
-			generalMemberDao.deleteByMemberID(memberID);
-//			generalMemberDao.deleteById(memberID);
+	public void deleteGeneralMember(Integer memberId) {
+		generalMemberDao.deleteById(memberId);
 	}
 
-	public GeneralMember getOneGeneralMember(Integer memberID) {
-		Optional<GeneralMember> optional = generalMemberDao.findById(memberID);
-//		return optional.get();
-		return optional.orElse(null); // public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
+	public GeneralMember getOneGeneralMember(Integer memberId) {
+		return generalMemberDao.findById(memberId);
 	}
 
 	public List<GeneralMember> getAll() {
 		return generalMemberDao.findAll();
 	}
 
+	// TODO: 傳入 condition DTO
 	public List<GeneralMember> getAll(Map<String, String[]> map) {
 		return HibernateUtil_CompositeQuery_GeneralMember.getAllC(map, sessionFactory.openSession());
 	}
