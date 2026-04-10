@@ -39,32 +39,50 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 會員 Controller
+ */
 @Slf4j
 @Controller
 @RequestMapping("/generalmember")
 public class GeneralMemberController {
 
+	/**
+	 * 會員 Service
+	 */
 	@Autowired
 	private GeneralMemberService gmemberSvc;
 
+	/**
+	 * 寄送 Email Service
+	 */
 	@Autowired
 	private MailService mailService;
 
+	/**
+	 * 文章收藏 Service
+	 */
 	@Autowired
 	private ArticleCollectionService artCollSvc;
 
+	/**
+	 * 票券訂單 Service
+	 */
 	@Autowired
 	private BookTicketService bookTicketService;
 
+	/**
+	 * 票券 Service
+	 */
 	@Autowired
 	private TicketService ticketSvc;
-	
+
+	/**
+	 * 訂單 Service
+	 */
 	@Autowired
 	private OrdersService ordersSvc;
 
-	/*
-	 * This method will serve as addEmp.html handler.
-	 */
 	@GetMapping("addGeneralMember")
 	public String addGeneralMember(ModelMap model) {
 		GeneralMember generalMember = new GeneralMember();
@@ -73,11 +91,6 @@ public class GeneralMemberController {
 
 		return "back-end/generalmember/addGeneralMember";
 	}
-
-	/*
-	 * This method will be called on addEmp.html form submission, handling POST
-	 * request It also validates the user input
-	 */
 
 	@PostMapping("insert")
 	public String insert(@Valid GeneralMember generalMember,
@@ -121,7 +134,6 @@ public class GeneralMemberController {
 		return "register";
 	}
 
-	// 會員註冊
 	@PostMapping("register")
 	public String register(@Valid GeneralMember generalMember,
 						   BindingResult result,
@@ -186,10 +198,6 @@ public class GeneralMemberController {
 
 	}
 
-	/*
-	 * This method will be called on listAllEmp.html form submission, handling POST
-	 * request
-	 */
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("memberID") String memberID, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -203,10 +211,6 @@ public class GeneralMemberController {
 		return "back-end/generalmember/update_generalmember_input"; // 查詢完成後轉交update_emp_input.html
 	}
 
-	/*
-	 * This method will be called on update_emp_input.html form submission, handling
-	 * POST request It also validates the user input
-	 */
 	@PostMapping("update")
 	public String update(@Valid GeneralMember generalMember,
 						 BindingResult result,
@@ -258,10 +262,6 @@ public class GeneralMemberController {
 		return "back-end/generalmember/listOneGeneralMember"; // 修改成功後轉交listOneEmp.html
 	}
 
-	/*
-	 * This method will be called on listAllEmp.html form submission, handling POST
-	 * request
-	 */
 	@PostMapping("delete")
 	public String delete(@RequestParam("memberID") String memberId, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
@@ -277,21 +277,6 @@ public class GeneralMemberController {
 		return "back-end/generalmember/listAllGeneralMember"; // 刪除完成後轉交listAllEmp.html
 	}
 
-	// 去除BindingResult中某個欄位的FieldError紀錄
-	public BindingResult removeFieldError(GeneralMember generalMember, BindingResult result, String removedFieldname) {
-		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
-				.filter(fieldname -> !fieldname.getField().equals(removedFieldname)).collect(Collectors.toList());
-		result = new BeanPropertyBindingResult(generalMember, "generalMember");
-		for (FieldError fieldError : errorsListToKeep) {
-			result.addError(fieldError);
-		}
-		return result;
-	}
-
-	/*
-	 * This method will be called on select_page.html form submission, handling POST
-	 * request
-	 */
 	@PostMapping("/listGeneralmember_ByCompositeQuery")
 	public String listAllGeneralMember(@ModelAttribute GeneralMemberQueryCondition condition, Model model) {
 		List<GeneralMember> list = gmemberSvc.getByCondition(condition);
@@ -380,9 +365,7 @@ public class GeneralMemberController {
 
 		return "front-end/generalmember/myOrders";
     }
-	
-	
-	
+
     // 顯示修改密碼的表單
 	@GetMapping("/changePassword")
     public String showChangePasswordForm(Model model) {
@@ -418,7 +401,6 @@ public class GeneralMemberController {
 	    }
     }
 
-	
 	// 會員忘記密碼
 	@PostMapping("/forgotPassword")
     @ResponseBody
@@ -433,6 +415,18 @@ public class GeneralMemberController {
             return ResponseEntity.badRequest().body("發送恢復郵件失敗：" + e.getMessage());
         }
     }
+
+	// 去除BindingResult中某個欄位的FieldError紀錄
+	public BindingResult removeFieldError(GeneralMember generalMember, BindingResult result, String removedFieldname) {
+		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
+				.filter(fieldname -> !fieldname.getField().equals(removedFieldname)).collect(Collectors.toList());
+		result = new BeanPropertyBindingResult(generalMember, "generalMember");
+		for (FieldError fieldError : errorsListToKeep) {
+			result.addError(fieldError);
+		}
+
+		return result;
+	}
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
