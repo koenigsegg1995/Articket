@@ -1,10 +1,9 @@
 package com.maddog.articket.controller.article;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.heart.service.impl.HeartService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

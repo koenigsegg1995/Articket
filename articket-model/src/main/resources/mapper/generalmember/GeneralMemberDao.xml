@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.generalmember.dao.GeneralMemberDao">
+
+<!-- sql -->
+    <!-- 新增欄位 -->
+    <sql id="columnsForInsert">
+        member_account,
+        member_password,
+        member_name,
+        member_phone,
+        member_nickname,
+        member_address,
+        national_id,
+        gender,
+        birthday,
+        member_picture,
+        member_status
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 全部查詢用 resultMap -->
+    <resultMap id="resultForSelect" type="com.maddog.articket.generalmember.entity.GeneralMember">
+        <id column="member_id" property="memberId" />
+        <result column="member_account" property="memberAccount" />
+        <result column="member_password" property="memberPassword" />
+        <result column="member_name" property="memberName" />
+        <result column="member_phone" property="memberPhone" />
+        <result column="member_nickname" property="memberNickName" />
+        <result column="member_address" property="memberAddress" />
+        <result column="national_id" property="nationalId" />
+        <result column="gender" property="gender" />
+        <result column="birthday" property="birthday" />
+        <result column="member_picture" property="memberPicture" />
+        <result column="member_status" property="memberStatus" />
+        <result column="member_create_time" property="memberCreateTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert" parameterType="com.maddog.articket.generalmember.entity.GeneralMember">
+        INSERT INTO general_member
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{memberAccount},
+            #{memberPassword},
+            #{memberName},
+            #{memberPhone},
+            #{memberNickName},
+            #{memberAddress},
+            #{nationalId},
+            #{gender},
+            #{birthday},
+            #{memberPicture},
+            #{memberStatus}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="com.maddog.articket.generalmember.entity.GeneralMember">
+        UPDATE
+            general_member
+        <set>
+            <if test=" memberAccount != null and memberAccount != '' ">
+                member_account = #{memberAccount},
+            </if>
+
+            <if test=" memberPassword != null and memberPassword != '' ">
+                member_password = #{memberPassword},
+            </if>
+
+            <if test=" memberName != null and memberName != '' ">
+                member_name = #{memberName},
+            </if>
+
+            <if test=" memberPhone != null and memberPhone != '' ">
+                member_phone = #{memberPhone},
+            </if>
+
+            <if test=" memberNickName != null and memberNickName != '' ">
+                member_nick_name = #{memberNickName},
+            </if>
+
+            <if test=" memberAddress != null and memberAddress != '' ">
+                member_address = #{memberAddress},
+            </if>
+
+            <if test=" nationalId != null and nationalId != '' ">
+                national_id = #{nationalId},
+            </if>
+
+            <if test=" gender != null and gender != '' ">
+                gender = #{gender},
+            </if>
+
+            <if test=" birthday != null ">
+                birthday = #{birthday},
+            </if>
+
+            <if test=" memberPicture != null ">
+                member_picture = #{memberPicture},
+            </if>
+
+            <if test=" memberStatus != null ">
+                member_status = #{memberStatus},
+            </if>
+        </set>
+        WHERE
+            member_id = #{memberId}
+    </update>
+
+    <!-- 刪除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM
+            general_member
+        WHERE
+            member_id = #{memberId}
+    </delete>
+
+    <!-- 依 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            general_member
+        WHERE
+            member_id = #{memberId}
+    </select>
+
+    <!-- 查詢所有 (依創建時間排序) -->
+    <select id="findAll" resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            general_member
+        ORDER BY
+            member_create_time DESC
+    </select>
+
+    <!-- 依條件查詢 (依創建時間排序) -->
+    <select id="findByCondition"
+            parameterType="com.maddog.articket.generalmember.dto.GeneralMemberQueryCondition"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            general_member
+        <where>
+            <if test=" memberId != null ">
+                AND member_id = #{memberId}
+            </if>
+
+            <if test=" memberName != null and memberName != '' ">
+                AND member_name = #{memberName}
+            </if>
+
+            <if test=" memberAddress != null and memberAddress != '' ">
+                AND member_address = #{memberAddress}
+            </if>
+
+            <if test=" gender != null and gender != '' ">
+                AND gender = #{gender}
+            </if>
+        </where>
+        ORDER BY
+            member_create_time DESC
+    </select>
+
+    <!-- 依帳號查詢 -->
+    <select id="findByMemberAccount"
+            parameterType="java.lang.String"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            general_member
+        WHERE
+            member_account = #{memberAccount}
+    </select>
+<!-- method-->
+
+</mapper>

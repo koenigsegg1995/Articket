@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.article;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.prosecute.entity.Prosecute;
 import com.maddog.articket.prosecute.service.impl.ProsecuteService;
 import org.springframework.beans.factory.annotation.Autowired;

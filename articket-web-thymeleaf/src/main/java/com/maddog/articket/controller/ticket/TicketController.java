@@ -4,9 +4,9 @@ import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.bookticket.entity.BookTicket;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
 import com.maddog.articket.ticket.entity.Ticket;
@@ -142,7 +142,7 @@ public class TicketController {
 			}
 			//取得第 i 個持有人
 			try {
-				GeneralMember ticketMember = memberSvc.getOneGeneralMember(Integer.valueOf(ticketMemberIDs[i]));
+				GeneralMember ticketMember = memberSvc.getById(Integer.valueOf(ticketMemberIDs[i]));
 				//取得第 i 張票券
 				Ticket ticket = ticketList.get(i);
 
@@ -159,7 +159,7 @@ public class TicketController {
 		}
 		
 		//設置訂單資料
-		bookTicket.setGeneralMember(memberSvc.getOneGeneralMember(Integer.valueOf(memberID))); //未從 session 取帳號
+		bookTicket.setGeneralMember(memberSvc.getById(Integer.valueOf(memberID))); //未從 session 取帳號
 		
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.get(0).getActivityTimeSlotId());
 		bookTicket.setActivityId(activityTimeSlot.getActivityId());

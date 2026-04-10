@@ -3,8 +3,8 @@ package com.maddog.articket.controller.cart;
 import com.maddog.articket.cart.entity.Cart;
 import com.maddog.articket.cart.service.impl.CartService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.cartitem.service.impl.CartItemService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.service.impl.MemberCouponService;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.service.impl.OrdersService;
@@ -116,7 +116,7 @@ public class CartController {
 	public String showCheckoutPage(Model model) {
 		Integer memberID = 1; // 假設當前登錄的會員 ID
 		Cart cart = cartService.getCartByMemberId(memberID);
-		GeneralMember member = memberService.getOneGeneralMember(memberID);
+		GeneralMember member = memberService.getById(memberID);
 		Orders order = new Orders();
 		// 添加日誌
 		System.out.println("Member info: " + member);

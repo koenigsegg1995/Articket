@@ -21,15 +21,15 @@ CREATE TABLE general_member(
     member_account                  VARCHAR(100)  NOT NULL          COMMENT "帳號(E-mail)",
     member_password                 VARCHAR(255)  NOT NULL          COMMENT "密碼",
     member_name                     VARCHAR(100)  NOT NULL          COMMENT "姓名",
-    member_phone                    VARCHAR(20)   NOT NULL           COMMENT "電話",
-    member_nickname                 VARCHAR(20)   NOT NULL           COMMENT "暱稱",
+    member_phone                    VARCHAR(20)   NOT NULL          COMMENT "電話",
+    member_nickname                 VARCHAR(20)   NOT NULL          COMMENT "暱稱",
     member_address                  VARCHAR(255)                    COMMENT "地址",
     national_id                     VARCHAR(10)   NOT NULL          COMMENT "身分證字號",
-    gender                          VARCHAR(10)   NOT NULL           COMMENT "性別",
+    gender                          VARCHAR(10)   NOT NULL          COMMENT "性別",
     birthday                        DATE                            COMMENT "生日",
     member_picture                  MEDIUMBLOB                      COMMENT "大頭照",
     member_status                   INT           NOT NULL          COMMENT "帳號狀態 0:帳號已黑單 1:帳號正常",
-    member_create_time               DATETIME
+    member_create_time              DATETIME
 		                                          DEFAULT CURRENT_TIMESTAMP
 		                                                            COMMENT "帳號建立時間",
     
@@ -101,29 +101,29 @@ CREATE TABLE venue_area(
 ) COMMENT "場館區域";
 
 CREATE TABLE seat(
-	seat_id                         INT           AUTO_INCREMENT     COMMENT "座位ID",
-    venue_id                        INT           NOT NULL           COMMENT "場館ID",
-	venue_area_id                   INT           NOT NULL           COMMENT "場館區域ID",
-	seat_name                       VARCHAR(10)   NOT NULL           COMMENT "座位代號 如NA001, NA002, NA003, NA004",
-	seat_row                        INT           NOT NULL           COMMENT "行",
-	seat_number                     INT           NOT NULL           COMMENT "號",
+	seat_id                         INT           AUTO_INCREMENT    COMMENT "座位ID",
+    venue_id                        INT           NOT NULL          COMMENT "場館ID",
+	venue_area_id                   INT           NOT NULL          COMMENT "場館區域ID",
+	seat_name                       VARCHAR(10)   NOT NULL          COMMENT "座位代號 如NA001, NA002, NA003, NA004",
+	seat_row                        INT           NOT NULL          COMMENT "行",
+	seat_number                     INT           NOT NULL          COMMENT "號",
     
 	CONSTRAINT pk_seat_id PRIMARY KEY (seat_id)
 ) COMMENT "座位";
 
 CREATE TABLE venue_rental(
-	venue_rental_id                  INT          AUTO_INCREMENT     COMMENT "場地申請資料ID",
-	venue_id                         INT          NOT NULL           COMMENT "場館ID",
-	partner_id                       INT          NOT NULL           COMMENT "廠商會員ID",
-	activity_name                    VARCHAR(255) NOT NULL           COMMENT "活動名稱",
-	proposal                         LONGBLOB                        COMMENT "企劃書",
-	venue_rental_status              INT          NOT NULL           COMMENT "申請狀態 0:不通過 1:通過 3:審核中 4:取消中 5:已取消",
-	venue_rental_start_date          DATE         NOT NULL           COMMENT "租用開始日期",
-	venue_rental_end_date            DATE         NOT NULL           COMMENT "租用結束日期",
+	venue_rental_id                  INT          AUTO_INCREMENT    COMMENT "場地申請資料ID",
+	venue_id                         INT          NOT NULL          COMMENT "場館ID",
+	partner_id                       INT          NOT NULL          COMMENT "廠商會員ID",
+	activity_name                    VARCHAR(255) NOT NULL          COMMENT "活動名稱",
+	proposal                         LONGBLOB                       COMMENT "企劃書",
+	venue_rental_status              INT          NOT NULL          COMMENT "申請狀態 0:不通過 1:通過 3:審核中 4:取消中 5:已取消",
+	venue_rental_start_date          DATE         NOT NULL          COMMENT "租用開始日期",
+	venue_rental_end_date            DATE         NOT NULL          COMMENT "租用結束日期",
 	venue_rental_create_time         DATETIME
 		                                          DEFAULT CURRENT_TIMESTAMP
-		                                                             COMMENT "申請建立時間",
-	venue_rental_code                VARCHAR(255) NOT NULL           COMMENT "場地申請編號",
+		                                                            COMMENT "申請建立時間",
+	venue_rental_code                VARCHAR(255) NOT NULL          COMMENT "場地申請編號",
     
 	CONSTRAINT pk_venue_rental_id PRIMARY KEY (venue_rental_id)
 ) COMMENT "場地申請資料";

@@ -3,7 +3,7 @@ package com.maddog.articket.controller.article;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.board.service.pri.BoardService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.service.impl.MessageService;
 import com.maddog.articket.board.entity.Board;
@@ -62,7 +62,7 @@ public class MessageController {
     @GetMapping("/picture/{memberID}")
     public ResponseEntity<byte[]> getMemberPicture(@PathVariable Integer memberID) {
         try {
-            GeneralMember member = generalMemberSvc.getOneGeneralMember(memberID);
+            GeneralMember member = generalMemberSvc.getById(memberID);
             if (member != null && member.getMemberPicture() != null) {
                 return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)

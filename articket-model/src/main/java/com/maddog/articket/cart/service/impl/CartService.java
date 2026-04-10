@@ -7,7 +7,7 @@ import com.maddog.articket.cartitem.dao.CartItemRepository;
 import com.maddog.articket.commodity.entity.Commodity;
 import com.maddog.articket.commodity.service.impl.CommodityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.entity.MemberCoupon;
 import com.maddog.articket.membercoupon.service.impl.MemberCouponService;
 import com.maddog.articket.orderitem.entity.OrderItem;
@@ -158,7 +158,7 @@ public class CartService {
         Cart cart = cartDao.findByGeneralMember_MemberID(memberID);
         if (cart == null) {
             cart = new Cart();
-            GeneralMember member = generalMemberService.getOneGeneralMember(memberID);
+            GeneralMember member = generalMemberService.getById(memberID);
             cart.setGeneralMember(member);
             cart.setCartTotalPrice(BigDecimal.ZERO);
             cart.setCartCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -215,7 +215,7 @@ public class CartService {
             throw new RuntimeException("購物車是空的");
         }
         
-        GeneralMember member = generalMemberService.getOneGeneralMember(memberId);
+        GeneralMember member = generalMemberService.getById(memberId);
 
         
 

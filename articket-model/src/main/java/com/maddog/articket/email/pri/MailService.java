@@ -1,7 +1,7 @@
 package com.maddog.articket.email.pri;
 
 /**
- * Email Service Interface
+ * 寄送 Email Service Interface
  */
 public interface MailService {
 

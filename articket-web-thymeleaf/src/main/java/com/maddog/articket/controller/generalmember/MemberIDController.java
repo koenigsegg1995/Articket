@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.generalmember;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.service.impl.MemberCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ import java.util.Set;
 public class MemberIDController {
 	
 	@Autowired
-	GeneralMemberService gmemberSvc;
+    GeneralMemberService gmemberSvc;
 	
 	@Autowired
 	MemberCouponService mbcSvc;
@@ -51,7 +51,7 @@ public class MemberIDController {
 		System.out.println("Received memberID: " + memberID);
 		/***************************2.開始查詢資料*********************************************/
 //		EmpService empSvc = new EmpService();
-		GeneralMember generalMember = gmemberSvc.getOneGeneralMember(Integer.valueOf(memberID));
+		GeneralMember generalMember = gmemberSvc.getById(Integer.valueOf(memberID));
 		
 		List<GeneralMember> list = gmemberSvc.getAll();
 		model.addAttribute("generalMemberListData", list);     // for select_page.html 第97 109行用

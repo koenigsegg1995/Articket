@@ -6,9 +6,10 @@ import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.articleimg.service.pri.ArticleImgService;
 import com.maddog.articket.board.service.pri.BoardService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.generalmember.service.impl.GeneralMemberService;
 import com.maddog.articket.articleimg.entity.ArticleImg;
 import com.maddog.articket.board.entity.Board;
+import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/article")
 public class ArticleController {
@@ -61,7 +63,8 @@ public class ArticleController {
 	            .collect(Collectors.toList());
 	    }
 	    allArticles.sort(Comparator.comparing(Article::getArticleCreateTime).reversed()); //按文章時間排序
-	    model.addAttribute("articleList", allArticles);
+
+		model.addAttribute("articleList", allArticles);
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("selectedBoardID", boardID); 
 
@@ -106,7 +109,8 @@ public class ArticleController {
             
             if (article == null) {
                 model.addAttribute("errorMessage", "查無資料");
-                return "front-end/forum/forum";
+
+				return "front-end/forum/forum";
             }            
             
     		List<Article> list = articleSvc.findByCondition();
@@ -121,14 +125,15 @@ public class ArticleController {
     	    model.addAttribute("articleCategories", categories);
     		
     	    List<GeneralMember> generalMemberList = generalMemberSvc.getAll();
+
     	    model.addAttribute("generalMemberListData", generalMemberList);
-    		          
-            
             model.addAttribute("article", article);
-            return "front-end/forum/OneArticle";
+
+			return "front-end/forum/OneArticle";
         } catch (NumberFormatException e) {
             model.addAttribute("errorMessage", "無效的文章ID");
-            return "front-end/forum/forum";
+
+			return "front-end/forum/forum";
         }
     }
     
@@ -145,8 +150,6 @@ public class ArticleController {
 //		return "front-end/forum/listAllArticle";
 //	}
     
-    
-    
     @ModelAttribute("articleListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
 	protected List<Article> referenceListData(Model model) {
 		
@@ -161,9 +164,6 @@ public class ArticleController {
 		return list;
 	}
 	
-
-	
-	
 	@GetMapping("addArticle")
 	public String addArticle(ModelMap model) {
 		Article article = new Article();
@@ -177,7 +177,6 @@ public class ArticleController {
 		
 	    List<GeneralMember> generalMemberList = generalMemberSvc.getAll();
 	    model.addAttribute("generalMemberListData", generalMemberList);
-	    
 	    
 		return "front-end/forum/addArticle";
 	}
@@ -195,56 +194,62 @@ public class ArticleController {
         Integer memberID = (Integer) session.getAttribute("memberID");
         if (memberID == null) {
             model.addAttribute("error", "會話已過期，請重新登入");
-            return "redirect:/generalmember/login";
+
+			return "redirect:/generalmember/login";
         }
 
-        GeneralMember generalMember = generalMemberSvc.getOneGeneralMember(memberID);
+        GeneralMember generalMember = generalMemberSvc.getById(memberID);
         if (generalMember == null) {
             model.addAttribute("error", "無法找到會員信息，請重新登入");
-            return "redirect:/generalmember/login";
+
+			return "redirect:/generalmember/login";
         }
 
         // 設置文章的作者
         article.setMemberId(memberID);
 
-		    if (result.hasErrors()) {
-		    	setCommonModelAttributes(model);
-		        return "front-end/forum/post";
-		    }
+		if (result.hasErrors()) {
+			setCommonModelAttributes(model);
+
+			return "front-end/forum/post";
+		}
 		    		    
-		 // 檢查圖片數量
-		    final int MAX_IMAGES = 5; // 最多允許5張圖片
-		    if (parts != null && parts.length > MAX_IMAGES) {
-		    	result.rejectValue("articlePic", "error.articlePic", "最多只能上傳 " + MAX_IMAGES + " 張圖片");
-		    	setCommonModelAttributes(model);
-		        return "front-end/forum/post";
-		    }
+	 	// 檢查圖片數量
+		final int MAX_IMAGES = 5; // 最多允許5張圖片
+		if (parts != null && parts.length > MAX_IMAGES) {
+			result.rejectValue("articlePic", "error.articlePic", "最多只能上傳 " + MAX_IMAGES + " 張圖片");
 
-		    // 檢查圖片大小和格式
-		    final long MAX_FILE_SIZE = 8 * 1024 * 1024; // 最大8MB
-		    if (parts != null) {
-		        for (MultipartFile pic : parts) {
-		            if (!pic.isEmpty()) {
-		            	if (!pic.isEmpty() && pic.getSize() > MAX_FILE_SIZE) {
-		                    result.rejectValue("articlePic", "error.articlePic", "圖片大小不能超過 8MB");
-		                    setCommonModelAttributes(model);
-		                    return "front-end/forum/post";
-		                }
+			setCommonModelAttributes(model);
 
-		            }
-		        }
-		    }
+			return "front-end/forum/post";
+		}
+
+		// 檢查圖片大小和格式
+		final long MAX_FILE_SIZE = 8 * 1024 * 1024; // 最大8MB
+		if (parts != null) {
+			for (MultipartFile pic : parts) {
+				if (!pic.isEmpty()) {
+					if (!pic.isEmpty() && pic.getSize() > MAX_FILE_SIZE) {
+						result.rejectValue("articlePic", "error.articlePic", "圖片大小不能超過 8MB");
+
+						setCommonModelAttributes(model);
+
+						return "front-end/forum/post";
+					}
+				}
+			}
+		}
 		    
 		/*************************** 2.開始新增資料 *****************************************/
 		// ArticleService articleSvc = new ArticleService();
 		articleSvc.addArticle(article);
 		
-		if (parts != null && parts.length > 0) {
+		if (parts != null) {
 	        for (MultipartFile pic : parts) {
 	            if (pic != null && !pic.isEmpty()) {
 	                try {
 	                    ArticleImg articleImg = new ArticleImg();
-	                    articleImg.setArticle(article);  // 使用原始的 article 對象
+	                    articleImg.setArticleId(article.getArticleId());  // 使用原始的 article 物件
 	                    articleImg.setArticlePic(pic.getBytes());
 	                    articleImgSvc.addArticleImg(articleImg);
 	                } catch (IOException e) {
@@ -253,13 +258,14 @@ public class ArticleController {
 	                }
 	            }
 	        }
-
 	    }
 			
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
 		List<Article> list = articleSvc.findByCondition();
+
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (新增成功)");
+
 		return "redirect:/article/forum"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/forum/listAllArticle")
 	}
 	
@@ -298,10 +304,9 @@ public class ArticleController {
 	    List<ArticleImg> articleImgs = articleImgSvc.getArticleImgsByArticleID(articleID);
 	    model.addAttribute("articleImgs", articleImgs);
 
-		
-
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("article", article);
+
 		return "front-end/forum/update_article_input"; // 查詢完成後轉交update_emp_input.html
 	}
 
@@ -318,14 +323,13 @@ public class ArticleController {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		// 去除BindingResult中upFiles欄位的FieldError紀錄 --> 見第172行
 //		result = removeFieldError(article, result, "articlePic");
-		
 
 		if (result.hasErrors()) {
 			setCommonModelAttributes(model);
 			return "front-end/forum/update_article_input";
 		}
 		
-		 // 檢查圖片數量
+		// 檢查圖片數量
 	    final int MAX_IMAGES = 5; // 最多允許5張圖片
 	    if (parts != null && parts.length > MAX_IMAGES) {
 	        result.rejectValue("articlePic", "error.articlePic", "最多只能上傳 " + MAX_IMAGES + " 張圖片");
@@ -358,7 +362,7 @@ public class ArticleController {
 	            if (pic != null && !pic.isEmpty()) {
 	                try {
 	                    ArticleImg articleImg = new ArticleImg();
-	                    articleImg.setArticle(article);
+	                    articleImg.setArticleId(article.getArticleId());
 	                    articleImg.setArticlePic(pic.getBytes());
 	                    articleImgSvc.addArticleImg(articleImg);
 	                } catch (IOException e) {
@@ -369,13 +373,12 @@ public class ArticleController {
 	        }
 	    }
 	    // 如果沒有新圖片上傳,保留原有圖片,不做任何處理
-		
-		
 
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("success", "- (修改成功)");
-		article = articleSvc.getOneArticle(Integer.valueOf(article.getArticleId()));
+		article = articleSvc.getOneArticle(article.getArticleId());
 		model.addAttribute("article", article);
+
 		return "front-end/forum/OneArticle"; // 修改成功後轉交listOneArticle.html
 	}
 
@@ -392,19 +395,17 @@ public class ArticleController {
 		List<Article> list = articleSvc.findByCondition();
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (刪除成功)");
+
 		return "front-end/forum/forum"; // 刪除完成後轉交listAllEmp.html
 	}
-	
 	
 	/*
 	 * This method will be called on select_page.html form submission, handling POST request
 	 */
-	
-	
 	//簡單文章標題查詢
 	@GetMapping("search")
 	public String searchArticlesByTitle(@RequestParam(required = false) String title, Model model) {
-		System.out.println("Received search request for title: " + title);
+		log.info("Received search request for title: {}", title);
 		
 	    List<Article> articleList = articleSvc.findByTitle(title);
 	    
@@ -415,13 +416,13 @@ public class ArticleController {
 
 	    model.addAttribute("articleList", articleList);
 	    
-	  //顯示用戶搜索的內容
+	    //顯示用戶搜索的內容
 	    model.addAttribute("searchTitle", title);
 
 	    List<Board> boardList = boardSvc.getAll();
 	    model.addAttribute("boardList", boardList);	    
 	    
-	    System.out.println("Model attributes: " + model.asMap().keySet());
+	    log.info("Model attributes: {}", model.asMap().keySet());
 
 	    return "front-end/forum/forum";
 	}
@@ -457,27 +458,23 @@ public class ArticleController {
 	 * request It also validates the user input
 	 */
 	@PostMapping("getOne_For_Display")
-	public String getOne_For_Display(
+	public String getOne_For_Display(@NotEmpty(message="文章編號: 請勿空白")
+									 @Digits(integer = 4, fraction = 0, message = "文章編號: 請填數字-請勿超過{integer}位數")
+									 @Min(value = 1, message = "文章編號: 不能小於{value}")
+									 @Max(value = 100, message = "文章編號: 不能超過{value}")
+									 @RequestParam("articleID") String articleID,
+									 ModelMap model) {
 		/***************************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-		@NotEmpty(message="文章編號: 請勿空白")
-		@Digits(integer = 4, fraction = 0, message = "文章編號: 請填數字-請勿超過{integer}位數")
-		@Min(value = 1, message = "文章編號: 不能小於{value}")
-		@Max(value = 100, message = "文章編號: 不能超過{value}")
-		@RequestParam("articleID") String articleID,
-		ModelMap model) {
-		
-		
 		/***************************2.開始查詢資料*********************************************/
 //		ArticleService articleSvc = new ArticleService();
 		Article article = articleSvc.getOneArticle(Integer.valueOf(articleID));
 		
 		List<Article> list = articleSvc.findByCondition();
-		model.addAttribute("articleListData", list);     // for select_page.html 第97 109行用
-		model.addAttribute("board", new Board());  // for select_page.html 第133行用
+		model.addAttribute("articleListData", list);
+		model.addAttribute("board", new Board());
 		
 		List<Board> list2 = boardSvc.getAll();
-    	model.addAttribute("boardListData",list2);    // for select_page.html 第135行用
-    	
+    	model.addAttribute("boardListData", list2);
 	    
 	    List<String> categories = articleSvc.getAllCategories();
 	    model.addAttribute("articleCategories", categories);
@@ -487,40 +484,26 @@ public class ArticleController {
 		
 		if (article == null) {
 			model.addAttribute("errorMessage", "查無資料");
+
 			return "front-end/forum/forum";
 		}
 		
 		/***************************3.查詢完成,準備轉交(Send the Success view)*****************/
 		model.addAttribute("article", article);
-		model.addAttribute("getOne_For_Display", "true"); // 旗標getOne_For_Display見select_page.html的第156行 -->
+		model.addAttribute("getOne_For_Display", "true");
 		
 //		return "front-end/forum/listOneArticle";  // 查詢完成後轉交listOneArticle.html
-		return "front-end/forum/OneArticle"; // 查詢完成後轉交select_page.html由其第158行insert listOneEmp.html內的th:fragment="listOneEmp-div
+		return "front-end/forum/OneArticle";
 	}
-	
 
-	/*
-	 * 第一種作法 Method used to populate the List Data in view. 如 : 
-	 * <form:select path="articleID" id="articleID" items="${generalMemberListData}" itemValue="memberID" itemLabel="memberName" />
-	 */
-//	@ModelAttribute("generalMemberListData")
-//	protected List<GeneralMember> referenceListData() {
-//		// GeneralMemberService generalMemberSvc = new GeneralMemberService();
-//		List<GeneralMember> list = generalMemberSvc.getAll();
-//		return list;
-//	}
-
-	/*
-	 * 【 第二種作法 】 Method used to populate the Map Data in view. 如 : 
-	 * <form:select path="memberID" id="memberID" items="${generalemberMapData}" />
-	 */
-	@ModelAttribute("articleCategoryMapData") //
+	@ModelAttribute("articleCategoryMapData")
 	protected Map<Integer, String> referenceMapData() {
 		Map<Integer, String> map = new LinkedHashMap<Integer, String>();
 		map.put(1, "公告");
 		map.put(2, "情報");
 		map.put(3, "影音");
 		map.put(4, "閒聊");
+
 		return map;
 	}
 
@@ -533,10 +516,9 @@ public class ArticleController {
 		for (FieldError fieldError : errorsListToKeep) {
 			result.addError(fieldError);
 		}
+
 		return result;
 	}
-	
-
 
 	//錯誤訊息處理顯示
 	@ExceptionHandler(value = { ConstraintViolationException.class })
@@ -558,20 +540,18 @@ public class ArticleController {
 		// 加載所有版塊
 		List<Board> list2 = boardSvc.getAll();
     	model.addAttribute("boardListData",list2);    // for select_page.html 第135行用
-		
     	
     	String message = strBuilder.toString();
-	    return new ModelAndView("front-end/forum/post", "errorMessage", "請修正以下錯誤:<br>"+message);
+
+		return new ModelAndView("front-end/forum/post", "errorMessage", "請修正以下錯誤:<br>"+message);
 	}
 	
-	
-	   //設置通用的model
-	   private void setCommonModelAttributes(ModelMap model) {
-	        model.addAttribute("articleListData", articleSvc.findByCondition());
-	        model.addAttribute("boardListData", boardSvc.getAll());
-	        model.addAttribute("articleCategories", articleSvc.getAllCategories());
-	        model.addAttribute("generalMemberListData", generalMemberSvc.getAll());
-	    }
-	
+    //設置通用的model
+    private void setCommonModelAttributes(ModelMap model) {
+		model.addAttribute("articleListData", articleSvc.findByCondition());
+		model.addAttribute("boardListData", boardSvc.getAll());
+		model.addAttribute("articleCategories", articleSvc.getAllCategories());
+		model.addAttribute("generalMemberListData", generalMemberSvc.getAll());
+	}
 
 }
