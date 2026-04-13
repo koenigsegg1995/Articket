@@ -20,7 +20,6 @@ public class HeartController {
 	
 	@Autowired
     GeneralMemberService generalMemberSvc;
-		
 	
 	/*檢查會員是否對此文章按過讚*/
 	@GetMapping("/status/{articleID}")
@@ -35,14 +34,14 @@ public class HeartController {
         if (member == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員信息");
         }
-        boolean isLiked = heartSvc.isArticleLikedByMember(articleID, member.getMemberID());
+        boolean isLiked = heartSvc.isArticleLikedByMember(articleID, member.getMemberId());
         return ResponseEntity.ok(isLiked);
     }
 	
 	
 	/*切換文章的按讚狀態*/
 	@PostMapping("/toggle")
-	public ResponseEntity<?> toggleHeart( @RequestParam Integer articleID,
+	public ResponseEntity<?> toggleHeart( @RequestParam Integer articleId,
 	        HttpSession session) {
     	
     	// 獲取當前登入的會員信息
@@ -56,7 +55,8 @@ public class HeartController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員信息，請重新登入");
         }
         
-        boolean isLiked = heartSvc.toggleHeart(member .getMemberID(), articleID);
+        boolean isLiked = heartSvc.toggleHeart(member.getMemberId(), articleId);
+
         return ResponseEntity.ok(isLiked);
     }
     

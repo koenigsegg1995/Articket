@@ -2,8 +2,9 @@ package com.maddog.articket.heart.service.impl;
 
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.heart.dao.HeartRepository;
+import com.maddog.articket.heart.dao.HeartDao;
 import com.maddog.articket.heart.entity.Heart;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,112 +12,87 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service("heartService")
 public class HeartService {
 
 	@Autowired
-	HeartRepository repository;
+	private HeartDao heartDao;
 
 //	@Autowired
 //	private RedisTemplate<String, String> redisTemplate;
 
-	//會員是否按讚
-	public boolean isArticleLikedByMember(Integer articleID, Integer memberID) {
-	    return !repository.findByMemberAndArticle(memberID, articleID).isEmpty();
-	}
-	
-	
 	// 確保文章按讚統計的一致性和安全性，同時提高程式碼的可維護性
 	private static final String HEART_COUNT_KEY = "article:heart:count:";
 
-	@Transactional
-	public void addHeart(Heart heart) {
-		repository.save(heart);
-		incrementRedisHeartCount(heart.getArticle().getArticleID());
-		syncHeartCount(heart.getArticle().getArticleID());
-	}
-
-
-	@Transactional
-	public void deleteHeart(Integer heartID) {
-		Heart heart = repository.findByHeartID(heartID)
-				.orElseThrow(() -> new IllegalArgumentException("heartID " + heartID + " not found"));// Optional
-																										// 類和lambda
-																										// 表達式的組合
-		repository.deleteByHeartID(heartID);
-		decrementRedisHeartCount(heart.getArticle().getArticleID());
-		syncHeartCount(heart.getArticle().getArticleID());
-	}
-
-	public Heart getOneHeart(Integer heartID) {
-		return repository.findByHeartID(heartID)
-				.orElseThrow(() -> new IllegalArgumentException("heartID " + heartID + " not found"));
-	}
-
-	public List<Heart> getAll() {
-		return repository.findAll();
+	//會員是否按讚
+	public boolean isArticleLikedByMember(Integer articleId, Integer memberId) {
+	    return heartDao.isArticleLikedByMember(memberId, articleId);
 	}
 
 	// 檢查是否按讚過決定按讚或取消按讚
 	@Transactional
-	public boolean toggleHeart(Integer memberID, Integer articleID) {
-		List<Heart> hearts = repository.findByMemberAndArticle(memberID, articleID);
+	public boolean toggleHeart(Integer memberId, Integer articleId) {
+		boolean liked = heartDao.isArticleLikedByMember(memberId, articleId);
 
-		if (hearts.isEmpty()) {
+		if (liked) { // 若尚未點讚
 			Heart heart = new Heart();
-
-			GeneralMember generalmember = new GeneralMember();
-			generalmember.setMemberID(memberID);
-
-			Article article = new Article();
-			article.setArticleID(articleID);
-
-			heart.setGeneralMember(generalmember);
-			heart.setArticle(article);
+			heart.setMemberId(memberId);
+			heart.setArticleId(articleId);
 
 			addHeart(heart);
-			syncHeartCount(articleID);
+
 			return true;
-		} else {
-			deleteHeart(hearts.get(hearts.size() - 1).getHeartID());
-			syncHeartCount(articleID);
+		} else { // 若點過讚
+			deleteHeart(memberId, articleId);
+
 			return false;
 		}
 	}
 
 	// 獲取特定文章的按讚數
-	public Long getHeartCount(Integer articleID) {
-//		String key = HEART_COUNT_KEY + articleID;
+	public Long getHeartCount(Integer articleId) {
+//		String key = HEART_COUNT_KEY + articleId;
 //		String count = redisTemplate.opsForValue().get(key);
 //		return count != null ? Long.parseLong(count) : 0L;
+
 		return 0L;
 	}
 
+	private void addHeart(Heart heart) {
+		heartDao.insert(heart);
+		incrementRedisHeartCount(heart.getArticleId());
+		syncHeartCount(heart.getArticleId());
+	}
+
+	private void deleteHeart(Integer memberId, Integer articleId) {
+		heartDao.deleteByArticleIdAndMemberId(memberId, articleId);
+		decrementRedisHeartCount(articleId);
+		syncHeartCount(articleId);
+	}
+
 	// 增加特定文章的按讚統計
-	private void incrementRedisHeartCount(Integer articleID) {
-//		String key = HEART_COUNT_KEY + articleID;
+	private void incrementRedisHeartCount(Integer articleId) {
+//		String key = HEART_COUNT_KEY + articleId;
 //		redisTemplate.opsForValue().increment(key);
 	}
 
 	// 減少特定文章的按讚統計
-	private void decrementRedisHeartCount(Integer articleID) {
-//		String key = HEART_COUNT_KEY + articleID;
+	private void decrementRedisHeartCount(Integer articleId) {
+//		String key = HEART_COUNT_KEY + articleId;
 //		redisTemplate.opsForValue().decrement(key);
 	}
-	
-    public void syncHeartCount(Integer articleID) {
-        try {
-            List<Heart> hearts = repository.findAll().stream()
-                .filter(heart -> heart.getArticle().getArticleID().equals(articleID))
-                .toList();
-            long sqlCount = hearts.size();
-            String key = HEART_COUNT_KEY + articleID;
-//            redisTemplate.opsForValue().set(key, String.valueOf(sqlCount));
-            System.out.println("同步文章 " + articleID + " 的按讚數: " + sqlCount);
-        } catch (Exception e) {
-            System.err.println("同步文章 " + articleID + " 的按讚數時發生錯誤: " + e.getMessage());
-        }
-    }
 
+	private void syncHeartCount(Integer articleId) {
+		try {
+			int sqlCount = heartDao.countByArticleId(articleId);
+			String key = HEART_COUNT_KEY + articleId;
+//            redisTemplate.opsForValue().set(key, String.valueOf(sqlCount));
+
+			log.info("同步文章 {} 的按讚數: {}", articleId, sqlCount);
+		} catch (Exception e) {
+			log.error("同步文章 {} 的按讚數時發生錯誤: {}", articleId, e.getMessage());
+		}
+	}
 
 }

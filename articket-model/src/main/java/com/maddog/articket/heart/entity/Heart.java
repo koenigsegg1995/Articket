@@ -1,89 +1,40 @@
 package com.maddog.articket.heart.entity;
 
-import com.maddog.articket.article.entity.Article;
-import com.maddog.articket.generalmember.entity.GeneralMember;
-import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 文章點讚 DO
+ */
+@Getter
+@Setter
+public class Heart implements Serializable {
 
-@Entity
-@Table(name = "heart")
-public class Heart implements java.io.Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 點讚 ID
+	 */
+	private Integer heartId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "heartID", updatable = false)
-	private Integer heartID;
-	
-	
+	/**
+	 * 會員 ID
+	 */
+	private Integer memberId;
 
-	@ManyToOne
-	@JoinColumn(name = "memberID", referencedColumnName = "memberID")
-	private GeneralMember generalMember;
+	/**
+	 * 文章 ID
+	 */
+	private Integer articleId;
 
-	
-
-	@ManyToOne
-	@JoinColumn(name = "articleID", referencedColumnName = "articleID")
-	private Article article;
-	
-	
-
-	@Column(name = "heartCreateTime", updatable = false, insertable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date  heartCreateTime;
-	
-	
-	public Heart() { 
-	}
-	
-
-	public Integer getHeartID() {
-		return heartID;
-	}
-
-	public void setHeartID(Integer heartID) {
-		this.heartID = heartID;
-	}
-
-
-
-	public Date getHeartCreateTime() {
-		return heartCreateTime;
-	}
-
-
-
-	public GeneralMember getGeneralMember() {
-		return this.generalMember;
-	}
-
-	public void setGeneralMember(GeneralMember generalMember) {
-		this.generalMember = generalMember;
-	}
-
-	
-	public Article getArticle() {
-		return this.article;
-	}
-
-	public void setArticle(Article article) {
-		this.article = article;
-	}
-
-	
-	
-//	@Override
-//	public String toString() {
-//	    return "Heart [heartID=" + heartID 
-//	           + ", generalMember=" + generalMember	 + ", article=" + article 
-//	           + ", heartCreateTime=" + heartCreateTime + "]";
-//	}
-
-	
-
-
+	/**
+	 * 點讚時間
+	 */
+	private Date heartCreateTime;
 
 }
