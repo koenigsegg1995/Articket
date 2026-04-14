@@ -2,7 +2,7 @@ package com.maddog.articket.heart.dao;
 
 import com.maddog.articket.heart.entity.Heart;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 文章點讚 DAO
@@ -28,8 +28,7 @@ public interface HeartDao {
 	 * 			文章 ID
 	 * @return 成功筆數
 	 */
-	@Query(value = "delete from heart where heartID =?1", nativeQuery = true)
-	int deleteByArticleIdAndMemberId(Integer memberId, Integer articleId);
+	int deleteByArticleIdAndMemberId(@Param("memberId") Integer memberId, @Param("articleId") Integer articleId);
 
 	/**
 	 * 會員是否對文章點讚
@@ -40,7 +39,7 @@ public interface HeartDao {
 	 * 			會員 ID
 	 * @return 是 / 否
 	 */
-	boolean isArticleLikedByMember(Integer articleId, Integer memberId);
+	boolean isArticleLikedByMember(@Param("articleId") Integer articleId, @Param("memberId") Integer memberId);
 
 	/**
 	 * 查詢文章點讚數

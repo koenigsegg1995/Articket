@@ -74,16 +74,16 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 	
 	//新增留言
 	@PostMapping("insert")
 	@ResponseBody
 	public ResponseEntity<?> insert(@Valid @RequestBody Message message, HttpSession session) {
-	    if (message.getArticle() == null || message.getArticleId() == null) {
+	    if (message.getArticleId() == null) {
 	        return ResponseEntity.badRequest().body("Article ID cannot be null");
 	    }
-	    // 獲取當前登入的會員信息
+
+	    // 獲取當前登入的會員資訊
 	    String memberAccount = (String) session.getAttribute("memberAccount");
 	    if (memberAccount == null || memberAccount.isEmpty()) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("登入已過期，請重新登入");
@@ -91,15 +91,16 @@ public class MessageController {
 
 	    GeneralMember generalMember = generalMemberSvc.getByMemberAccount(memberAccount);
 	    if (generalMember == null) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員資料，請重新登入");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員，請重新登入");
 	    }
 
 	    // 設置留言的作者
-	    message.setGeneralMember(generalMember);
+	    message.setMemberId(generalMember.getMemberId());
 	    
 	    try {
 	        Message savedMessage = messageSvc.addMessage(message);
-	        return ResponseEntity.ok(savedMessage);
+
+			return ResponseEntity.ok(savedMessage);
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                             .body("Error saving message: " + e.getMessage());
@@ -162,7 +163,7 @@ public class MessageController {
     public ResponseEntity<?> getMessagesByArticle(@PathVariable Integer articleID) {
         try {
             //List<Message> messages = messageSvc.getMessagesByArticleID(articleID); //original
-        	List<Message> messages = messageSvc.getMessagesByArticleIdDao(articleID); //JDBC
+        	List<Message> messages = messageSvc.getMessagesByArticleId(articleID); //JDBC
             return ResponseEntity.ok()
                                  .contentType(MediaType.APPLICATION_JSON)
                                  .body(messages);

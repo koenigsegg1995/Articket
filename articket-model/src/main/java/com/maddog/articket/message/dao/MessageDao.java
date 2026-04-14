@@ -2,33 +2,67 @@ package com.maddog.articket.message.dao;
 
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.rowmapper.MessageRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Mapper
+public interface MessageDao {
 
+	/**
+	 * 新增
+	 *
+	 * @param message
+	 * 			留言
+	 * @return 成功筆數
+	 */
+	int insert(Message message);
 
-@Component
-public class MessageDao {
-	
-	@Autowired
-	private NamedParameterJdbcTemplate npjt;
-	
-	public List<Message> getMessagesByArticleIdDao(Integer articleID){
-		String sql = "SELECT m1.messageID, m1.articleID, m1.memberID, m2.memberName, m1.messageContent, m1.messageCreateTime\r\n"
-				+ "FROM message as m1 \r\n"
-				+ "LEFT JOIN generalmember as m2 ON m1.memberid = m2.memberid\r\n"
-				+ "WHERE m1.articleID = :articleID";
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("articleID", articleID);
-		
-		List<Message> messages = npjt.query(sql, map, new MessageRowMapper());
-		
-		return messages;
-	}
+	/**
+	 * 更新
+	 *
+	 * @param message
+	 * 			留言
+	 * @return 成功筆數
+	 */
+	int update(Message message);
+
+	/**
+	 * 刪除
+	 *
+	 * @param messageId
+	 * 			留言 ID
+	 * @return 成功筆數
+	 */
+	int deleteById(Integer messageId);
+
+	/**
+	 * 依留言 ID 查詢
+	 *
+	 * @param messageId
+	 * 			留言 ID
+	 * @return 留言
+	 */
+	Message findById(Integer messageId);
+
+	/**
+	 * 查詢全部
+	 *
+	 * @return 全部留言清單
+	 */
+	List<Message> findAll();
+
+	/**
+	 * 依文章 ID 查詢留言清單
+	 *
+	 * @param articleId
+	 * 			文章 ID
+	 * @return 留言清單
+	 */
+	// TODO: 創建回傳 DTO
+	List<Message> getMessagesByArticleId(Integer articleId);
+
 }

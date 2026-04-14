@@ -9,7 +9,7 @@ import com.maddog.articket.commodity.service.impl.CommodityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.entity.MemberCoupon;
-import com.maddog.articket.membercoupon.service.impl.MemberCouponService;
+import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orderitem.entity.OrderItem;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.dao.OrdersRepository;

@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class MessageRowMapper implements RowMapper<Message> {
 
 	@Override

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.heart.dao.HeartDao">
+
+<!-- sql -->
+    <!-- 新增欄位 -->
+    <sql id="columnsForInsert">
+        member_id,
+        article_id,
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 點讚 -->
+    <insert id="insert" parameterType="com.maddog.articket.heart.entity.Heart">
+        INSERT INTO heart
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{memberId},
+            #{articleId}
+        )
+    </insert>
+
+    <!-- 取消點讚 -->
+    <delete id="deleteByArticleIdAndMemberId">
+        DELETE FROM
+            heart
+        WHERE
+            member_id = #{memberId}
+            and
+            article_id = #{articleId}
+    </delete>
+
+    <!-- 會員是否對文章點讚 -->
+    <select id="isArticleLikedByMember" resultType="java.lang.Boolean">
+        SELECT EXISTS(
+            SELECT
+                1
+            FROM
+                heart
+            WHERE
+                article_id = #{articleId}
+                and
+                member_id = #{memberId}
+        )
+    </select>
+
+    <!-- 查詢文章點讚數 -->
+    <select id="countByArticleId" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            heart
+        WHERE
+            article_id = #{articleId}
+    </select>
+<!-- method-->
+
+</mapper>

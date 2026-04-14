@@ -3,8 +3,6 @@ package com.maddog.articket.announcement.service.impl;
 import com.maddog.articket.announcement.dao.AnnouncementDao;
 import com.maddog.articket.announcement.entity.Announcement;
 import com.maddog.articket.announcement.service.pri.AnnouncementService;
-import com.maddog.articket.hibernate.util.compositequery.HibernateUtil_CompositeQuery_Announcement3;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 公告 Service Implementation

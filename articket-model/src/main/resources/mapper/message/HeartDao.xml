@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.message.dao.MessageDao">
+
+<!-- sql -->
+    <!-- 新增欄位 -->
+    <sql id="columnsForInsert">
+        member_id,
+        article_id,
+        message_content,
+        message_status
+    </sql>
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.message.entity.Message"
+            useGeneratedKeys="true"
+            keyProperty="messageId">
+        INSERT INTO message
+        (
+            <include refid="columnsForInsert" />
+        )
+        VALUES
+        (
+            #{memberId},
+            #{articleId},
+            #{messageContent},
+            #{messageStatus}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <insert id="update"
+            parameterType="com.maddog.articket.message.entity.Message">
+        UPDATE
+            message
+        <set>
+            <if test=" memberId != null and memberId != '' ">
+                member_id = #{memberId},
+            </if>
+
+            <if test=" articleId != null ">
+                article_id = #{articleId},
+            </if>
+
+            <if test=" messageContent != null and messageContent != '' ">
+                message_content = #{messageContent},
+            </if>
+
+            <if test=" messageStatus != null ">
+                message_status = #{messageStatus},
+            </if>
+        </set>
+        WHERE
+            message_id = #{messageId}
+    </insert>
+
+    <!-- 刪除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM
+            message
+        WHERE
+            message_id = #{messageId}
+    </delete>
+
+    <!-- 依留言 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.message.entity.Message">
+        SELECT
+            *
+        FROM
+            message
+        WHERE
+            message_id = #{messageId}
+    </select>
+
+    <!-- 查詢全部 -->
+    <select id="findAll" resultType="com.maddog.articket.message.entity.Message">
+        SELECT
+            *
+        FROM
+            message
+        ORDER BY
+            message_create_time
+    </select>
+
+    <!-- 依文章 ID 查詢留言清單 -->
+    <select id="getMessagesByArticleId"
+            parameterType="java.lang.Integer"
+            resultType="com.maddog.articket.message.entity.Message">
+        SELECT
+            m.message_id,
+            m.article_id,
+            m.member_id,
+            gm.member_name,
+            m.message_content,
+            m.message_createTime
+        FROM
+            message m
+        LEFT JOIN
+            general_member gm
+            ON
+            m.member_id = gm.member_id
+        WHERE
+            m.article_id = #{articleId}
+    </select>
+<!-- method-->
+
+</mapper>

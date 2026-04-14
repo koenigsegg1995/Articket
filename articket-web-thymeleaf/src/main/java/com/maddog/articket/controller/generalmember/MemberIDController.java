@@ -2,7 +2,7 @@ package com.maddog.articket.controller.generalmember;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
-import com.maddog.articket.membercoupon.service.impl.MemberCouponService;
+import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
