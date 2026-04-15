@@ -14,7 +14,25 @@
 <!-- sql -->
 
 <!-- resultMap-->
+    <!-- 全查詢 -->
+    <resultMap id="resultForSelect" type="com.maddog.articket.message.entity.Message">
+        <id property="messageId" column="message_id" />
+        <result property="memberId" column="member_id" />
+        <result property="articleId" column="article_id" />
+        <result property="messageContent" column="message_content" />
+        <result property="messageStatus" column="message_status" />
+        <result property="messageCreateTime" column="message_create_time" />
+    </resultMap>
 
+    <!-- 前端顯示 -->
+    <resultMap id="resultForView" type="com.maddog.articket.message.dto.MessageForView">
+        <result property="messageId" column="message_id" />
+        <result property="articleId" column="article_id" />
+        <result property="memberId" column="member_id" />
+        <result property="memberName" column="member_name" />
+        <result property="messageContent" column="message_content" />
+        <result property="messageCreateTime" column="message_create_time" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
@@ -73,7 +91,7 @@
     <!-- 依留言 ID 查詢 -->
     <select id="findById"
             parameterType="java.lang.Integer"
-            resultType="com.maddog.articket.message.entity.Message">
+            resultMap="resultForSelect">
         SELECT
             *
         FROM
@@ -83,7 +101,7 @@
     </select>
 
     <!-- 查詢全部 -->
-    <select id="findAll" resultType="com.maddog.articket.message.entity.Message">
+    <select id="findAll" resultMap="resultForSelect">
         SELECT
             *
         FROM
@@ -95,7 +113,7 @@
     <!-- 依文章 ID 查詢留言清單 -->
     <select id="getMessagesByArticleId"
             parameterType="java.lang.Integer"
-            resultType="com.maddog.articket.message.entity.Message">
+            resultMap="resultForView">
         SELECT
             m.message_id,
             m.article_id,

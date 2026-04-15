@@ -4,8 +4,9 @@ import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.board.service.pri.BoardService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
+import com.maddog.articket.message.dto.MessageForView;
 import com.maddog.articket.message.entity.Message;
-import com.maddog.articket.message.service.impl.MessageService;
+import com.maddog.articket.message.service.impl.MessageServiceImpl;
 import com.maddog.articket.board.entity.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class MessageController {
 	
 	@Autowired
-	private MessageService messageSvc;
+	private MessageServiceImpl messageSvc;
 	
 	@Autowired
 	private GeneralMemberService generalMemberSvc;
@@ -163,14 +164,16 @@ public class MessageController {
     public ResponseEntity<?> getMessagesByArticle(@PathVariable Integer articleID) {
         try {
             //List<Message> messages = messageSvc.getMessagesByArticleID(articleID); //original
-        	List<Message> messages = messageSvc.getMessagesByArticleId(articleID); //JDBC
-            return ResponseEntity.ok()
+        	List<MessageForView> messages = messageSvc.getMessagesByArticleId(articleID); //JDBC
+
+			return ResponseEntity.ok()
                                  .contentType(MediaType.APPLICATION_JSON)
                                  .body(messages);
         } catch (Exception e) {
             System.err.println("Controller: Error fetching messages: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Error fetching messages: " + e.getMessage());
         }
     }

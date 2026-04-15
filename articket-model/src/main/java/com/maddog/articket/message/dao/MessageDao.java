@@ -1,5 +1,6 @@
 package com.maddog.articket.message.dao;
 
+import com.maddog.articket.message.dto.MessageForView;
 import com.maddog.articket.message.entity.Message;
 import com.maddog.articket.message.rowmapper.MessageRowMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,11 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 文章留言 DAO
+ */
 @Mapper
 public interface MessageDao {
 
 	/**
-	 * 新增
+	 * 留言
 	 *
 	 * @param message
 	 * 			留言
@@ -62,7 +66,6 @@ public interface MessageDao {
 	 * 			文章 ID
 	 * @return 留言清單
 	 */
-	// TODO: 創建回傳 DTO
-	List<Message> getMessagesByArticleId(Integer articleId);
+	List<MessageForView> getMessagesByArticleId(Integer articleId);
 
 }
