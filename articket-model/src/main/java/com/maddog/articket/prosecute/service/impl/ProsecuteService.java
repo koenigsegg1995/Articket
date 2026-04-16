@@ -3,7 +3,7 @@ package com.maddog.articket.prosecute.service.impl;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.article.service.pri.ArticleService;
 import com.maddog.articket.message.entity.Message;
-import com.maddog.articket.message.service.impl.MessageServiceImpl;
+import com.maddog.articket.message.service.pri.MessageService;
 import com.maddog.articket.prosecute.dao.ProsecuteRepository;
 import com.maddog.articket.prosecute.entity.Prosecute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class ProsecuteService {
 	private ArticleService articleSvc;
 	
 	@Autowired
-	private MessageServiceImpl messageSvc;
+	private MessageService messageSvc;
 
 	@Transactional
 	public void prosecuteContent(Prosecute prosecute) {
