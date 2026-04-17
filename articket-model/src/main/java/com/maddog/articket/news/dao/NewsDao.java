@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface NewsDao {
 
 	int insert(News news);
@@ -13,9 +15,15 @@ public interface NewsDao {
 	int update(News news);
 
 	@Query(value = "delete from News where newsID =?1", nativeQuery = true)
-	void deleteById(int newsId);
+	void deleteById(Integer newsId);
 
-	// 添加按狀態查詢的方法
-	Page<News> findByNewsStatus(Integer status, Pageable pageable);
+	News findById(Integer newsId);
+
+	// 	ORDER BY news_create_time desc
+	List<News> findAllPaginated(Integer offset, Integer size );
+
+	int countAll();
+
+	List<News> findByCondition();
 	
 }

@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁消息</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
- <!--  	   	<link rel="stylesheet" href="/css/admin.css">-->
-    	<link rel="stylesheet" href="/css/admin_sidebar.css">
-<link rel="icon" href="/images/icon.ico">
+    <!--  	   	<link rel="stylesheet" href="/css/admin.css">-->
+    <link rel="stylesheet" href="/css/admin_sidebar.css">
+    <link rel="icon" href="/images/icon.ico">
 
     <style>
         body {
@@ -18,11 +18,11 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         .content {
-    margin-left: 250px; /* 調整這個值使其與側邊欄寬度匹配 */
-    padding: 20px;
-}
+            margin-left: 250px; /* 調整這個值使其與側邊欄寬度匹配 */
+            padding: 20px;
+        }
 
         .container {
             background-color: rgba(255, 255, 255, 0.9);
@@ -39,15 +39,14 @@
 
         .controls {
             display: flex;
-/*justify-content: flex-end;*/
-justify-content: flex;
+            justify-content: flex-end;
             align-items: center;
             margin-bottom: 20px;
         }
 
         select,
         button,
-        input{
+        input {
             padding: 10px;
             border: none;
             border-radius: 5px;
@@ -77,7 +76,7 @@ justify-content: flex;
             color: white;
         }
 
-        #operate{
+        #operate {
             text-align: center;
         }
 
@@ -194,13 +193,14 @@ justify-content: flex;
             pointer-events: none;
             background-color: #f8f8f8;
         }
-        
-         .search-form {
+
+        .search-form {
             margin-bottom: 20px;
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
         }
+
         .search-form input[type="text"],
         .search-form input[type="date"] {
             margin-right: 10px;
@@ -208,6 +208,7 @@ justify-content: flex;
             border: 1px solid #ced4da;
             border-radius: 4px;
         }
+
         .search-form input[type="submit"] {
             background-color: #4a69bd;
             color: white;
@@ -216,6 +217,7 @@ justify-content: flex;
             border-radius: 4px;
             cursor: pointer;
         }
+
         .search-form input[type="submit"]:hover {
             background-color: #3c56a5;
         }
@@ -232,20 +234,20 @@ justify-content: flex;
         <div id="news-management" class="section">
             <div class="container">
                 <h1>消息管理</h1>
-                
-     <!--            <form class="search-form" th:action="@{/news/listAllNews}" method="get">
-                        <label for="newsTitle">輸入公告標題:</label>
-                        <input type="text" id="newsTitle" name="newsTitle" th:value="${param.newsTitle}">
-                        
-                        <label for="newsCreateTime">公告日期:</label>
-                        <input type="date" id="newsCreateTime" name="newsCreateTime" th:value="${param.newsCreateTime}">
-                        
-                        <input type="submit" value="搜尋">
-                    </form>
--->
-                    <div class="controls">
-                        <a th:href="@{/news/addNews}" class="btn btn-primary">+ 新增消息</a>
-                    </div>
+
+                <!--            <form class="search-form" th:action="@{/news/listAllNews}" method="get">
+                                   <label for="newsTitle">輸入公告標題:</label>
+                                   <input type="text" id="newsTitle" name="newsTitle" th:value="${param.newsTitle}">
+
+                                   <label for="newsCreateTime">公告日期:</label>
+                                   <input type="date" id="newsCreateTime" name="newsCreateTime" th:value="${param.newsCreateTime}">
+
+                                   <input type="submit" value="搜尋">
+                               </form>
+           -->
+                <div class="controls">
+                    <a th:href="@{/news/addNews}" class="btn btn-primary">+ 新增消息</a>
+                </div>
 
                 <table>
                     <thead>
@@ -292,17 +294,17 @@ justify-content: flex;
     </div>
 </div>
 <script th:inline="javascript">
-        /*<![CDATA[*/
-        window.onload = function() {
-            var error = /*[[${error}]]*/ null;
-            if (error) {
-                alert(error);
-            }
+    /*<![CDATA[*/
+    window.onload = function () {
+        var error = /*[[${error}]]*/ null;
+        if (error) {
+            alert(error);
         }
-        /*]]>*/
-    </script>
-	<script src="/js/admin.js"></script>
-	<script src="/js/admin_sidebar.js"></script>
+    }
+    /*]]>*/
+</script>
+<script src="/js/admin.js"></script>
+<script src="/js/admin_sidebar.js"></script>
 
 </body>
 

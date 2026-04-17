@@ -173,15 +173,6 @@ public class NewsController {
 
     }
 
-
-
-
-
-
-
-
-
-
     @PostMapping("listNewss_ByCompositeQuery")
     public String listAllNews(HttpServletRequest req, Model model) {
         Map<String, String[]> map = req.getParameterMap();
@@ -232,4 +223,5 @@ public class NewsController {
         String message = strBuilder.toString();
         return new ModelAndView("front-end/news/select_page", "errorMessage", "請修正以下錯誤:<br>"+message);
     }
+
 }
