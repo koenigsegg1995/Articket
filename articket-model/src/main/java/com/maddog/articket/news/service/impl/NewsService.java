@@ -1,6 +1,5 @@
 package com.maddog.articket.news.service.impl;
 
-import com.maddog.articket.announcement.entity.Announcement;
 import com.maddog.articket.news.dao.NewsDao;
 import com.maddog.articket.news.entity.News;
 import org.hibernate.SessionFactory;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service("newsService")
 public class NewsService {
@@ -57,9 +55,9 @@ public class NewsService {
         return new PageImpl<>(result, pageable, total);
     }
 
-    // 複合查詢
-    public List<News> getAll(Map<String, String[]> map) {
-        return newsDao.findByCondition();
-    }
+//    // 複合查詢
+//    public List<News> getAll(Map<String, String[]> map) {
+//        return newsDao.findByCondition();
+//    }
 
 }

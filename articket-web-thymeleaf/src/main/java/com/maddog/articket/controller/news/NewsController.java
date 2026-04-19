@@ -173,15 +173,15 @@ public class NewsController {
 
     }
 
-    @PostMapping("listNewss_ByCompositeQuery")
-    public String listAllNews(HttpServletRequest req, Model model) {
-        Map<String, String[]> map = req.getParameterMap();
-        List<News> list = newsSvc.getAll(map);
-        model.addAttribute("newsListData", list);
-//        return "back-end/news/listAllNews";
-        return "front-end/announcement-news/listAllNews";
-
-    }
+//    @PostMapping("listNewss_ByCompositeQuery")
+//    public String listAllNews(HttpServletRequest req, Model model) {
+//        Map<String, String[]> map = req.getParameterMap();
+//        List<News> list = newsSvc.getAll(map);
+//        model.addAttribute("newsListData", list);
+////        return "back-end/news/listAllNews";
+//        return "front-end/announcement-news/listAllNews";
+//
+//    }
 
     @PostMapping("getOne_For_Display")
     public String getOne_For_Display(

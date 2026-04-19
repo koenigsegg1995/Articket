@@ -24,6 +24,6 @@ public interface NewsDao {
 
 	int countAll();
 
-	List<News> findByCondition();
+//	List<News> findByCondition();
 	
 }
