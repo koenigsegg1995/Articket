@@ -1,8 +1,7 @@
 package com.maddog.articket.controller.news;
 
-import com.maddog.articket.administrator.entity.Administrator;
 import com.maddog.articket.news.entity.News;
-import com.maddog.articket.news.service.impl.NewsService;
+import com.maddog.articket.news.service.pri.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,28 +24,39 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+/**
+ * 最新消息 Controller
+ */
 @Controller
 @RequestMapping("/news")
 @Validated
 public class NewsController {
 
+    /**
+     * 最新消息 Service
+     */
     @Autowired
     private NewsService newsSvc;
 
-    // 管理員消息頁面 沒有側邊攔
+    /**
+     * 管理員消息頁面 沒有側邊攔
+     *
+     * @param session
+     *          HttpSession
+     * @param model
+     *          Model
+     * @param page
+     *          頁碼
+     * @return adminLogin.html
+     */
     @GetMapping("/listAllNews")
     public String listAllNews(HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
-    	
     	if(session.getAttribute("administratorID") == null) {
     		return "redirect:/adminLogin";
     	}
-//    	
-//    	Integer adminID = (Integer)session.getAttribute("adminID");
-//    	Administrator admin = AdministratorService.getOneAdministrator(adminID);
-    	
+
         int pageSize = 10; // 每頁顯示的公告數量
         Page<News> newsPage = newsSvc.getAllPaginated(PageRequest.of(page - 1, pageSize));
 
@@ -57,12 +67,17 @@ public class NewsController {
         return "back-end-admin/announcement-news/news";
     }
 
-    // 首頁消息頁面
+    /**
+     * 首頁消息頁面
+     *
+     * @param model
+     *          Model
+     * @param page
+     *          頁碼
+     * @return news.html
+     */
     @GetMapping("/allNews")
     public String allNews(Model model, @RequestParam(defaultValue = "1") int page) {
-//        List<News> newsList = newsSvc.getAll();  // 或者使用分頁版本
-//        model.addAttribute("newsList", newsList);
-
         int pageSize = 5; // 每頁顯示的公告數量
         Page<News> newsPage = newsSvc.getAllPaginated(PageRequest.of(page - 1, pageSize));
 
@@ -73,13 +88,15 @@ public class NewsController {
         return "front-end/announcement-news/news";
     }
 
-    @ModelAttribute("newsListData")
-    protected List<News> referenceListData(Model model) {
-        List<News> list = newsSvc.getAll();
-        return list;
-    }
-
- // 新增消息頁面
+    /**
+     * 新增消息頁面
+     *
+     * @param session
+     *          HttpSession
+     * @param model
+     *          Model
+     * @return addNews.html
+     */
     @GetMapping("addNews")
     public String addNews(HttpSession session, ModelMap model) {
         // 檢查是否登入
@@ -89,17 +106,27 @@ public class NewsController {
         }
 
         News news = new News();
-        Administrator admin = new Administrator();
-        admin.setAdministratorId(administratorId);
-        news.setAdministrator(admin);
+        news.setAdministratorId(administratorId);
         model.addAttribute("news", news);
 
         return "back-end-admin/announcement-news/addNews";
     }
 
-    // 處理新增消息
+    /**
+     * 處理新增消息
+     *
+     * @param news
+     *          最新消息
+     * @param result
+     *          BindingResult
+     * @param session
+     *          HttpSession
+     * @param model
+     *          Model
+     * @return addNews.html
+     */
     @PostMapping("insert")
-    public String insert(@Valid News news, BindingResult result, HttpSession session, ModelMap model) throws IOException {
+    public String insert(@Valid News news, BindingResult result, HttpSession session, ModelMap model) {
         // 再次檢查是否登入
         Integer administratorId = (Integer) session.getAttribute("administratorID");
         if (administratorId == null) {
@@ -111,38 +138,61 @@ public class NewsController {
         }
 
         // 設置管理員ID
-        news.getAdministrator().setAdministratorId(administratorId);
+        news.setAdministratorId(administratorId);
 
         newsSvc.addNews(news);
 
         model.addAttribute("success", "- (新增成功)");
+
         return "redirect:/news/listAllNews";
     }
 
- // 獲取要更新的消息
+    /**
+     * 獲取要更新的消息
+     *
+     * @param newsId
+     *          消息ID
+     * @param session
+     *          HttpSession
+     * @param model
+     *          Model
+     * @return updateNews.html
+     */
     @PostMapping("getOne_For_Update")
-    public String getOne_For_Update(@RequestParam("newsID") String newsIDStr, HttpSession session, ModelMap model) {
+    public String getOne_For_Update(@RequestParam("newsID") Integer newsId, HttpSession session, ModelMap model) {
         // 檢查是否登入
         Integer administratorId = (Integer) session.getAttribute("administratorID");
         if (administratorId == null) {
             return "redirect:/adminLogin";
         }
 
-        Integer newsId = Integer.valueOf(newsIDStr);
         News news = newsSvc.getOneNews(newsId);
 
-        if (!news.getAdministrator().getAdministratorId().equals(administratorId)) {
+        if (!news.getAdministratorId().equals(administratorId)) {
             model.addAttribute("error", "您沒有權限更新這個公告");
             return "back-end-admin/announcement-news/news"; // 返回列表頁面
         }
 
         model.addAttribute("news", news);
+
         return "back-end-admin/announcement-news/updateNews";
     }
 
- // 處理消息更新
+    /**
+     * 處理消息更新
+     *
+     * @param news
+     *          最新消息
+     * @param result
+     *          BindingResult
+     * @param session
+     *          HttpSession
+     * @param model
+     *          Model
+     * @return updateNews.html
+     */
     @PostMapping("update")
-    public String update(@Valid News news, BindingResult result, HttpSession session, ModelMap model) throws IOException {
+    public String update(@Valid News news, BindingResult result, HttpSession session, ModelMap model) {
         // 檢查是否登入
         Integer administratorId = (Integer) session.getAttribute("administratorID");
         if (administratorId == null) {
@@ -154,23 +204,34 @@ public class NewsController {
         }
 
         // 設置當前登入的管理員ID
-        news.getAdministrator().setAdministratorId(administratorId);
+        news.setAdministratorId(administratorId);
 
         newsSvc.updateNews(news);
 
         model.addAttribute("success", "- (修改成功)");
+
         return "redirect:/news/listAllNews";
     }
 
+    /**
+     * 刪除最新消息
+     *
+     * @param newsId
+     *          消息ID
+     * @param model
+     *          Model
+     * @return listAllNews.html
+     */
     @PostMapping("delete")
-    public String delete(@RequestParam("newsID") String newsID, ModelMap model) {
-        newsSvc.deleteNews(Integer.valueOf(newsID));
+    public String delete(@RequestParam("newsID") Integer newsId, ModelMap model) {
+        newsSvc.deleteNews(newsId);
+
         List<News> list = newsSvc.getAll();
+
         model.addAttribute("newsListData", list);
         model.addAttribute("success", "- (刪除成功)");
-//        return "back-end/news/listAllNews";
-        return "front-end/announcement-news/listAllNews";
 
+        return "front-end/announcement-news/listAllNews";
     }
 
 //    @PostMapping("listNewss_ByCompositeQuery")
@@ -178,25 +239,34 @@ public class NewsController {
 //        Map<String, String[]> map = req.getParameterMap();
 //        List<News> list = newsSvc.getAll(map);
 //        model.addAttribute("newsListData", list);
-////        return "back-end/news/listAllNews";
+//        return "back-end/news/listAllNews";
 //        return "front-end/announcement-news/listAllNews";
 //
 //    }
 
+    /**
+     * 顯示一則最新消息
+     *
+     * @param newsId
+     *          消息ID
+     * @param model
+     *          Model
+     * @return select_page.html
+     */
     @PostMapping("getOne_For_Display")
     public String getOne_For_Display(
             @NotEmpty(message="公告編號: 請勿空白")
             @Digits(integer = 4, fraction = 0, message = "公告編號: 請填數字-請勿超過{integer}位數")
             @Min(value = 1, message = "公告編號: 不能小於{value}")
             @Max(value = 1000, message = "公告編號: 不能超過{value}")
-            @RequestParam("newsID") String newsID,
+            @RequestParam("newsID") Integer newsId,
             ModelMap model) {
 
-        News news = newsSvc.getOneNews(Integer.valueOf(newsID));
+        News news = newsSvc.getOneNews(newsId);
 
         if (news == null) {
             model.addAttribute("errorMessage", "查無資料");
-//            return "back-end/news/select_page";
+
             return "front-end/announcement-news/select_page";
 
         }
@@ -204,9 +274,17 @@ public class NewsController {
         model.addAttribute("news", news);
         model.addAttribute("getOne_For_Display", "true");
 
-//        return "back-end/news/select_page";
         return "front-end/announcement-news/select_page";
+    }
 
+    /**
+     * 顯示所有最新消息
+     *
+     * @return 最新消息清單
+     */
+    @ModelAttribute("newsListData")
+    public List<News> referenceListData() {
+        return newsSvc.getAll();
     }
 
     @ExceptionHandler(value = { ConstraintViolationException.class })

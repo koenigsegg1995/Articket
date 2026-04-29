@@ -1,27 +1,67 @@
 package com.maddog.articket.news.dao;
 
 import com.maddog.articket.news.entity.News;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 最新消息 DAO
+ */
+@Mapper
 public interface NewsDao {
 
+	/**
+	 * 新增
+	 *
+	 * @param news
+	 * 			最新消息
+	 * @return 成功筆數
+	 */
 	int insert(News news);
 
+	/**
+	 * 更新
+	 *
+	 * @param news
+	 * 			最新消息
+	 * @return 成功筆數
+	 */
 	int update(News news);
 
-	@Query(value = "delete from News where newsID =?1", nativeQuery = true)
-	void deleteById(Integer newsId);
+	/**
+	 * 刪除
+	 *
+	 * @param newsId
+	 * 			消息ID
+	 * @return 成功筆數
+	 */
+	int deleteById(Integer newsId);
 
+	/**
+	 * 依消息 ID 查詢
+	 *
+	 * @param newsId
+	 * 			消息ID
+	 * @return 最新消息
+	 */
 	News findById(Integer newsId);
 
-	// 	ORDER BY news_create_time desc
+	/**
+	 * 查詢全部並分頁
+	 * @param offset
+	 * 			分頁起始位置
+	 * @param size
+	 * 			分頁大小
+	 * @return 最新消息清單
+	 */
 	List<News> findAllPaginated(Integer offset, Integer size );
 
+	/**
+	 * 計算全部最新消息筆數
+	 *
+	 * @return
+	 */
 	int countAll();
 
 //	List<News> findByCondition();
