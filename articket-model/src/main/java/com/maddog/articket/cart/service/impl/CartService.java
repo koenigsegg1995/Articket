@@ -12,7 +12,7 @@ import com.maddog.articket.membercoupon.entity.MemberCoupon;
 import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orderitem.entity.OrderItem;
 import com.maddog.articket.orders.entity.Orders;
-import com.maddog.articket.orders.dao.OrdersRepository;
+import com.maddog.articket.orders.dao.OrdersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,7 @@ public class CartService {
     private MemberCouponService memberCouponService;
     
     @Autowired
-    private OrdersRepository ordersRepository;
+    private OrdersDao ordersDao;
 
     // 獲取購物車
     public Cart getCartByMemberId(Integer memberId) {
@@ -280,7 +280,7 @@ public class CartService {
 //        ordersRepository.save(order);
         
      // 保存訂單
-        order = ordersRepository.save(order);
+        order = ordersDao.save(order);
         
         // 清空購物車
         cart.getCartItems().clear();

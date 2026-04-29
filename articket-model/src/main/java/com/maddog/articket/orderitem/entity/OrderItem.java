@@ -1,121 +1,57 @@
 package com.maddog.articket.orderitem.entity;
 
-import com.maddog.articket.commodity.entity.Commodity;
-import com.maddog.articket.orders.entity.Orders;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "orderItem")
-public class OrderItem implements java.io.Serializable {
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * 訂單明細 DO
+ */
+@Getter
+@Setter
+public class OrderItem implements Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "orderItemID", updatable = false)
-	private Integer orderItemID; // 訂單明細ID
+	/**
+	 * 訂單明細ID
+	 */
+	private Integer orderItemId;
 
-	@ManyToOne
-	@JoinColumn(name = "orderID", referencedColumnName = "orderID")
-	private Orders orders; // 訂單ID
+	/**
+	 * 訂單ID
+	 */
+	private Integer orderId;
 
-	@ManyToOne
-	@JoinColumn(name = "commodityID", referencedColumnName = "commodityID")
-	private Commodity commodity; // 商品ID
+	/**
+	 * 商品ID
+	 */
+	private Integer commodityId;
 
-	@NotNull(message = "商品下訂價格不能為空")
-	@Column(name = "commodityOrderPrice")
-	private BigDecimal commodityOrderPrice; // 商品下訂價格
+	/**
+	 * 商品下訂價格
+	 */
+	private BigDecimal commodityOrderPrice;
 
-	@NotNull(message = "商品數量不能為空")
-	@Column(name = "orderItemQuantity")
-	private Integer orderItemQuantity; // 數量
+	/**
+	 * 商品數量
+	 */
+	private Integer orderItemQuantity;
 
-	@NotNull(message = "單一商品總價不能為空")
-	@Column(name = "orderItemTotalPrice")
-	private BigDecimal orderItemTotalPrice; // 單一商品架總價
+	/**
+	 * 單一商品總價
+	 */
+	private BigDecimal orderItemTotalPrice;
 
-	@Column(name = "orderItemCreateTime", updatable = false, insertable = false)
-	private Timestamp orderItemCreateTime; // 建立時間
+	/**
+	 * 建立時間
+	 */
+	private Date orderItemCreateTime;
 
-	// 構造函數、getter 和 setter 方法
-	public OrderItem() {
-		super();
-	}
-
-	public OrderItem(Integer orderItemID, Orders orders, Commodity commodity, BigDecimal commodityOrderPrice,
-			Integer orderItemQuantity, BigDecimal orderItemTotalPrice, Timestamp orderItemCreateTime) {
-		super();
-		this.orderItemID = orderItemID;
-		this.orders = orders;
-		this.commodity = commodity;
-		this.commodityOrderPrice = commodityOrderPrice;
-		this.orderItemQuantity = orderItemQuantity;
-		this.orderItemTotalPrice = orderItemTotalPrice;
-		this.orderItemCreateTime = orderItemCreateTime;
-	}
-
-	public Integer getOrderItemID() {
-		return orderItemID;
-	}
-
-	public void setOrderItemID(Integer orderItemID) {
-		this.orderItemID = orderItemID;
-	}
-
-	public Orders getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Orders orders) {
-		this.orders = orders;
-	}
-
-	public Commodity getCommodity() {
-		return commodity;
-	}
-
-	public void setCommodity(Commodity commodity) {
-		this.commodity = commodity;
-	}
-
-	public BigDecimal getCommodityOrderPrice() {
-		return commodityOrderPrice;
-	}
-
-	public void setCommodityOrderPrice(BigDecimal commodityOrderPrice) {
-		this.commodityOrderPrice = commodityOrderPrice;
-	}
-
-	public Integer getOrderItemQuantity() {
-		return orderItemQuantity;
-	}
-
-	public void setOrderItemQuantity(Integer orderItemQuantity) {
-		this.orderItemQuantity = orderItemQuantity;
-	}
-
-	public BigDecimal getOrderItemTotalPrice() {
-		return orderItemTotalPrice;
-	}
-
-	public void setOrderItemTotalPrice(BigDecimal orderItemTotalPrice) {
-		this.orderItemTotalPrice = orderItemTotalPrice;
-	}
-
-	public Timestamp getOrderItemCreateTime() {
-		return orderItemCreateTime;
-	}
-
-	public void setOrderItemCreateTime(Timestamp orderItemCreateTime) {
-		this.orderItemCreateTime = orderItemCreateTime;
-	}
-
-	@PrePersist
-	protected void onCreate() {
-		orderItemCreateTime = new Timestamp(System.currentTimeMillis());
-	}
 }
 

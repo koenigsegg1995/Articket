@@ -359,7 +359,7 @@ public class GeneralMemberController {
             return "redirect:/generalmember/login";
         }
 
-		List<Orders> orders = ordersSvc.getOrdersByMemberID(memberId);
+		List<Orders> orders = ordersSvc.getOrdersByMemberId(memberId);
 
         model.addAttribute("orders", orders);
 
