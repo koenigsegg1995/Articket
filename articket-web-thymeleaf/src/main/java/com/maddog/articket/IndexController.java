@@ -7,7 +7,7 @@ import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
-import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
+import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

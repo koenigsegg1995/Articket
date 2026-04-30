@@ -7,7 +7,7 @@ import com.maddog.articket.commodity.service.impl.CommodityService;
 import com.maddog.articket.commoditypicture.entity.CommodityPicture;
 import com.maddog.articket.commoditypicture.service.impl.CommodityPictureService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
-import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
+import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class CommodityController {
 	CommodityPictureService commodityPictureSvc;
 
 	@Autowired
-	PartnerMemberService partnerMemberSvc;
+    PartnerMemberService partnerMemberSvc;
 
 	@Autowired
 	ActivityService activitySvc;

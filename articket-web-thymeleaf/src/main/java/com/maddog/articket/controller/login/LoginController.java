@@ -3,7 +3,7 @@ package com.maddog.articket.controller.login;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
-import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
+import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class LoginController {
     GeneralMemberService gmemberSvc;
 
 	@Autowired
-	PartnerMemberService partnerSvc;
+    PartnerMemberService partnerSvc;
 
 	@GetMapping("/login")
 	public String getLogin() {

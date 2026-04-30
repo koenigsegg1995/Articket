@@ -8,7 +8,7 @@ import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.bookticket.entity.BookTicket;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
-import com.maddog.articket.partnermember.service.impl.PartnerMemberService;
+import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
 import com.maddog.articket.ticket.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,19 +23,34 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 票券 Controller
+ */
 @Controller
 @RequestMapping("/ticket")
 public class TicketController {
-	
+
+	/**
+	 * 活動時段 Service
+	 */
 	@Autowired
 	private ActivityTimeSlotService activityTimeSlotService;
-	
+
+	/**
+	 * 一般會員 Service
+	 */
 	@Autowired
 	private GeneralMemberService memberSvc;
-	
+
+	/**
+	 * 票券訂單 Service
+	 */
 	@Autowired
 	private BookTicketService bookTicketSvc;
-	
+
+	/**
+	 * 廠商會員 Service
+	 */
 	@Autowired
 	private PartnerMemberService partnerSvc;
 	
