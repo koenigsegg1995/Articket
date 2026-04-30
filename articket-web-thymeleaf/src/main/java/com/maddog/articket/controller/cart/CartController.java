@@ -7,7 +7,7 @@ import com.maddog.articket.cartitem.service.impl.CartItemService;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orders.entity.Orders;
-import com.maddog.articket.orders.service.impl.OrdersService;
+import com.maddog.articket.orders.service.pri.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

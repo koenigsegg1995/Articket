@@ -10,12 +10,28 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * 訂單 DAO
+ */
 @Mapper
 public interface OrdersDao {
 
+    /**
+     * 依訂單ID查詢
+     *
+     * @param orderId
+     *          訂單ID
+     * @return 訂單
+     */
     Orders findById(Integer orderId);
 
-    //查詢訂單
+    /**
+     * 依會員ID查詢訂單清單
+     *
+     * @param memberId
+     *          會員ID
+     * @return 訂單清單
+     */
     List<Orders> findByGeneralMemberId(Integer memberId);
 
 }

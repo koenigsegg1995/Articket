@@ -9,7 +9,7 @@ import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.bookticket.entity.BookTicket;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.orders.entity.Orders;
-import com.maddog.articket.orders.service.impl.OrdersService;
+import com.maddog.articket.orders.service.pri.OrdersService;
 import com.maddog.articket.passwordchangeform.PasswordChangeForm;
 import com.maddog.articket.ticket.entity.Ticket;
 import com.maddog.articket.ticket.service.impl.TicketService;

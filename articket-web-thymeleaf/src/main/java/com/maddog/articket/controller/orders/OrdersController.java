@@ -1,8 +1,7 @@
 package com.maddog.articket.controller.orders;
 
-import com.maddog.articket.orderitem.service.pri.OrderItemService;
 import com.maddog.articket.orders.entity.Orders;
-import com.maddog.articket.orders.service.impl.OrdersService;
+import com.maddog.articket.orders.service.pri.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

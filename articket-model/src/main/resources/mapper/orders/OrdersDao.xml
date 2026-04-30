@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.orders.dao.OrdersDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 全查詢 -->
+    <resultMap id="resultForSelect" type="com.maddog.articket.orders.entity.Orders">
+        <id property="orderId" column="order_id" />
+        <result property="memberId" column="member_id" />
+        <result property="recipient" column="recipient" />
+        <result property="recipientPhone" column="recipient_phone" />
+        <result property="recipientEmail" column="recipient_email" />
+        <result property="recipientAddress" column="recipient_address" />
+        <result property="memberCouponId" column="member_coupon_id" />
+        <result property="actualAmount" column="actual_amount" />
+        <result property="orderStatus" column="order_status" />
+        <result property="payStatus" column="pay_status" />
+        <result property="payTime" column="pay_time" />
+        <result property="shipTime" column="ship_time" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 依訂單ID查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            orders
+        WHERE
+            order_id = #{orderId}
+    </select>
+
+    <!-- 依會員ID查詢訂單清單 -->
+    <select id="findByGeneralMemberId"
+            parameterType="java.lang.Integer"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            orders
+        WHERE
+            member_id = #{memberId}
+    </select>
+<!-- method-->
+
+</mapper>
