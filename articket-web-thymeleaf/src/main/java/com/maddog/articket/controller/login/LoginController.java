@@ -206,7 +206,7 @@ public class LoginController {
 			return "partnerLogin";
 		}
 		// 根據帳號獲取會員資料
-		PartnerMember partnerMember = partnerSvc.getByTaxID(taxIDStr);
+		PartnerMember partnerMember = partnerSvc.getByTaxId(taxIDStr);
 
 		// 檢查會員是否存在
 		if (partnerMember == null) {
@@ -250,7 +250,7 @@ public class LoginController {
 		String taxId = (String) session.getAttribute("taxID");
 		log.info("Fetching data for member account: {}", taxId);
 
-		PartnerMember partnerMember = partnerSvc.getByTaxID(taxId);
+		PartnerMember partnerMember = partnerSvc.getByTaxId(taxId);
 
 		if (partnerMember == null) {
 			log.warn("Member not found for account: {}", taxId);

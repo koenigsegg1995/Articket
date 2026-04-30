@@ -68,6 +68,6 @@ public interface PartnerMemberService {
 	 * 			統一編號
 	 * @return 廠商會員
 	 */
-	PartnerMember getByTaxID(String taxId);
+	PartnerMember getByTaxId(String taxId);
 
 }

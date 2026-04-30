@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.prosecute.dao.ProsecuteDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 全查詢 -->
+    <resultMap id="resultForSelect" type="com.maddog.articket.prosecute.entity.Prosecute">
+        <id property="prosecuteId" column="prosecute_id" />
+        <result property="memberId" column="member_id" />
+        <result property="articleId" column="article_id" />
+        <result property="prosecuteReason" column="prosecute_reason" />
+        <result property="messageId" column="message_id" />
+        <result property="prosecuteCreateTime" column="prosecute_create_time" />
+        <result property="prosecuteStatus" column="prosecute_status" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.prosecute.entity.Prosecute">
+        INSERT INTO
+            prosecute
+        (
+            member_id,
+            article_id,
+            prosecute_reason,
+            message_id,
+            prosecute_create_time,
+            prosecute_status
+        )
+        VALUES
+        (
+            #{prosecuteId},
+            #{memberId},
+            #{articleId},
+            #{prosecuteReason},
+            #{messageId},
+            NOW(),
+            #{prosecuteStatus}
+        )
+    </insert>
+
+    <!-- 查詢全部 -->
+    <select id="findAll"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            prosecute
+    </select>
+<!-- method-->
+
+</mapper>

@@ -3,7 +3,7 @@ package com.maddog.articket.controller.article;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.prosecute.entity.Prosecute;
-import com.maddog.articket.prosecute.service.impl.ProsecuteService;
+import com.maddog.articket.prosecute.service.pri.ProsecuteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * 檢舉 Controller
+ */
 @RestController
 @RequestMapping("/prosecutes")
 public class ProsecuteController {
 
 	@Autowired
-    ProsecuteService ProsecuteSvc;
+    private ProsecuteService prosecuteSvc;
 	
 	@Autowired
-    GeneralMemberService generalMemberSvc;
+    private GeneralMemberService generalMemberSvc;
 
 	@PostMapping
 	public ResponseEntity<?> prosecuteContent(@RequestBody Prosecute prosecute,
@@ -37,14 +40,14 @@ public class ProsecuteController {
         } 
         
         // 檢查是檢舉文章還是留言
-        if (prosecute.getArticle() != null) {
+        if (prosecute.getArticleId() != null) {
             // 文章檢舉
-            if (ProsecuteSvc.isArticleReported(prosecute.getArticle().getArticleID())) {
+            if (prosecuteSvc.isArticleReported(prosecute.getArticleId())) {
                 return ResponseEntity.badRequest().body("此文章已被檢舉過，無法重複檢舉");
             }
-        } else if (prosecute.getMessage() != null) {
+        } else if (prosecute.getMessageId() != null) {
             // 留言檢舉
-            if (ProsecuteSvc.isMessageReported(prosecute.getMessage().getMessageID())) {
+            if (prosecuteSvc.isMessageReported(prosecute.getMessageId())) {
                 return ResponseEntity.badRequest().body("此留言已被檢舉過，無法重複檢舉");
             }
         } else {
@@ -52,10 +55,11 @@ public class ProsecuteController {
         }
         
         // 設置檢舉人ID
-        prosecute.setGeneralMember(generalMember);
+        prosecute.setMemberId(generalMember.getMemberId());
 		
-		ProsecuteSvc.prosecuteContent(prosecute);
-		return ResponseEntity.ok().build();
+		prosecuteSvc.prosecuteContent(prosecute);
+
+        return ResponseEntity.ok().build();
 	}
 
     @GetMapping("/article/{id}")
@@ -63,7 +67,7 @@ public class ProsecuteController {
         if (id == null) {
             throw new IllegalArgumentException("Article ID is required");
         }
-        boolean isReported = ProsecuteSvc.isArticleReported(id);
+        boolean isReported = prosecuteSvc.isArticleReported(id);
         return ResponseEntity.ok(isReported);
     }
 
@@ -78,7 +82,7 @@ public class ProsecuteController {
         if (generalMember == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("請先登入");
         }
-        boolean isReported = ProsecuteSvc.isMessageReported(id);
+        boolean isReported = prosecuteSvc.isMessageReported(id);
         return ResponseEntity.ok(isReported);
     }
 
