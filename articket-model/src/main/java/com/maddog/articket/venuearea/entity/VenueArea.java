@@ -1,7 +1,7 @@
 package com.maddog.articket.venuearea.entity;
 
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
-import com.maddog.articket.seat.model.entity.Seat;
+import com.maddog.articket.seat.entity.Seat;
 import com.maddog.articket.venue.entity.Venue;
 import jakarta.persistence.*;
 import java.util.Set;

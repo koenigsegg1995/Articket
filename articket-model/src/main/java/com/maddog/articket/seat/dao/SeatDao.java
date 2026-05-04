@@ -1,4 +1,4 @@
-package com.maddog.articket.seat.model.entity;
+package com.maddog.articket.seat.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

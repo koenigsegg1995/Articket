@@ -6,7 +6,7 @@ import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
 import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
-import com.maddog.articket.seat.model.service.pri.SeatService;
+import com.maddog.articket.seat.service.pri.SeatService;
 import com.maddog.articket.seatstatus.entity.SeatStatus;
 import com.maddog.articket.seatstatus.service.impl.SeatStatusService;
 import com.maddog.articket.ticket.entity.Ticket;

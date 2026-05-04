@@ -1,4 +1,4 @@
-package com.maddog.articket.seat.model;
+package com.maddog.articket.seat;
 
 import java.util.List;
 import java.util.Map;

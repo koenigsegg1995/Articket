@@ -1,4 +1,4 @@
-package com.maddog.articket.seat.model.service.pri;
+package com.maddog.articket.seat.service.pri;
 
 /**
  * 座位 Service interface

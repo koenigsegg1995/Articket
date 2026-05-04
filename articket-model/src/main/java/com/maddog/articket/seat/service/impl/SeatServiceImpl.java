@@ -1,7 +1,7 @@
-package com.maddog.articket.seat.model.service.impl;
+package com.maddog.articket.seat.service.impl;
 
-import com.maddog.articket.seat.model.entity.SeatDao;
-import com.maddog.articket.seat.model.service.pri.SeatService;
+import com.maddog.articket.seat.dao.SeatDao;
+import com.maddog.articket.seat.service.pri.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
