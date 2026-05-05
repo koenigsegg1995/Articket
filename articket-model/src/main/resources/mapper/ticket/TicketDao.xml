@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.ticket.dao.TicketDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.ticket.entity.Ticket">
+        <id column="ticket_id" property="ticketId" />
+        <result column="member_id" property="memberId" />
+        <result column="seat_status_id" property="seatStatusId" />
+        <result column="activity_area_price_id" property="activityAreaPriceId" />
+        <result column="book_ticket_id" property="bookTicketId" />
+        <result column="activity_time_slot_id" property="activityTimeSlotId" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 查全部 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            ticket
+        ORDER BY
+            ticket_id
+    </select>
+
+    <!-- 依一般會員 ID 查詢 -->
+    <select id="findByGeneralMemberMemberId"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            ticket
+        WHERE
+            member_id = #{memberId}
+        ORDER BY
+            ticket_id
+    </select>
+<!-- method-->
+
+</mapper>

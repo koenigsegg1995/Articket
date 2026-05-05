@@ -344,7 +344,7 @@ public class GeneralMemberController {
 			return "redirect:/generalmember/login";
 		}
 
-		List<Ticket> tickets = ticketSvc.getTicketsByMemberID(memberId);
+		List<Ticket> tickets = ticketSvc.getTicketsByMemberId(memberId);
 
 		model.addAttribute("tickets", tickets);
 
