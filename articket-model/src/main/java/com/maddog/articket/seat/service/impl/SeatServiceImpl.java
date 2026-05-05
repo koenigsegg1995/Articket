@@ -16,7 +16,7 @@ public class SeatServiceImpl implements SeatService {
      * 座位 DAO
      */
     @Autowired
-    private SeatDao seatDap;
+    private SeatDao seatDao;
 
     /**
      * 依場館 ID 與座位代號查詢座位 ID
@@ -31,7 +31,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional(readOnly = true)
     public Integer findSeatId(Integer venueId, String seatName) {
-        return seatDap.findSeatIdByVenueIdAndSeatName(venueId, seatName);
+        return seatDao.findSeatIdByVenueIdAndSeatName(venueId, seatName);
     }
 
 }

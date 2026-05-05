@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 座位狀態 DO
  */
 @Getter
 @Setter
-public class SeatStatus implements java.io.Serializable {
+public class SeatStatus implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;

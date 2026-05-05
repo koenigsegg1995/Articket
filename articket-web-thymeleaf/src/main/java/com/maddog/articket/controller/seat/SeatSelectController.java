@@ -8,7 +8,7 @@ import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.seat.service.pri.SeatService;
 import com.maddog.articket.seatstatus.entity.SeatStatus;
-import com.maddog.articket.seatstatus.service.impl.SeatStatusService;
+import com.maddog.articket.seatstatus.service.pri.SeatStatusService;
 import com.maddog.articket.ticket.entity.Ticket;
 import com.maddog.articket.venuearea.service.impl.VenueAreaService;
 import lombok.extern.slf4j.Slf4j;
@@ -160,8 +160,8 @@ public class SeatSelectController {
 
 						// Create a new Ticket object and add it to the list
 						Ticket ticket = new Ticket();
-						ticket.setSeatStatus(seatStatus);
-						ticket.setActivityAreaPrice(activityAreaPrice);
+						ticket.setSeatStatusId(seatStatus.getSeatStatusId());
+						ticket.setActivityAreaPriceId(activityAreaPrice.getActivityAreaPriceId());
 						ticket.setActivityTimeSlotId(activityTimeSlotId);
 						ticketList.add(ticket);
 					} else {

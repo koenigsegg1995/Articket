@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.seatstatus.dao.SeatStatusDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.seatstatus.entity.SeatStatus">
+        <id column="seat_status_id" property="seatStatusId" />
+        <result column="activity_time_slot_id" property="activityTimeSlotId" />
+        <result column="seat_id" property="seatId" />
+        <result column="seat_status" property="seatStatus" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.seatstatus.entity.SeatStatus">
+        UPDATE
+            seat_status
+        SET
+            seat_status = #{seatStatus}
+        WHERE
+            seat_status_id = #{seatStatusId}
+    </update>
+
+    <!-- 依 活動時段 ID 和座位 ID 查詢 -->
+    <select id="findSeatStatusByActivityTimeSlotIdAndSeatId"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            seat_status
+        WHERE
+            activity_time_slot_id = #{activityTimeSlotId}
+            AND
+            seat_id = #{seatId}
+    </select>
+
+    <!-- 依 活動時段 ID 查詢座位狀態 -->
+    <select id="findAllByActivityTimeSlotId"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            seat_status
+        WHERE
+            activity_time_slot_id = #{activityTimeSlotId}
+        ORDER BY
+            seat_status_id
+    </select>
+
+    <!-- 為了在seatSelectPage顯示不可選取的座位而寫的方法 -->
+    <select id="findUnavailableSeatNamesByActivityTimeSlotId"
+            resultType="java.lang.String">
+        SELECT
+            s.seat_name
+        FROM
+            seat s
+        JOIN
+            seat_status ss
+            ON
+            s.seat_id = ss.seat_id
+        WHERE
+            ss.activity_time_slot_id = #{activityTimeSlotId}
+            AND
+            ss.seat_status IN (#{status1}, #{status2})
+    </select>
+
+    <!-- 獲取 seatStatus 為 2 的座位名稱 -->
+    <select id="findSeatNamesWithStatus2"
+            resultType="java.lang.String">
+        SELECT
+            s.seat_name
+        FROM
+            seat s
+        JOIN
+            seatStatus ss
+            ON
+            s.seat_id = ss.seat_id
+        WHERE
+            ss.activity_time_slot_id = #{activityTimeSlotId}
+            AND
+            ss.seat_status = 2
+    </select>
+
+    <!-- 獲取 seatStatus 為 3 的座位名稱 -->
+    <select id="findSeatNamesWithStatus3"
+            resultType="java.lang.String">
+        SELECT
+            s.seat_name
+        FROM
+            seat s
+        JOIN
+            seat_status ss
+            ON
+            s.seat_id = ss.seat_id
+        WHERE
+            ss.activity_time_slot_id = #{activityTimeSlotId}
+            AND
+            ss.seat_status = 3
+    </select>
+<!-- method-->
+
+</mapper>

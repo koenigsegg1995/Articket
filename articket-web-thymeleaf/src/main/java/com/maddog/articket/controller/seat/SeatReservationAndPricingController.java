@@ -9,7 +9,7 @@ import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.seat.PriceForm;
 import com.maddog.articket.seat.SeatPriceData;
 import com.maddog.articket.seat.service.pri.SeatService;
-import com.maddog.articket.seatstatus.service.impl.SeatStatusService;
+import com.maddog.articket.seatstatus.service.pri.SeatStatusService;
 import com.maddog.articket.venuearea.service.impl.VenueAreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
