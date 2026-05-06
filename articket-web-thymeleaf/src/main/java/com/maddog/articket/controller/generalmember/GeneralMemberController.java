@@ -12,7 +12,7 @@ import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.service.pri.OrdersService;
 import com.maddog.articket.passwordchangeform.dto.PasswordChangeForm;
 import com.maddog.articket.ticket.entity.Ticket;
-import com.maddog.articket.ticket.service.impl.TicketService;
+import com.maddog.articket.ticket.service.pri.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;

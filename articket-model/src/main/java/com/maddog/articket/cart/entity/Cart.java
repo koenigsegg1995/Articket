@@ -46,7 +46,7 @@ public class Cart implements Serializable {
 	private Date cartCreateTime;
 
 	public void addItem(Commodity commodity, int quantity) {
-        CartItem item = cartItems.stream()
+        CartItem item =cartItems.stream()
                 .filter(i -> i.getCommodity().getCommodityId().equals(commodity.getCommodityId()))
                 .findFirst()
                 .orElse(null);

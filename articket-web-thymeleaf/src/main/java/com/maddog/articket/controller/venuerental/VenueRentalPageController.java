@@ -1,7 +1,7 @@
 package com.maddog.articket.controller.venuerental;
 
 import com.maddog.articket.venue.entity.Venue;
-import com.maddog.articket.venue.service.impl.VenueService;
+import com.maddog.articket.venue.service.pri.VenueService;
 import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.pri.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,32 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 場地申請 Controller
+ */
 @Controller
 @RequestMapping("/venueRentalPage")
 public class VenueRentalPageController {
 
+	/**
+	 * 場地申請資料 Service
+	 */
 	@Autowired
 	private VenueRentalService venueRentalService;
 
+	/**
+	 * 場館 Service
+	 */
 	@Autowired
 	private VenueService venueService;
 
+	/**
+	 * 場地申請頁面
+	 *
+	 * @param model
+	 * 			Model
+	 * @return venueRentalPage.html
+	 */
 	@GetMapping
 	public String addVenueRental(Model model) {
 		VenueRental venueRental = new VenueRental();
@@ -46,7 +62,15 @@ public class VenueRentalPageController {
 		return "/back-end-partner/venue/venueRentalPage";
 	}
 
-//  根據 partnerID 顯示場地租借資料，這是給廠商查看已申請的場地用的
+	/**
+	 * 根據 partnerID 顯示場地申請資料，這是給廠商查看已申請的場地用的
+	 *
+	 * @param model
+	 * 			Model
+	 * @param session
+	 * 			HttpSession
+	 * @return listAllPartnerVenueRental.html
+	 */
 	@GetMapping("/partnerVenueRentalList")
 	public String getVenueRentalsByPartnerId(Model model, HttpSession session) {
 		// 從 session 中獲取 partnerID
@@ -57,12 +81,21 @@ public class VenueRentalPageController {
 		return "/back-end-partner/venue/listAllPartnerVenueRental";
 	}
 
-//    這是給場館申請的下拉式選單用的
-	@ModelAttribute("venueList")
-	public List<Venue> showVenueList() {
-		return venueService.getAll(); // 從服務層獲取所有場館資料並返回
-	}
-
+	/**
+	 * 新增場地申請資料
+	 *
+	 * @param venueRental
+	 * 			場地申請資料
+	 * @param result
+	 * 			BindingResult
+	 * @param proposalFile
+	 * 			場地申請書
+	 * @param model
+	 * 			Model
+	 * @param session
+	 * 			HttpSession
+	 * @return partnerVenueRentalList.html
+	 */
 	@PostMapping("insert")
 	public String insert(@Valid VenueRental venueRental,
 						 BindingResult result,
@@ -123,10 +156,28 @@ public class VenueRentalPageController {
 		return "redirect:/venueRentalPage/partnerVenueRentalList"; // 新增成功後重導至VenueRentalPageController
 	}
 
-	// 生成 venueRentalCode 的方法
+	/**
+	 * 場館申請的下拉式選單用
+	 *
+	 * @return 場館清單
+	 */
+	@ModelAttribute("venueList")
+	public List<Venue> showVenueList() {
+		return venueService.getAll();
+	}
+
+	/**
+	 * 生成場地申請編號的方法
+	 *
+	 * @param venueRentalId
+	 * 			場地租借 ID
+	 * @return 場地申請編號
+	 */
 	private String generateVenueRentalCode(Integer venueRentalId) {
 		int baseNumber = 3001000;
 		int generatedNumber = baseNumber + venueRentalId;
+
 		return "G" + generatedNumber;
 	}
+
 }

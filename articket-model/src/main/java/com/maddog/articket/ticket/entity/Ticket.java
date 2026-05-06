@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 票券
+ * 票券 DO
  */
 @Getter
 @Setter

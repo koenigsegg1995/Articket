@@ -1,12 +1,18 @@
 package com.maddog.articket.venuerental.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 場地申請資料 DO
  */
-public class VenueRental implements java.io.Serializable {
+@Getter
+@Setter
+public class VenueRental implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -60,185 +66,5 @@ public class VenueRental implements java.io.Serializable {
 	 * 場地申請編號
 	 */
 	private String venueRentalCode;
-
-	/**
-	 *
-	 * @return venueRentalId
-	 * 			Integer
-	 */
-	public Integer getVenueRentalId() {
-		return venueRentalId;
-	}
-
-	/**
-	 *
-	 * @param venueRentalId
-	 * 			Integer
-	 */
-	public void setVenueRentalId(Integer venueRentalId) {
-		this.venueRentalId = venueRentalId;
-	}
-
-	/**
-	 *
-	 * @return venueId
-	 * 			Integer
-	 */
-	public Integer getVenueId() {
-		return venueId;
-	}
-
-	/**
-	 *
-	 * @param venueId
-	 * 			Integer
-	 */
-	public void setVenueId(Integer venueId) {
-		this.venueId = venueId;
-	}
-
-	/**
-	 *
-	 * @return partnerId
-	 * 			Integer
-	 */
-	public Integer getPartnerId() {
-		return partnerId;
-	}
-
-	/**
-	 *
-	 * @param partnerId
-	 * 			Integer
-	 */
-	public void setPartnerId(Integer partnerId) {
-		this.partnerId = partnerId;
-	}
-
-	/**
-	 *
-	 * @return activityName
-	 * 			String
-	 */
-	public String getActivityName() {
-		return activityName;
-	}
-
-	/**
-	 *
-	 * @param activityName
-	 * 			String
-	 */
-	public void setActivityName(String activityName) {
-		this.activityName = activityName;
-	}
-
-	/**
-	 *
-	 * @return proposal
-	 * 			byte[]
-	 */
-	public byte[] getProposal() {
-		return proposal;
-	}
-
-	/**
-	 *
-	 * @param proposal
-	 * 			byte[]
-	 */
-	public void setProposal(byte[] proposal) {
-		this.proposal = proposal;
-	}
-
-	/**
-	 *
-	 * @return venueRentalStatus
-	 * 			Integer
-	 */
-	public Integer getVenueRentalStatus() {
-		return venueRentalStatus;
-	}
-
-	/**
-	 *
-	 * @param venueRentalStatus
-	 * 			Integer
-	 */
-	public void setVenueRentalStatus(Integer venueRentalStatus) {
-		this.venueRentalStatus = venueRentalStatus;
-	}
-
-	/**
-	 *
-	 * @return venueRentalStartDate
-	 * 			Date
-	 */
-	public Date getVenueRentalStartDate() {
-		return venueRentalStartDate;
-	}
-
-	/**
-	 *
-	 * @param venueRentalStartDate
-	 * 			Date
-	 */
-	public void setVenueRentalStartDate(Date venueRentalStartDate) {
-		this.venueRentalStartDate = venueRentalStartDate;
-	}
-
-	/**
-	 *
-	 * @return venueRentalEndDate
-	 * 			Date
-	 */
-	public Date getVenueRentalEndDate() {
-		return venueRentalEndDate;
-	}
-
-	/**
-	 *
-	 * @param venueRentalEndDate
-	 * 			Date
-	 */
-	public void setVenueRentalEndDate(Date venueRentalEndDate) {
-		this.venueRentalEndDate = venueRentalEndDate;
-	}
-
-	/**
-	 *
-	 * @return venueRentalCreateTime
-	 * 			Date
-	 */
-	public Date getVenueRentalCreateTime() {
-		return venueRentalCreateTime;
-	}
-
-	/**
-	 *
-	 * @param venueRentalCreateTime
-	 * 			Date
-	 */
-	public void setVenueRentalCreateTime(Date venueRentalCreateTime) {
-		this.venueRentalCreateTime = venueRentalCreateTime;
-	}
-
-	/**
-	 *
-	 * @return venueRentalCode
-	 * 			String
-	 */
-	public String getVenueRentalCode() {
-		return venueRentalCode;
-	}
-
-	/**
-	 *
-	 * @param venueRentalCode
-	 * 			String
-	 */
-	public void setVenueRentalCode(String venueRentalCode) {
-		this.venueRentalCode = venueRentalCode;
-	}
 
 }

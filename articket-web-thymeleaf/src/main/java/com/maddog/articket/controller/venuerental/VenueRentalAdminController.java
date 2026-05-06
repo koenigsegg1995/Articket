@@ -1,6 +1,5 @@
 package com.maddog.articket.controller.venuerental;
 
-import com.maddog.articket.venue.service.impl.VenueService;
 import com.maddog.articket.venuerental.entity.VenueRental;
 import com.maddog.articket.venuerental.service.pri.VenueRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,61 +17,107 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * 場地申請資料 (管理員) Controller
+ */
 @Controller
 @RequestMapping("/venueRentalAdmin")
 public class VenueRentalAdminController {
-	@Autowired
-	VenueRentalService venueRentalService;
-	@Autowired
-	VenueService venueService;
 
-//  根據 partnerID 顯示場地租借資料，這是給廠商查看已申請的場地用的
+	/**
+	 * 場地申請 Service
+	 */
+	@Autowired
+	private VenueRentalService venueRentalService;
+
+	/**
+	 * 根據 partnerID 顯示場地申請資料，這是給廠商查看已申請的場地用的
+	 *
+	 * @param model
+	 * 			Model
+	 * @return listAllAdminVenueRental.html
+	 */
 	@GetMapping
 	public String getadminVenueRentalList(ModelMap model) {
 		List<VenueRental> list = venueRentalService.getAll();
 		model.addAttribute("venueRentalListData", list);
+
 		return "/back-end-admin/venue/listAllAdminVenueRental";
 	}
 
+	/**
+	 * 依 場館申請資料ID 查詢
+	 *
+	 * @param venueRentalID
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("venueRentalID") String venueRentalID, ModelMap model) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 		/*************************** 2.開始查詢資料 *****************************************/
-		// EmpService empSvc = new EmpService();
 		VenueRental venueRental = venueRentalService.getOneVenueRental(Integer.valueOf(venueRentalID));
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("venueRental", venueRental);
-		return "back-end-admin/venue/listOneAdminVenueRental"; // 查詢完成後轉交update_emp_input.html
+
+		return "back-end-admin/venue/listOneAdminVenueRental";
 	}
 
+	/**
+	 * 場地申請通過
+	 *
+	 * @param venueRentalId
+	 * 			場地申請資料ID
+	 * @param redirectAttributes
+	 * 			RedirectAttributes
+	 * @return venueRentalAdmin.html
+	 */
 	@PostMapping("/approve")
-	public String approveVenueRental(@RequestParam("venueRentalID") Integer venueRentalID,
+	public String approveVenueRental(@RequestParam("venueRentalID") Integer venueRentalId,
 			RedirectAttributes redirectAttributes) {
-		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalID);
+		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalId);
 		if (venueRental != null) {
 			venueRental.setVenueRentalStatus(1); // 設置為通過狀態
 			venueRentalService.updateVenueRental(venueRental);
 			redirectAttributes.addFlashAttribute("message", "場地租借申請已通過審核");
 		}
+
 		return "redirect:/venueRentalAdmin";
 	}
 
+	/**
+	 * 場地申請拒絕
+	 *
+	 * @param venueRentalId
+	 * 			場地申請資料ID
+	 * @param redirectAttributes
+	 * 			RedirectAttributes
+	 * @return venueRentalAdmin.html
+	 */
 	@PostMapping("/reject")
-	public String rejectVenueRental(@RequestParam("venueRentalID") Integer venueRentalID,
+	public String rejectVenueRental(@RequestParam("venueRentalID") Integer venueRentalId,
 			RedirectAttributes redirectAttributes) {
-		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalID);
+		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalId);
 		if (venueRental != null) {
 			venueRental.setVenueRentalStatus(0); // 設置為不通過狀態
 			venueRentalService.updateVenueRental(venueRental);
 			redirectAttributes.addFlashAttribute("message", "場地租借申請已被拒絕");
 		}
+
 		return "redirect:/venueRentalAdmin";
 	}
 
+	/**
+	 * 下載場地申請書
+	 *
+	 * @param venueRentalId
+	 * 			場地申請資料ID
+	 * @return 場地申請書
+	 */
 	@GetMapping("/downloadProposal")
-	public ResponseEntity<ByteArrayResource> downloadProposal(@RequestParam("venueRentalID") Integer venueRentalID) {
-		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalID);
+	public ResponseEntity<ByteArrayResource> downloadProposal(@RequestParam("venueRentalID") Integer venueRentalId) {
+		VenueRental venueRental = venueRentalService.getOneVenueRental(venueRentalId);
 		if (venueRental != null && venueRental.getProposal() != null) {
 			byte[] pdfBytes = venueRental.getProposal();
 			ByteArrayResource resource = new ByteArrayResource(pdfBytes);
@@ -83,4 +128,5 @@ public class VenueRentalAdminController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
 }

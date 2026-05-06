@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.venue.dao.VenueDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.venue.entity.Venue">
+        <id column="venue_id" property="venueId" />
+        <result column="venue_name" property="venueName" />
+        <result column="venue_phone" property="venuePhone" />
+        <result column="venue_contact_person" property="venueContactPerson" />
+        <result column="venue_address" property="venueAddress" />
+        <result column="venue_location" property="venueLocation" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 查全部 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            venue
+        ORDER BY
+            venue_id
+    </select>
+<!-- method-->
+
+</mapper>
