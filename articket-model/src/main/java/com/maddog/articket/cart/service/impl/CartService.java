@@ -9,7 +9,6 @@ import com.maddog.articket.commodity.service.impl.CommodityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.entity.MemberCoupon;
-import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orderitem.entity.OrderItem;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.dao.OrdersDao;
@@ -36,19 +35,16 @@ public class CartService {
 
     @Autowired
     private GeneralMemberService generalMemberService;
-    
-    @Autowired
-    private MemberCouponService memberCouponService;
-    
+
     @Autowired
     private OrdersDao ordersDao;
 
     // 獲取購物車
     public Cart getCartByMemberId(Integer memberId) {
-    	return cartDao.findByGeneralMember_MemberID(memberId);
+    	return cartDao.findByMemberId(memberId);
     }
     
- // 添加商品到購物車
+    // 添加商品到購物車
     @Transactional
     public void addToCart(Integer memberID, Integer commodityID, Integer quantity) {
         // 獲取購物車，或創建一個新的
@@ -138,24 +134,9 @@ public class CartService {
         cart.setCartTotalPrice(totalPrice);
     }
     
-    
-    // 獲取或創建購物車
-//    @Transactional
-//    public Cart getOrCreateCart(Integer memberID) {
-//        Cart cart = cartRepository.findByGeneralMember_MemberID(memberID);
-//        if (cart == null) {
-//            cart = new Cart();
-//            cart.setGeneralMember(generalMemberService.getOneGeneralMember(memberID));
-//            cart.setCartTotalPrice(BigDecimal.ZERO);
-//            cart.setCartCreateTime(new Timestamp(System.currentTimeMillis()));
-//            return cartRepository.save(cart);
-//        }
-//        return cart;
-//    }
-    
     @Transactional
     public Cart getOrCreateCart(Integer memberID) {
-        Cart cart = cartDao.findByGeneralMember_MemberID(memberID);
+        Cart cart = cartDao.findByMemberId(memberID);
         if (cart == null) {
             cart = new Cart();
             GeneralMember member = generalMemberService.getById(memberID);
@@ -290,7 +271,6 @@ public class CartService {
         return order;
 
     }
-    
     
     private BigDecimal calculateTotalAmount(Cart cart) {
         return cart.getCartItems().stream()

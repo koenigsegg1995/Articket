@@ -2,7 +2,6 @@ package com.maddog.articket.cart.dao;
 
 import com.maddog.articket.cart.entity.Cart;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * 購物車 DAO
@@ -11,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Mapper
 public interface CartDao {
 	
-    Cart findByGeneralMember_MemberID(Integer memberId);
+    Cart findByMemberId(Integer memberId);
 
     int insert(Cart cart);
 
