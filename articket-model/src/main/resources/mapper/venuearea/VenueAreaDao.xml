@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.venuearea.dao.VenueAreaDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 查全部 -->
+    <select id="findVenueAreaIdByVenueIdAndVenueAreaName"
+            resultType="java.lang.Integer">
+        SELECT
+            venue_area_id
+        FROM
+            venue_area
+        WHERE
+            venue_id = #{venueId}
+            AND
+            venue_area_name = #{venueAreaName}
+    </select>
+<!-- method-->
+
+</mapper>
