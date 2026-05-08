@@ -6,13 +6,35 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 購物車 DAO
  */
-// TODO: 弄清需求考慮重做
 @Mapper
 public interface CartDao {
-	
-    Cart findByMemberId(Integer memberId);
 
+    /**
+     * 新增
+     *
+     * @param cart
+     *          購物車
+     * @return 成功筆數
+     */
     int insert(Cart cart);
+
+    /**
+     * 依購物車ID查詢
+     *
+     * @param cartId
+     *          購物車ID
+     * @return 購物車
+     */
+    Cart findById(Integer cartId);
+
+    /**
+     * 依會員ID查詢
+     *
+     * @param memberId
+     *          會員ID
+     * @return 購物車
+     */
+    Cart findByMemberId(Integer memberId);
 
 }
 

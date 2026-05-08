@@ -3,7 +3,7 @@ package com.maddog.articket.cart.service.impl;
 import com.maddog.articket.cart.dao.CartDao;
 import com.maddog.articket.cart.entity.Cart;
 import com.maddog.articket.cartitem.entity.CartItem;
-import com.maddog.articket.cartitem.dao.CartItemRepository;
+import com.maddog.articket.cartitem.dao.CartItemDao;
 import com.maddog.articket.commodity.entity.Commodity;
 import com.maddog.articket.commodity.service.impl.CommodityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
@@ -28,7 +28,7 @@ public class CartService {
     private CartDao cartDao;
 
     @Autowired
-    private CartItemRepository cartItemRepository;
+    private CartItemDao cartItemDao;
 
     @Autowired
     private CommodityService commodityService;
@@ -46,9 +46,9 @@ public class CartService {
     
     // 添加商品到購物車
     @Transactional
-    public void addToCart(Integer memberID, Integer commodityID, Integer quantity) {
+    public void addToCart(Integer memberId, Integer commodityId, Integer quantity) {
         // 獲取購物車，或創建一個新的
-        Cart cart = getOrCreateCart(memberID);  // 獲取或創建購物車
+        Cart cart = getOrCreateCart(memberId);  // 獲取或創建購物車
 //        // 找到商品
 //        Commodity commodity = commodityService.getOneCommodity(commodityID);
 //
@@ -84,19 +84,19 @@ public class CartService {
 //             cart = cartRepository.save(cart);
 //         }
 
-         Commodity commodity = commodityService.getOneCommodity(commodityID);
-         CartItem cartItem = cart.getCartItems().stream()
-                 .filter(item -> item.getCommodity().getCommodityId().equals(commodityID))
+         CartItem cartItem = cartItemDao.findByCartId(cart.getCartId()).stream()
+                 .filter(item -> item.getCommodityId().equals(commodityId))
                  .findFirst()
                  .orElse(null);
 
          if (cartItem == null) {
              // 如果購物車中沒有該商品，創建新的購物車項目
              cartItem = new CartItem();
-             cartItem.setCart(cart);
-             cartItem.setCommodity(commodity);
+             cartItem.setCartId(cart.getCartId());
+             cartItem.setCommodityId(commodityId);
              cartItem.setCheckedQuantity(quantity);
-             cart.getCartItems().add(cartItem);
+
+             cartItemDao.insert(cartItem);
          } else {
              // 如果購物車中已有該商品，更新數量
              cartItem.setCheckedQuantity(cartItem.getCheckedQuantity() + quantity);
@@ -110,8 +110,8 @@ public class CartService {
     //購物車總金額
     @Transactional
     public void calculateTotalPrice(Cart cart) {
-        BigDecimal total = cart.getCartItems().stream()
-                .map(item -> item.getCommodity().getCommodityPrice()
+        BigDecimal total = cartItemDao.findByCartId(cart.getCartId()).stream()
+                .map(item -> commodityService.getOneCommodity(item.getCommodityId()).getCommodityPrice()
                         .multiply(BigDecimal.valueOf(item.getCheckedQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setCartTotalPrice(total);
@@ -120,45 +120,40 @@ public class CartService {
     // 更新購物車總價
     @Transactional
     public void updateCartTotalPrice(Cart cart) {
-//        BigDecimal total = BigDecimal.ZERO;
-//        for (CartItem item : cart.getCartItems()) {
-//            BigDecimal itemPrice = item.getCommodity().getCommodityPrice();
-//            BigDecimal quantity = BigDecimal.valueOf(item.getCheckedQuantity());
-//            total = total.add(itemPrice.multiply(quantity));
-//        }
-//        cart.setCartTotalPrice(total);
-    	
-    	BigDecimal totalPrice = cart.getCartItems().stream()
-                .map(item -> item.getCommodity().getCommodityPrice().multiply(new BigDecimal(item.getCheckedQuantity())))
+    	BigDecimal totalPrice = cartItemDao.findByCartId(cart.getCartId()).stream()
+                .map(item -> commodityService.getOneCommodity(item.getCommodityId()).getCommodityPrice().multiply(new BigDecimal(item.getCheckedQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setCartTotalPrice(totalPrice);
     }
     
     @Transactional
-    public Cart getOrCreateCart(Integer memberID) {
-        Cart cart = cartDao.findByMemberId(memberID);
+    public Cart getOrCreateCart(Integer memberId) {
+        Cart cart = cartDao.findByMemberId(memberId);
+
         if (cart == null) {
             cart = new Cart();
-            GeneralMember member = generalMemberService.getById(memberID);
-            cart.setGeneralMember(member);
+            cart.setMemberId(memberId);
             cart.setCartTotalPrice(BigDecimal.ZERO);
-            cart.setCartCreateTime(new Timestamp(System.currentTimeMillis()));
-            cart = cartDao.save(cart);
+            cartDao.insert(cart);
         }
+
         return cart;
     }
     
     @Transactional
-    public void changeQuantity(Integer cartItemID, Integer change) {
-        CartItem item = cartItemRepository.findById(cartItemID)
-                .orElseThrow(() -> new RuntimeException("購物車項目不存在"));
+    public void changeQuantity(Integer cartItemId, Integer change) {
+        CartItem item = cartItemDao.findById(cartItemId);
+        if(item == null) {
+            throw new RuntimeException("購物車項目不存在");
+        }
+
         int newQuantity = item.getCheckedQuantity() + change;
         if (newQuantity < 1) {
             throw new RuntimeException("商品數量不能小於1");
         }
         item.setCheckedQuantity(newQuantity);
-        cartItemRepository.save(item);
-        calculateTotalPrice(item.getCart());
+        cartItemDao.update(item);
+        calculateTotalPrice(cartDao.findById(item.getCartId()));
     }
     
     @Transactional
@@ -166,23 +161,25 @@ public class CartService {
         if (quantity < 1) {
             throw new RuntimeException("商品數量不能小於1");
         }
-        CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RuntimeException("購物車項目不存在"));
-        item.setCheckedQuantity(quantity);
-        cartItemRepository.save(item);
-        calculateTotalPrice(item.getCart());
-    }
+        CartItem item = cartItemDao.findById(cartItemId);
+        if(item == null) {
+            throw new RuntimeException("購物車項目不存在");
+        }
 
-   
+        item.setCheckedQuantity(quantity);
+        cartItemDao.update(item);
+        calculateTotalPrice(cartDao.findById(item.getCartId()));
+    }
 
     // 刪除購物車項目
     @Transactional
-    public void removeFromCart(Integer cartItemID) {
-        CartItem item = cartItemRepository.findById(cartItemID)
-                .orElseThrow(() -> new RuntimeException("CartItem not found"));
-        Cart cart = item.getCart();
-        cart.getCartItems().remove(item);
-        cartItemRepository.delete(item);
+    public void removeFromCart(Integer cartItemId) {
+        CartItem item = cartItemDao.findById(cartItemId);
+        if (item == null) {
+            throw new RuntimeException("購物車項目不存在");
+        }
+
+        cartItemDao.deleteById(cartItemId);
         updateCartTotalPrice(cart); //這要刪掉嗎?
         calculateTotalPrice(cart);
         cartDao.save(cart);
@@ -276,19 +273,6 @@ public class CartService {
         return cart.getCartItems().stream()
                 .map(item -> item.getCommodity().getCommodityPrice().multiply(BigDecimal.valueOf(item.getCheckedQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal applyCouponDiscount(BigDecimal totalAmount, MemberCoupon coupon) {
-        // 實現優惠券折扣邏輯
-        // 這裡假設優惠券有一個折扣率屬性 discountRate
-        BigDecimal discountRate = coupon.getCouponType().getCouponTypeDiscount();
-        return totalAmount.multiply(discountRate);
-    }
-
-    private void clearCart(Cart cart) {
-        cart.getCartItems().clear();
-        cart.setCartTotalPrice(BigDecimal.ZERO);
-        cartDao.save(cart);
     }
 
 }

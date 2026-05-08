@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.cart.dao.CartDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.cart.entity.Cart">
+        <id column="cart_id" property="cartId" />
+        <result column="member_id" property="memberId" />
+        <result column="cart_total_price" property="cartTotalPrice" />
+        <result column="cart_create_time" property="cartCreateTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.cart.entity.Cart"
+            useGeneratedKeys="true">
+            keyProperty="cartId">
+        INSERT INTO
+            cart
+        (
+            member_id,
+            cart_total_price
+        )
+        VALUES
+        (
+            #{memberId},
+            #{cartTotalPrice}
+        )
+    </insert>
+
+    <!-- 依購物車ID查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            cart
+        WHERE
+            cart_id = #{cartId}
+    </select>
+
+    <!-- 依會員ID查詢 -->
+    <select id="findByMemberId"
+            resultMap="resultMapForSelect">
+        SELECT
+        *
+        FROM
+        cart
+        WHERE
+        member_id = #{memberId}
+    </select>
+<!-- method-->
+
+</mapper>

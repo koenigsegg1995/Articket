@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.cartitem.dao.CartItemDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.cartitem.entity.CartItem">
+        <id column="cart_item_id" property="cartItemId" />
+        <result column="cart_id" property="cartId" />
+        <result column="commodity_id" property="commodityId" />
+        <result column="checked_quantity" property="checkedQuantity" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.cartitem.entity.CartItem">
+        INSERT INTO
+            cart_item
+        (
+            cart_id,
+            commodity_id,
+            checked_quantity
+        )
+        VALUES
+        (
+            #{cartId},
+            #{commodityId},
+            #{checkedQuantity}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.cartitem.entity.CartItem">
+        UPDATE
+            cart_item
+        <set>
+            <if test=" cartId != null ">
+                cart_id = #{cartId},
+            </if>
+
+            <if test=" cartId != null ">
+                commodity_id = #{commodityId},
+            </if>
+
+            <if test=" cartId != null ">
+                checked_quantity = #{checkedQuantity}
+            </if>
+        </set>
+        WHERE
+            cart_item_id = #{cartItemId}
+    </update>
+
+    <!-- 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            cart_item
+        WHERE
+            cart_item_id = #{cartItemId}
+    </delete>
+
+    <!-- 依購物車明細ID查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            cart_item
+        WHERE
+            cart_item_id = #{cartItemId}
+    </select>
+
+    <!-- 依購物車ID查詢 -->
+    <select id="findByCartId"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            cart_item
+        WHERE
+            cart_id = #{cartId}
+    </select>
+<!-- method-->
+
+</mapper>
