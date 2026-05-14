@@ -26,6 +26,37 @@
 <!-- resultMap-->
 
 <!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyProperty="orderId">
+        INSERT INTO
+            orders
+        (
+            member_id,
+            recipient,
+            recipient_phone,
+            recipient_email,
+            recipient_address,
+            member_coupon_id,
+            actual_amount,
+            order_status,
+            pay_status
+        )
+        VALUES
+        (
+            #{memberId},
+            #{recipient},
+            #{recipientPhone},
+            #{recipientEmail},
+            #{recipientAddress},
+            #{memberCouponId},
+            #{actualAmount},
+            #{orderStatus},
+            #{payStatus}
+        )
+    </insert>
+
     <!-- 依訂單ID查詢 -->
     <select id="findById"
             parameterType="java.lang.Integer"

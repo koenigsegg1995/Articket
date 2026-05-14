@@ -36,6 +36,24 @@
         )
     </insert>
 
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.cart.entity.Cart">
+        UPDATE
+            cart
+        <set>
+            <if test=" memberId != null ">
+                member_id = #{memberId},
+            </if>
+
+            <if test=" cartTotalPrice != null ">
+                cart_total_price = #{cartTotalPrice}
+            </if>
+        </set>
+        WHERE
+            cart_id = #{cartId}
+    </update>
+
     <!-- 依購物車ID查詢 -->
     <select id="findById"
             parameterType="java.lang.Integer"

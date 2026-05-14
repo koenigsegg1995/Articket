@@ -19,6 +19,15 @@ public interface CartDao {
     int insert(Cart cart);
 
     /**
+     * 更新
+     *
+     * @param cart
+     *          購物車
+     * @return 成功筆數
+     */
+    int update(Cart cart);
+
+    /**
      * 依購物車ID查詢
      *
      * @param cartId

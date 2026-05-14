@@ -17,6 +17,15 @@ import java.util.List;
 public interface OrdersDao {
 
     /**
+     * 新增
+     *
+     * @param orders
+     *          訂單
+     * @return 成功筆數
+     */
+    int insert(Orders orders);
+
+    /**
      * 依訂單ID查詢
      *
      * @param orderId
