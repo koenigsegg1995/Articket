@@ -29,40 +29,41 @@ public class CommodityService {
     @Autowired
     private ActivityDao activityDao;
 
-    public void addCommodity(Commodity commodity) {
-        commodityDao.save(commodity);
+    public int addCommodity(Commodity commodity) {
+        return commodityDao.insert(commodity);
     }
 
-    public void updateCommodity(Commodity commodity) {
-        commodityDao.save(commodity);
+    public int updateCommodity(Commodity commodity) {
+        return commodityDao.update(commodity);
     }
 
-    public void deleteCommodity(Integer commodityID) {
-        if (commodityDao.existsById(commodityID))
-            commodityDao.deleteById(commodityID);
+    public int deleteCommodity(Integer commodityId) {
+        return commodityDao.deleteById(commodityId);
     }
 
-    public Commodity getOneCommodity(Integer commodityID) {
-        Optional<Commodity> optional = commodityDao.findById(commodityID);
-        return optional.orElse(null);
-
+    public Commodity getOneCommodity(Integer commodityId) {
+        return commodityDao.findById(commodityId);
     }
 
     public List<Commodity> getAll() {
         return commodityDao.findAll();
     }
 
-    public List<Commodity> getCommoditiesByActivity(Integer activityID) {
-        return commodityDao.findByActivityId(activityID);
+    public List<Commodity> getCommoditiesByActivity(Integer activityId) {
+        return commodityDao.findByActivityId(activityId);
+    }
+
+    public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityID, Pageable pageable) {
+        return commodityDao.findByActivityId(activityID, pageable);
     }
 
     public List<Activity> getAllActivities() {
         return commodityDao.findAllDistinctActivities();
     }
 
-    public List<Activity> getActivitiesByPartnerMember(Integer partnerMemberID) {
-        List<Activity> activitiesFromCommodities = commodityDao.findActivitiesByMemberId(partnerMemberID);
-        List<Activity> allActivities = commodityDao.findAllActivitiesByPartnerMemberID(partnerMemberID);
+    public List<Activity> getActivitiesByPartnerMember(Integer partnerMemberId) {
+        List<Activity> activitiesFromCommodities = commodityDao.findActivitiesByMemberId(partnerMemberId);
+        List<Activity> allActivities = commodityDao.findAllActivitiesByPartnerMemberID(partnerMemberId);
 
         // 合併兩個列表並去重
         Set<Activity> uniqueActivities = new HashSet<>(activitiesFromCommodities);
@@ -73,12 +74,8 @@ public class CommodityService {
 //        return repository.findActivitiesByPartnerMemberID(partnerMemberID);
     }
 
-    public boolean isActivityOwnedByPartner(Integer activityID, Integer partnerID) {
-        return activityDao.isActivityOwnedByPartner(activityID, partnerID);
-    }
-
-    public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityID, Pageable pageable) {
-        return commodityDao.findByActivityId(activityID, pageable);
+    public boolean isActivityOwnedByPartner(Integer activityId, Integer partnerId) {
+        return activityDao.isActivityOwnedByPartner(activityId, partnerId);
     }
 
 }
