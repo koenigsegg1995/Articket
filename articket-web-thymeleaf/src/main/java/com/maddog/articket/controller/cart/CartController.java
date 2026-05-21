@@ -2,8 +2,8 @@ package com.maddog.articket.controller.cart;
 
 import com.maddog.articket.cart.entity.Cart;
 import com.maddog.articket.cart.service.pri.CartService;
+import com.maddog.articket.cartitem.service.pri.CartItemService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.cartitem.service.impl.CartItemService;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orders.entity.Orders;
@@ -119,7 +119,7 @@ public class CartController {
 		System.out.println("Member info: " + member);
 
 		// 檢查購物車是否為空
-	    if (cart == null || cartItemService.getCartItemsByCartID(cart.getCartId()).isEmpty()) {
+	    if (cart == null || cartItemService.findByCartId(cart.getCartId()).isEmpty()) {
 	        model.addAttribute("errorMessage", "您的購物車是空的，請先添加商品。");
 			return "redirect:/commodity/mall_activity";
 	    }
