@@ -6,6 +6,7 @@ import com.maddog.articket.commodity.dao.CommodityDao;
 import com.maddog.articket.commodity.entity.Commodity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,14 @@ public class CommodityService {
         return commodityDao.findByActivityId(activityId);
     }
 
-    public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityID, Pageable pageable) {
-        return commodityDao.findByActivityId(activityID, pageable);
+    public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable) {
+        // 查詢分頁結果
+        List<Commodity> result = commodityDao.findByActivityIdPaginated(activityId, (int) pageable.getOffset(), pageable.getPageSize());
+
+        // 總筆數
+        int total = commodityDao.countByActivityId(activityId);
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     public List<Activity> getAllActivities() {
@@ -63,7 +70,7 @@ public class CommodityService {
 
     public List<Activity> getActivitiesByPartnerMember(Integer partnerMemberId) {
         List<Activity> activitiesFromCommodities = commodityDao.findActivitiesByMemberId(partnerMemberId);
-        List<Activity> allActivities = commodityDao.findAllActivitiesByPartnerMemberID(partnerMemberId);
+        List<Activity> allActivities = activityDao.findByPartnerMemberId(partnerMemberId);
 
         // 合併兩個列表並去重
         Set<Activity> uniqueActivities = new HashSet<>(activitiesFromCommodities);

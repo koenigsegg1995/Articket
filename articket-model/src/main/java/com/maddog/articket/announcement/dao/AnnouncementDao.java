@@ -77,7 +77,8 @@ public interface AnnouncementDao {
 	 * @return 公告清單
 	 * 			List<Announcement>
 	 */
-	List<Announcement> findAllPaginated(@Param("offset") int offset, @Param("limit") int limit);
+	List<Announcement> findAllPaginated(@Param("offset") int offset,
+										@Param("limit") int limit);
 
 	/**
 	 * 計算總比數

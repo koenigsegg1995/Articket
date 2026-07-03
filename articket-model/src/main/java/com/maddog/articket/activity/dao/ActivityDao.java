@@ -7,6 +7,8 @@ import com.maddog.articket.activity.dto.ActivityQueryCondition;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -114,5 +116,14 @@ public interface ActivityDao {
      * @return 成功筆數
      */
     int setTicketSetStatusFinished(Integer activityId);
+
+    /**
+     * 依廠商 ID 查詢活動清單
+     *
+     * @param partnerId
+     *          廠商 ID
+     * @return 活動清單
+     */
+    List<Activity> findByPartnerMemberId(Integer partnerId);
 
 }

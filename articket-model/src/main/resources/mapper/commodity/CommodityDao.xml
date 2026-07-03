@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.commodity.dao.CommodityDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 商品全查詢 -->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.commodity.entity.Commodity">
+        <id column="commodity_id" property="commodityId" />
+        <result column="commodity_name" property="commodityName" />
+        <result column="commodity_price" property="commodityPrice" />
+        <result column="commodity_stock" property="commodityStock" />
+        <result column="commodity_content" property="commodityContent" />
+        <result column="activity_id" property="activityId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="commodity_status" property="commodityStatus" />
+        <result column="commodity_post_time" property="commodityPostTime" />
+        <result column="commodity_remove_time" property="commodityRemoveTime" />
+        <result column="commodity_update_time" property="commodityUpdateTime" />
+        <result column="commodity_create_time" property="commodityCreateTime" />
+    </resultMap>
+
+    <!-- 活動全查詢 -->
+    <resultMap id="resultMapForActivity"
+               type="com.maddog.articket.activity.entity.Activity">
+        <id column="activity_id" property="activityId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="venue_id" property="venueId" />
+        <result column="venue_rental_id" property="venueRentalId" />
+        <result column="activity_name" property="activityName" />
+        <result column="activity_content" property="activityContent" />
+        <result column="activity_create_time" property="activityCreateTime" />
+        <result column="activity_post_time" property="activityPostTime" />
+        <result column="activity_tag" property="activityTag" />
+        <result column="activity_status" property="activityStatus" />
+        <result column="ticket_set_status" property="ticketSetStatus" />
+        <result column="sell_time" property="sellTime" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.commodity.entity.Commodity">
+        INSERT INTO
+            commodity
+        (
+            commodity_name,
+            commodity_price,
+            commodity_stock,
+            commodity_content,
+            activity_id,
+            partner_id,
+            commodity_status,
+            commodity_post_time,
+            commodity_remove_time
+        )
+        VALUES
+        (
+            #{commodityName},
+            #{commodityPrice},
+            #{commodityStock},
+            #{commodityContent},
+            #{activityId},
+            #{partnerId},
+            #{commodityStatus},
+            #{commodityPostTime},
+            #{commodityRemoveTime}
+        )
+    </insert>
+
+    <!-- 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            commodity
+        WHERE
+            commodity_id = #{commodityId}
+    </delete>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.commodity.entity.Commodity">
+        UPDATE
+            commodity
+        <set>
+            <if test=" commodityName != null and commodityName != '' ">
+                commodity_name = #{commodityName},
+            </if>
+            <if test="commodityPrice != null">
+                commodity_price = #{commodityPrice},
+            </if>
+            <if test="commodityStock != null">
+                commodity_stock = #{commodityStock},
+            </if>
+            <if test="commodityContent != null and commodityContent != '' ">
+                commodity_content = #{commodityContent},
+            </if>
+            <if test="activityId != null">
+                activity_id = #{activityId},
+            </if>
+            <if test="partnerId != null">
+                partner_id = #{partnerId},
+            </if>
+            <if test="commodityStatus != null">
+                commodity_status = #{commodityStatus},
+            </if>
+        </set>
+        WHERE
+            commodity_id = #{commodityId}
+    </update>
+
+    <!-- 依商品 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity
+        WHERE
+            commodity_id = #{commodityId}
+    </select>
+
+    <!-- 查詢所有商品 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity
+        ORDER BY
+            commodity_id DESC
+    </select>
+
+    <!-- 依活動 ID 查詢商品 -->
+    <select id="findByActivityId"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity
+        WHERE
+            activity_id = #{activityId}
+        ORDER BY
+            commodity_id DESC
+    </select>
+
+    <!-- 依活動 ID 查詢商品（分頁） -->
+    <select id="findByActivityIdPaginated"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity
+        WHERE
+            activity_id = #{activityId}
+        ORDER BY
+            commodity_id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 依活動 ID 查詢商品總筆數 -->
+    <select id="countByActivityId"
+            parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            commodity
+        WHERE
+            activity_id = #{activityId}
+    </select>
+
+    <!-- 查詢所有商品的活動 -->
+    <select id="findAllDistinctActivities"
+            resultMap="resultMapForActivity">
+        SELECT DISTINCT
+            activity
+        FROM
+            commodity
+        ORDER BY
+            activity_id DESC
+    </select>
+
+    <!-- 依廠商 ID 查詢所有商品的活動 -->
+    <select id="findActivitiesByMemberId"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForActivity">
+        SELECT DISTINCT
+            activity
+        FROM
+            commodity
+        WHERE
+            partner_id = #{partnerId}
+    </select>
+<!-- method-->
+
+</mapper>

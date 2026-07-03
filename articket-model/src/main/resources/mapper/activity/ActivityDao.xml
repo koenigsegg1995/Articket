@@ -46,6 +46,23 @@
         <result column="venue_name" property="venueName" />
         <result column="partner_name" property="partnerName" />
     </resultMap>
+
+    <!-- 全查詢 -->
+    <resultMap id="resultMapForSelectAll"
+               type="com.maddog.articket.activity.entity.Activity">
+        <id column="activity_id" property="activityId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="venue_id" property="venueId" />
+        <result column="venue_rental_id" property="venueRentalId" />
+        <result column="activity_name" property="activityName" />
+        <result column="activity_content" property="activityContent" />
+        <result column="activity_create_time" property="activityCreateTime" />
+        <result column="activity_post_time" property="activityPostTime" />
+        <result column="activity_tag" property="activityTag" />
+        <result column="activity_status" property="activityStatus" />
+        <result column="ticket_set_status" property="ticketSetStatus" />
+        <result column="sell_time" property="sellTime" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
@@ -259,6 +276,19 @@
         WHERE
             activity_id = #{activityId}
     </update>
+
+    <!-- 依廠商 ID 查詢活動清單-->
+    <select id="findByPartnerMemberId"
+            resultMap="resultMapForSelectAll">
+        SELECT
+            *
+        FROM
+            activity
+        WHERE
+            partner_id = #{partnerId}
+        ORDER BY
+            activity_id DESC
+    </select>
 <!-- method-->
 
 </mapper>
