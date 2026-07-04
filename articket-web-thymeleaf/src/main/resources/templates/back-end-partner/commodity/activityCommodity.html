@@ -137,7 +137,7 @@
             </thead>
             <tbody>
             <tr th:each="activity : ${activities}">
-              <td th:text="${activity.activityID}"></td>
+              <td th:text="${activity.activityId}"></td>
               <td th:text="${activity.activityName}"></td>
               <td th:text="${#dates.format(activity.activityPostTime, 'yyyy-MM-dd')}"></td>
               
@@ -154,8 +154,8 @@
 						th:action="@{/commodity/listAllCommodity}"
 						class="action-form">
 						<input type="submit" value="查看商品" class="action-button">
-						<input type="hidden" name="activityID"
-							th:value="${activity.activityID}">
+						<input type="hidden" name="activityId"
+							th:value="${activity.activityId}">
 					</form>
 				</td>
 

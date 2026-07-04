@@ -5,7 +5,7 @@ import com.maddog.articket.cart.entity.Cart;
 import com.maddog.articket.cart.service.pri.CartService;
 import com.maddog.articket.cartitem.entity.CartItem;
 import com.maddog.articket.cartitem.dao.CartItemDao;
-import com.maddog.articket.commodity.service.impl.CommodityService;
+import com.maddog.articket.commodity.service.pri.CommodityService;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.dao.OrdersDao;
 import org.springframework.beans.factory.annotation.Autowired;
