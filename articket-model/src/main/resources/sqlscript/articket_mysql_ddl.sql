@@ -357,7 +357,7 @@ CREATE TABLE commodity(
 ) COMMENT "商品";
 
 CREATE TABLE commodity_picture(
-	commodity_picture_id            INT           AUTO_INCREMENT     COMMENT "商品圖片",
+	commodity_picture_id            INT           AUTO_INCREMENT     COMMENT "商品圖片ID",
     commodity_id                    INT           NOT NULL           COMMENT "商品ID",
     commodity_picture               MEDIUMBLOB                       COMMENT "商品圖片",
     

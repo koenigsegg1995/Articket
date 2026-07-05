@@ -1,42 +1,50 @@
 package com.maddog.articket.commoditypicture.service.impl;
 
-import com.maddog.articket.commoditypicture.dao.CommodityPictureRepository;
+import com.maddog.articket.commoditypicture.dao.CommodityPictureDao;
 import com.maddog.articket.commoditypicture.entity.CommodityPicture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service("commodityPictureService")
 public class CommodityPictureService {
 
+    /**
+     * 商品圖片 DAO
+     */
     @Autowired
-    CommodityPictureRepository repository;
+    private CommodityPictureDao commodityPictureDao;
 
-    public void addCommodityPicture(CommodityPicture commodityPicture) {
-        repository.save(commodityPicture);
+    /**
+     * 新增
+     *
+     * @param commodityPicture
+     *          商品圖片
+     * @return 成功筆數
+     */
+    public int addCommodityPicture(CommodityPicture commodityPicture) {
+        return commodityPictureDao.insert(commodityPicture);
     }
 
-    public void updateCommodityPicture(CommodityPicture commodityPicture) {
-        repository.save(commodityPicture);
+    /**
+     * 依商品圖片 ID 查詢
+     *
+     * @param commodityPictureId
+     * 			商品圖片 ID
+     * @return 商品圖片
+     */
+    public CommodityPicture getOneCommodityPicture(Integer commodityPictureId) {
+        return commodityPictureDao.findById(commodityPictureId);
     }
 
-    public void deleteCommodityPicture(Integer commodityPictureID) {
-        if (repository.existsById(commodityPictureID))
-            repository.deleteById(commodityPictureID);
-    }
-
-    public CommodityPicture getOneCommodityPicture(Integer commodityPictureID) {
-        Optional<CommodityPicture> optional = repository.findById(commodityPictureID);
-        return optional.orElse(null);
-    }
-
-//    public List<CommodityPicture> getCommodityPicturesByCommodityID(Integer commodityID) {
-//        return repository.findByCommodity_CommodityID(commodityID);
-//    }
-
+    /**
+     * 查詢所有商品圖片
+     *
+     * @return 商品圖片清單
+     */
     public List<CommodityPicture> getAll() {
-        return repository.findAll();
+        return commodityPictureDao.findAll();
     }
+
 }
