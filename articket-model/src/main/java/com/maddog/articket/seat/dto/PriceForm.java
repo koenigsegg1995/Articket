@@ -1,4 +1,4 @@
-package com.maddog.articket.seat;
+package com.maddog.articket.seat.dto;
 
 import lombok.Getter;
 import lombok.Setter;

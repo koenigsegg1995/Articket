@@ -21,14 +21,26 @@ public class ActivityAreaPriceServiceImpl implements ActivityAreaPriceService {
     private ActivityAreaPriceDao activityAreaPriceDao;
 
     /**
+     * 依活動區域價格 ID 查詢活動區域價格
+     *
+     * @param activityAreaPriceId
+     *          活動區域價格 ID
+     * @return 活動區域價格
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ActivityAreaPrice findById(Integer activityAreaPriceId){
+        return activityAreaPriceDao.findById(activityAreaPriceId);
+    }
+
+    /**
      * 依場館區域 ID 與活動 ID 查詢活動區域價格
      *
      * @param venueAreaId
-     * 			Integer
+     * 			場館區域 ID
      * @param activityId
-     * 			Integer
+     * 			活動 ID
      * @return 活動區域價格
-     * 			ActivityAreaPrice
      */
     @Override
     @Transactional(readOnly = true)
@@ -40,9 +52,8 @@ public class ActivityAreaPriceServiceImpl implements ActivityAreaPriceService {
      * 更新或創建活動區域價格
      *
      * @param activityAreaPrice
-     *         ActivityAreaPrice
+     *         活動區域價格
      * @return 成功筆數
-     *          int
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

@@ -38,6 +38,18 @@
         )
     </insert>
 
+    <!-- 依活動區域價格 ID 查詢活動區域價格 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            activity_area_price
+        WHERE
+            activity_area_price_id = #{activityAreaPriceId}
+    </select>
+
     <!-- 更新 -->
     <update id="update"
             parameterType="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice">
@@ -51,8 +63,8 @@
             activity_id = #{activityId}
     </update>
 
+    <!-- 依場館區域 ID 與活動 ID 查詢活動區域價格 -->
     <select id="findByVenueAreaIdAndActivityId"
-            resultType="com.maddog.articket.activityareaprice.entity.ActivityAreaPrice"
             resultMap="resultMapForSelect">
         SELECT
             *

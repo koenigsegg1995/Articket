@@ -1,6 +1,7 @@
 package com.maddog.articket.controller.ticket;
 
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
@@ -53,6 +54,12 @@ public class TicketController {
 	 */
 	@Autowired
 	private PartnerMemberService partnerSvc;
+
+	/**
+	 * 活動區域價格 Service
+	 */
+	@Autowired
+	private ActivityAreaPriceService activityAreaPriceService;
 	
 /********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
@@ -69,7 +76,7 @@ public class TicketController {
 		
 		//選購票券總價
 		for(Ticket ticket : ticketList) {
-			total = total.add(ticket.getActivityAreaPrice().getActivityAreaPrice());
+			total = total.add(activityAreaPriceService.findById(ticket.getActivityAreaPriceId()).getActivityAreaPrice());
 		}
 		
 		model.addAttribute("total", total);

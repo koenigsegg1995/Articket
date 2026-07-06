@@ -35,7 +35,7 @@ public class ArticleCollectionController {
         if (member == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員信息");
         }
-        boolean isCollected = articleCollectionSvc.isArticleCollectedByMember(articleID, member.getMemberID());
+        boolean isCollected = articleCollectionSvc.isArticleCollectedByMember(articleID, member.getMemberId());
         return ResponseEntity.ok(isCollected);
     }
 	
@@ -55,7 +55,7 @@ public class ArticleCollectionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("無法找到會員信息，請重新登入");
         }    	
     	
-    	boolean isCollected = articleCollectionSvc.toggleArticleCollection(member .getMemberID(), articleID);
+    	boolean isCollected = articleCollectionSvc.toggleArticleCollection(member.getMemberId(), articleID);
         return ResponseEntity.ok(isCollected);
     }
     

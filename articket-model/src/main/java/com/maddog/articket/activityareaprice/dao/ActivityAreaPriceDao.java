@@ -14,21 +14,28 @@ public interface ActivityAreaPriceDao {
 	 * 新增
 	 *
 	 * @param activityAreaPrice
-	 * 			ActivityAreaPrice
+	 * 			活動區域價格
 	 * @return 成功筆數
-	 *          int
 	 */
 	int insert(ActivityAreaPrice activityAreaPrice);
+
+	/**
+	 * 依活動區域價格 ID 查詢活動區域價格
+	 *
+	 * @param activityAreaPriceId
+	 *          活動區域價格 ID
+	 * @return 活動區域價格
+	 */
+	ActivityAreaPrice findById(Integer activityAreaPriceId);
 
 	/**
 	 * 依場館區域 ID 與活動 ID 查詢活動區域價格
 	 *
 	 * @param venueAreaId
-	 * 			Integer
+	 * 			場館區域 ID
 	 * @param activityId
-	 * 			Integer
+	 * 			活動 ID
 	 * @return 活動區域價格
-	 * 			ActivityAreaPrice
 	 */
 	ActivityAreaPrice findByVenueAreaIdAndActivityId(Integer venueAreaId, Integer activityId);
 
@@ -36,9 +43,8 @@ public interface ActivityAreaPriceDao {
 	 * 更新
 	 *
 	 * @param activityAreaPrice
-	 * 			ActivityAreaPrice
+	 * 			活動區域價格
 	 * @return 成功筆數
-	 *          int
 	 */
 	int update(ActivityAreaPrice activityAreaPrice);
 

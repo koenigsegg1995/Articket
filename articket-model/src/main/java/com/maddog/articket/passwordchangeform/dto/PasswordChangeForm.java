@@ -8,6 +8,9 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * 密碼更新表單 DTO
+ */
 @Getter
 @Setter
 public class PasswordChangeForm implements Serializable {

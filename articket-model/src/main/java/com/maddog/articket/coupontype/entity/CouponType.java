@@ -1,12 +1,19 @@
 package com.maddog.articket.coupontype.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 優惠券 DO
+ *
+ * 尚未實裝
  */
+@Getter
+@Setter
 public class CouponType implements Serializable {
 
 	@Serial
