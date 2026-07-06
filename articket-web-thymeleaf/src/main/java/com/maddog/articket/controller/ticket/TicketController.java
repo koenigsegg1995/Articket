@@ -1,6 +1,8 @@
 package com.maddog.articket.controller.ticket;
 
+import com.maddog.articket.activity.dto.ActivityDisplayForView;
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
@@ -60,6 +62,12 @@ public class TicketController {
 	 */
 	@Autowired
 	private ActivityAreaPriceService activityAreaPriceService;
+
+	/**
+	 * 活動 Service
+	 */
+	@Autowired
+	private ActivityService  activityService;
 	
 /********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
@@ -99,7 +107,7 @@ public class TicketController {
 		PartnerMember partner = partnerSvc.getOnePartnerMember(partnerID);
 		
 		//取得廠商所有 Activity
-		Set<Activity> activities = partner.getActivities();
+		List<ActivityDisplayForView> activities = activityService.getActivityDisplayForViewByPartnerId(partnerID);
 
 		model.addAttribute("partnerActivityListData", activities);
 		
@@ -164,12 +172,11 @@ public class TicketController {
 			}
 			//取得第 i 個持有人
 			try {
-				GeneralMember ticketMember = memberSvc.getById(Integer.valueOf(ticketMemberIDs[i]));
 				//取得第 i 張票券
 				Ticket ticket = ticketList.get(i);
 
-				ticket.setGeneralMember(ticketMember);
-				ticket.setBookTicket(bookTicket);
+				ticket.setMemberId(Integer.valueOf(ticketMemberIDs[i]));
+				ticket.setBookTicketId(bookTicket);
 			}catch (Exception e) {
 				return "redirect:/";
 			}
