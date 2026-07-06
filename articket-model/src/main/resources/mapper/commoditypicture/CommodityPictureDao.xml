@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.commoditypicture.dao.CommodityPictureDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 商品全查詢 -->
+    <resultMap id="resultMapForSelect"
+                type="com.maddog.articket.commoditypicture.entity.CommodityPicture">
+        <id column="commodity_picture_id" property="commodityPictureId" />
+        <result column="commodity_id" property="commodityId" />
+        <result column="commodity_picture" property="commodityPicture" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.commoditypicture.entity.CommodityPicture">
+        INSERT INTO
+            commodity_picture
+        (
+            commodity_id,
+            commodity_picture
+        )
+        VALUES
+        (
+            #{commodityId},
+            #{commodityPicture}
+        )
+    </insert>
+
+    <!-- 依商品圖片 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity_picture
+        WHERE
+            commodity_picture_id = #{commodityPictureId}
+    </select>
+
+    <!-- 查詢所有商品 -->
+    <select id="findAll"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity_picture
+        ORDER BY
+            commodity_picture_id DESC
+    </select>
+<!-- method-->
+
+</mapper>

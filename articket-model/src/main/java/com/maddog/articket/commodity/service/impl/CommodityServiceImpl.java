@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,6 +40,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          商品
      * @return 成功筆數
      */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int addCommodity(Commodity commodity) {
         return commodityDao.insert(commodity);
     }
@@ -49,6 +53,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          商品
      * @return 成功筆數
      */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updateCommodity(Commodity commodity) {
         return commodityDao.update(commodity);
     }
@@ -60,6 +66,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          商品 ID
      * @return 成功筆數
      */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int deleteCommodity(Integer commodityId) {
         return commodityDao.deleteById(commodityId);
     }
@@ -71,6 +79,8 @@ public class CommodityServiceImpl implements CommodityService {
      * 			商品 ID
      * @return 商品
      */
+    @Override
+    @Transactional(readOnly = true)
     public Commodity getOneCommodity(Integer commodityId) {
         return commodityDao.findById(commodityId);
     }
@@ -80,6 +90,8 @@ public class CommodityServiceImpl implements CommodityService {
      *
      * @return 商品清單
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<Commodity> getAll() {
         return commodityDao.findAll();
     }
@@ -91,6 +103,8 @@ public class CommodityServiceImpl implements CommodityService {
      * 			活動 ID
      * @return 商品清單
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<Commodity> getCommoditiesByActivity(Integer activityId) {
         return commodityDao.findByActivityId(activityId);
     }
@@ -104,6 +118,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          分頁資訊
      * @return 分頁結果
      */
+    @Override
+    @Transactional(readOnly = true)
     public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable) {
         // 查詢分頁結果
         List<Commodity> result = commodityDao.findByActivityIdPaginated(activityId, (int) pageable.getOffset(), pageable.getPageSize());
@@ -119,6 +135,8 @@ public class CommodityServiceImpl implements CommodityService {
      *
      * @return 活動清單
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<Activity> getAllActivities() {
         return commodityDao.findAllDistinctActivities();
     }
@@ -130,6 +148,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          廠商 ID
      * @return 活動清單
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<Activity> getActivitiesByPartnerMember(Integer partnerMemberId) {
 //        List<Activity> activitiesFromCommodities = commodityDao.findActivitiesByMemberId(partnerMemberId);
 //        List<Activity> allActivities = activityDao.findByPartnerMemberId(partnerMemberId);
@@ -152,6 +172,8 @@ public class CommodityServiceImpl implements CommodityService {
      *          廠商 ID
      * @return 是/否
      */
+    @Override
+    @Transactional(readOnly = true)
     public boolean isActivityOwnedByPartner(Integer activityId, Integer partnerId) {
         return activityDao.isActivityOwnedByPartner(activityId, partnerId);
     }

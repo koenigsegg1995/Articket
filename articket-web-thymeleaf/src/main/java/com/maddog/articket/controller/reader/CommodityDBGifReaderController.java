@@ -1,6 +1,6 @@
 package com.maddog.articket.controller.reader;
 
-import com.maddog.articket.commoditypicture.service.impl.CommodityPictureService;
+import com.maddog.articket.commoditypicture.service.pri.CommodityPictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,20 +12,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 @Controller
 @RequestMapping("/commodity")
 public class CommodityDBGifReaderController {
 	
 	@Autowired
-	CommodityPictureService commodityPictureSvc;
+    private CommodityPictureService commodityPictureSvc;
 	
 	/*
 	 * This method will serve as listOneEmp.html , listAllEmp.html handler.
 	 */
 	@GetMapping("CommodityDBGifReader")
-	public void dBGifReader(@RequestParam("commodityPictureID") String commodityPictureID, HttpServletRequest req, HttpServletResponse res)
-			                                                                                          throws IOException {
+	public void dBGifReader(@RequestParam("commodityPictureID") String commodityPictureID,
+							HttpServletRequest req,
+							HttpServletResponse res) throws IOException {
 		res.setContentType("image/gif");
 		ServletOutputStream out = res.getOutputStream();
 
@@ -36,4 +36,5 @@ public class CommodityDBGifReaderController {
 			out.write(buf);
 		}
 	}
+
 }

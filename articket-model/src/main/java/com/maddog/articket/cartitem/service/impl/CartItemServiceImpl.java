@@ -5,6 +5,7 @@ import com.maddog.articket.cartitem.entity.CartItem;
 import com.maddog.articket.cartitem.service.pri.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class CartItemServiceImpl implements CartItemService {
      *          購物車ID
      * @return 購物車明細清單
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<CartItem> findByCartId(Integer cartId) {
         return cartItemDao.findByCartId(cartId);
     }
