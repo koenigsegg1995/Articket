@@ -22,6 +22,19 @@ public class VenueServiceImpl implements VenueService {
 	private VenueDao venueDao;
 
 	/**
+	 * 依場館 ID 查詢場館名稱
+	 *
+	 * @param venueId
+	 * 			場館 ID
+	 * @return 場館名稱
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public String getNameById(Integer venueId){
+		return venueDao.getNameById(venueId);
+	}
+
+	/**
 	 * 查全部
 	 *
 	 * @return 場館清單

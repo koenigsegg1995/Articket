@@ -71,6 +71,7 @@ public class ActivityController {
         List<ActivityFrontEndForView> activities = new ArrayList<>();
 		
 		model.addAttribute("activitySearchList", activities);
+		model.addAttribute("activityQueryCondition", new ActivityQueryCondition());
 		
 		return "front-end/activity/activityInfoAll";
 	}
@@ -358,9 +359,11 @@ public class ActivityController {
      *          String
      */
 	@PostMapping("activitySearch")
-	public String activitySearch(@ModelAttribute ActivityQueryCondition condition, Model model) {
+	public String activitySearch(@ModelAttribute ActivityQueryCondition condition,
+								 Model model) {
 		List<ActivityFrontEndForView> activities = activitySvc.findByConditionForView(condition);
 		model.addAttribute("activitySearchList", activities);
+		model.addAttribute("activityQueryCondition", condition);
 		
 		return "front-end/activity/activityInfoAll";
 	}

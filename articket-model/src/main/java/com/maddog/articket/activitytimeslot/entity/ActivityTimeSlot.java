@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -44,5 +45,16 @@ public class ActivityTimeSlot implements Serializable {
      * 時段剩餘座位數
      */
 	private Integer activityTimeSlotSeatAmount;
+
+    /**
+     * 取得日期字串
+     *
+     * @return 日期字串
+     */
+    public String getDateString(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd (E)");
+
+        return format.format(activityTimeSlotDate);
+    }
 
 }

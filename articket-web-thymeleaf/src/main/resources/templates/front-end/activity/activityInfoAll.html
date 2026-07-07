@@ -171,18 +171,18 @@
         <div class="row mt-3">
             <!-- 地區與類型選擇 -->
             <div class="col-md-12">
-                <form method="post" th:action="@{/activity/activitySearch}">
+                <form method="post" th:action="@{/activity/activitySearch}" th:object="${activityQueryCondition}">
                     <div class="mb-3">
                         <label class="form-label">地區:</label>
                         <div>
                             <label>
-                                <input type="checkbox" id="north" name="venueId" value="1"> 北部
+                                <input type="checkbox" id="north" th:field="*{venueIdList}" th:value="1"> 北部
                             </label>
                             <label>
-                                <input type="checkbox" id="central" name="venueId" value="2"> 中部
+                                <input type="checkbox" id="central" th:field="*{venueIdList}" th:value="2"> 中部
                             </label>
                             <label>
-                                <input type="checkbox" id="south" name="venueId" value="3"> 南部
+                                <input type="checkbox" id="south" th:field="*{venueIdList}" th:value="3"> 南部
                             </label>
                         </div>
                     </div>
@@ -190,25 +190,25 @@
                         <label class="form-label">類型:</label>
                         <div>
                             <label>
-                                <input type="checkbox" id="concert" name="activityTag" value="演唱會"> 演唱會
+                                <input type="checkbox" id="concert" th:field="*{activityTagList}" th:value="演唱會"> 演唱會
                             </label>
                             <label>
-                                <input type="checkbox" id="musical" name="activityTag" value="音樂劇"> 音樂劇
+                                <input type="checkbox" id="musical" th:field="*{activityTagList}" th:value="音樂劇"> 音樂劇
                             </label>
                             <label>
-                                <input type="checkbox" id="exhibition" name="activityTag" value="展覽"> 展覽
+                                <input type="checkbox" id="exhibition" th:field="*{activityTagList}" th:value="展覽"> 展覽
                             </label>
                             <label>
-                                <input type="checkbox" id="play" name="activityTag" value="戲劇"> 戲劇
+                                <input type="checkbox" id="play" th:field="*{activityTagList}" th:value="戲劇"> 戲劇
                             </label>
                             <label>
-                                <input type="checkbox" id="dance" name="activityTag" value="舞蹈"> 舞蹈
+                                <input type="checkbox" id="dance" th:field="*{activityTagList}" th:value="舞蹈"> 舞蹈
                             </label>
                             <label>
-                                <input type="checkbox" id="lecture" name="activityTag" value="講座"> 講座
+                                <input type="checkbox" id="lecture" th:field="*{activityTagList}" th:value="講座"> 講座
                             </label>
                             <label>
-                                <input type="checkbox" id="others" name="activityTag" value="其它"> 其它
+                                <input type="checkbox" id="others" th:field="*{activityTagList}" th:value="其它"> 其它
                             </label>
                             <label>
                                 <!-- <span id="searchBar">關鍵字搜尋: <input type="text" name="searchBar" placeholder="例如: IVE"></span> -->

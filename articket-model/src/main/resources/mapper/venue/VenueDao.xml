@@ -30,6 +30,18 @@
         ORDER BY
             venue_id
     </select>
+
+    <!-- 依場館 ID 查詢場館名稱 -->
+    <select id="getNameById"
+            parameterType="java.lang.Integer"
+            resultType="java.lang.String">
+        SELECT
+            venue_name
+        FROM
+            venue
+        WHERE
+            venue_id = #{venueId}
+    </select>
 <!-- method-->
 
 </mapper>

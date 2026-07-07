@@ -6,10 +6,12 @@ import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
 import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
+import com.maddog.articket.seat.dto.SeatSelectForView;
 import com.maddog.articket.seat.service.pri.SeatService;
 import com.maddog.articket.seatstatus.entity.SeatStatus;
 import com.maddog.articket.seatstatus.service.pri.SeatStatusService;
 import com.maddog.articket.ticket.entity.Ticket;
+import com.maddog.articket.venue.service.pri.VenueService;
 import com.maddog.articket.venuearea.service.pri.VenueAreaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,9 @@ public class SeatSelectController {
 	@Autowired
 	private ActivityAreaPriceService activityAreaPriceService;
 
+	@Autowired
+	private VenueService venueService;
+
 	@GetMapping
 	public String getSeatSelect(@RequestParam("activityTimeSlot") Integer activityTimeSlotId, Model model) {
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotId);
@@ -57,28 +62,35 @@ public class SeatSelectController {
         Activity activity = activityService.getOneActivity(activityId);
         Integer venueId = activity.getVenueId();
 		
-		String venueAreaName1 = "VIP";
+		String venueAreaName1 = "VIP 區域";
 		Integer venueAreaId1 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName1);
 		log.info("venueAreaId1================================={}", venueAreaId1);
 		log.info("activityId================================={}", activityId);
 		ActivityAreaPrice activityAreaPrice1 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId1, activityId);
 		
-		String venueAreaName2 = "A";
+		String venueAreaName2 = "主舞台";
 		Integer venueAreaId2 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName2);
 		log.info("venueAreaId2================================={}", venueAreaId2);
 		log.info("activityId================================={}", activityId);
 		ActivityAreaPrice activityAreaPrice2 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId2, activityId);
 		
-		String venueAreaName3 = "B";
+		String venueAreaName3 = "普通區域";
 		Integer venueAreaId3 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName3);
 		log.info("venueAreaId3========================================={}", venueAreaId3);
 		log.info("activityId========================================={}", activityId);
 		ActivityAreaPrice activityAreaPrice3 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId3, activityId);
-		
-		model.addAttribute("activityTimeSlot", activityTimeSlot);
-		model.addAttribute("activityAreaPrice1", activityAreaPrice1.getActivityAreaPrice());
-		model.addAttribute("activityAreaPrice2", activityAreaPrice2.getActivityAreaPrice());
-		model.addAttribute("activityAreaPrice3", activityAreaPrice3.getActivityAreaPrice());
+
+		SeatSelectForView seatSelectForView = new SeatSelectForView();
+		seatSelectForView.setActivityName(activity.getActivityName());
+		seatSelectForView.setActivityTimeSlotDate(activityTimeSlot.getDateString());
+		seatSelectForView.setVenueName(venueService.getNameById(venueId));
+		seatSelectForView.setActivityAreaPrice1(activityAreaPrice1.getActivityAreaPrice());
+		seatSelectForView.setActivityAreaPrice2(activityAreaPrice2.getActivityAreaPrice());
+		seatSelectForView.setActivityAreaPrice3(activityAreaPrice3.getActivityAreaPrice());
+
+		model.addAttribute("seatSelectForView", seatSelectForView);
+
+		model.addAttribute("activityTimeSlotId", activityTimeSlotId);
 		
 		// 這裡可以添加更多需要傳遞給視圖的數據
 		
