@@ -48,4 +48,19 @@ public class BookTicketForView implements Serializable {
      */
     private BigDecimal ticketPrice;
 
+    /**
+     * 場館名稱
+     */
+    private String venueName;
+
+    /**
+     * 座位代號
+     */
+    private String seatName;
+
+    /**
+     * 活動區域價格
+     */
+    private BigDecimal activityAreaPrice;
+
 }

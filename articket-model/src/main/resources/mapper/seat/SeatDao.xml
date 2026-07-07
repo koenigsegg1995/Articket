@@ -14,16 +14,15 @@
 <!-- method-->
     <!-- 依場館 ID 與座位代號查詢座位 ID -->
     <select id="findSeatIdByVenueIdAndSeatName"
-            parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         SELECT
-            seatId
+            seat_id
         FROM
             seat
         WHERE
-            venueId = #{venueId)
+            venue_id = #{venueId}
             AND
-            seatName = #{seatName}
+            seat_name = #{seatName}
     </select>
 <!-- method-->
 

@@ -6,6 +6,7 @@ import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
 import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
+import com.maddog.articket.bookticket.dto.BookTicketForView;
 import com.maddog.articket.seat.dto.SeatSelectForView;
 import com.maddog.articket.seat.service.pri.SeatService;
 import com.maddog.articket.seatstatus.entity.SeatStatus;
@@ -62,19 +63,19 @@ public class SeatSelectController {
         Activity activity = activityService.getOneActivity(activityId);
         Integer venueId = activity.getVenueId();
 		
-		String venueAreaName1 = "VIP 區域";
+		String venueAreaName1 = "VIP";
 		Integer venueAreaId1 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName1);
 		log.info("venueAreaId1================================={}", venueAreaId1);
 		log.info("activityId================================={}", activityId);
 		ActivityAreaPrice activityAreaPrice1 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId1, activityId);
 		
-		String venueAreaName2 = "主舞台";
+		String venueAreaName2 = "A";
 		Integer venueAreaId2 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName2);
 		log.info("venueAreaId2================================={}", venueAreaId2);
 		log.info("activityId================================={}", activityId);
 		ActivityAreaPrice activityAreaPrice2 = activityAreaPriceService.findByVenueAreaIdAndActivityId(venueAreaId2, activityId);
 		
-		String venueAreaName3 = "普通區域";
+		String venueAreaName3 = "B";
 		Integer venueAreaId3 = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName3);
 		log.info("venueAreaId3========================================={}", venueAreaId3);
 		log.info("activityId========================================={}", activityId);
@@ -114,13 +115,12 @@ public class SeatSelectController {
 							  @RequestParam(required = false) String seat5,
 							  HttpSession session,
 							  RedirectAttributes redirectAttributes) {
-
 		List<String> seatNames = Stream.of(seat1, seat2, seat3, seat4, seat5)
 									.filter(Objects::nonNull)
 									.filter(seat -> !seat.isBlank())
 									.toList();
 
-		List<Ticket> ticketList = new ArrayList<>();
+		List<BookTicketForView> ticketList = new ArrayList<>();
 		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(activityTimeSlotId);
 		Integer activityId = activityTimeSlot.getActivityId();// 活動ID從活動時段ID抓取
 		Activity activity = activityService.getOneActivity(activityId);
@@ -139,7 +139,6 @@ public class SeatSelectController {
 
 				// 使用 VenueAreaService 找出 venueAreaId
 				Integer venueAreaId = venueAreaService.findVenueAreaIdByVenueIdAndVenueAreaName(venueId, venueAreaName);
-				
 				
 				if (venueAreaId == null) {
 					log.info("未找到區域: {}", venueAreaName);
@@ -165,16 +164,14 @@ public class SeatSelectController {
 				if (seatId != null) {
 					log.info("找到座位ID: {} 對應座位名稱: {} 在區域ID: {}", seatId, seatName, venueAreaId);
 					// 使用 activityTimeSlotId 和 seatId 找出 SeatStatus
-					SeatStatus seatStatus = seatStatusService
-							.getSeatStatusByActivityTimeSlotIdAndSeatId(activityTimeSlotId, seatId);
+					SeatStatus seatStatus = seatStatusService.getSeatStatusByActivityTimeSlotIdAndSeatId(activityTimeSlotId, seatId);
 					if (seatStatus != null) {
 						log.info("找到座位狀態ID: {} 對應座位ID: {} 在區域ID: {}", seatStatus.getSeatStatusId(), seatId, venueAreaId);
 
 						// Create a new Ticket object and add it to the list
-						Ticket ticket = new Ticket();
-						ticket.setSeatStatusId(seatStatus.getSeatStatusId());
-						ticket.setActivityAreaPriceId(activityAreaPrice.getActivityAreaPriceId());
-						ticket.setActivityTimeSlotId(activityTimeSlotId);
+						BookTicketForView ticket = new BookTicketForView();
+						ticket.setActivityName(activity.getActivityName());
+						ticket.setActivityTimeSlot();
 						ticketList.add(ticket);
 					} else {
 						log.info("未找到座位狀態: {} 在區域ID: {}", seatName, venueAreaId);
@@ -199,4 +196,5 @@ public class SeatSelectController {
 			return "redirect:/error";
 		}
 	}
+
 }
