@@ -2,7 +2,6 @@ package com.maddog.articket.bookticket.dao;
 
 import com.maddog.articket.bookticket.entity.BookTicket;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

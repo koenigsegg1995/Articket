@@ -2,8 +2,6 @@ package com.maddog.articket.cartitem.dao;
 
 import com.maddog.articket.cartitem.entity.CartItem;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

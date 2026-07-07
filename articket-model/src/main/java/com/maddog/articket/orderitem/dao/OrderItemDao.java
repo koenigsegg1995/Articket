@@ -1,13 +1,5 @@
 package com.maddog.articket.orderitem.dao;
 
-import com.maddog.articket.orderitem.entity.OrderItem;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
 /**
  * 訂單明細 DAO
  */

@@ -3,8 +3,6 @@ package com.maddog.articket.prosecute.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;

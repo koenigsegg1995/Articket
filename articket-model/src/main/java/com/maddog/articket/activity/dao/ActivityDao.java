@@ -4,8 +4,6 @@ import com.maddog.articket.activity.dto.*;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

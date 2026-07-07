@@ -3,7 +3,6 @@ package com.maddog.articket.news.service.impl;
 import com.maddog.articket.news.dao.NewsDao;
 import com.maddog.articket.news.entity.News;
 import com.maddog.articket.news.service.pri.NewsService;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;

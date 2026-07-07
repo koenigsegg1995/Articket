@@ -2,7 +2,6 @@ package com.maddog.articket.activityareaprice.dao;
 
 import com.maddog.articket.activityareaprice.entity.ActivityAreaPrice;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.Query;
 
 /**
  * 活動區域價格 DAO
