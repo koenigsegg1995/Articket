@@ -2,7 +2,6 @@ package com.maddog.articket.controller.generalmember;
 
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
-import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +29,7 @@ import java.util.Set;
 public class MemberIDController {
 	
 	@Autowired
-    GeneralMemberService gmemberSvc;
-	
-	@Autowired
-	MemberCouponService mbcSvc;
+    private GeneralMemberService gmemberSvc;
 	
 	/*
 	 * This method will be called on select_page.html form submission, handling POST

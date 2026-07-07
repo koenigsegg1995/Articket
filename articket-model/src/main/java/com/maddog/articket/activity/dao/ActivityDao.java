@@ -1,9 +1,6 @@
 package com.maddog.articket.activity.dao;
 
-import com.maddog.articket.activity.dto.ActivityDisplayForView;
-import com.maddog.articket.activity.dto.ActivityForUpdate;
-import com.maddog.articket.activity.dto.ActivityFrontEndForView;
-import com.maddog.articket.activity.dto.ActivityQueryCondition;
+import com.maddog.articket.activity.dto.*;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import org.apache.ibatis.annotations.Mapper;
@@ -125,5 +122,12 @@ public interface ActivityDao {
      * @return 活動清單
      */
     List<Activity> findByPartnerMemberId(Integer partnerId);
+
+    /**
+     * 查詢 index.html 顯示用 VO 清單
+     *
+     * @return 活動 VO 清單
+     */
+    List<ActivityIndexForView> getActivityForIndex();
 
 }

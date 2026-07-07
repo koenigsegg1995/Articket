@@ -108,7 +108,7 @@ public class PartnerMemberServiceImpl implements PartnerMemberService {
 	@Override
 	@Transactional(readOnly = true)
 	public PartnerMember getByTaxId(String taxId) {
-		return dao.findByTaxID(taxId);
+		return dao.findByTaxId(taxId);
 	}
 
 }

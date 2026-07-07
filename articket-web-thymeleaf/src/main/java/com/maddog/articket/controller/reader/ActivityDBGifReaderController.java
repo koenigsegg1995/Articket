@@ -1,6 +1,5 @@
 package com.maddog.articket.controller.reader;
 
-import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activitypicture.service.pri.ActivityPictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,20 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 
 @Controller
 @RequestMapping("/activity")
 public class ActivityDBGifReaderController {
 
 	@Autowired
-	ActivityService activitySvc;
-	
-	@Autowired
-	ActivityPictureService activityPictureSvc;
+	private ActivityPictureService activityPictureSvc;
 	
 	//提供 <img> 顯示
 	@GetMapping("DBGifReader")

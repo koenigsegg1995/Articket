@@ -5,9 +5,7 @@ import com.maddog.articket.cart.service.pri.CartService;
 import com.maddog.articket.cartitem.service.pri.CartItemService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
-import com.maddog.articket.membercoupon.service.pri.MemberCouponService;
 import com.maddog.articket.orders.entity.Orders;
-import com.maddog.articket.orders.service.pri.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,12 +27,6 @@ public class CartController {
 
 	@Autowired
 	private GeneralMemberService memberService;
-
-	@Autowired
-	private MemberCouponService couponService;
-
-	@Autowired
-	private OrdersService ordersService;
 
 	@GetMapping("/view")
 	public String viewCart(Model model) {

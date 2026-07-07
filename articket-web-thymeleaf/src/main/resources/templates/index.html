@@ -182,7 +182,6 @@
 <body>
     <div id="header"></div>
 
-
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide"><img src="images/slideMagazine.jpg" alt="Slide 1"></div>
@@ -227,14 +226,14 @@
                 <!-- 設定 overflow: hidden; 確保卡片內的內容不會超出卡片範圍 -->
                 <div class="card h-100">
                     <div class="card-body d-flex flex-column">
-                        <a th:href="@{activity/activityInfoOne(activityID=${activity.activityID})}" class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
+                        <a th:href="@{activity/activityInfoOne(activityId=${activity.activityId})}" class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
                             <!-- 設定圖片容器的寬度和 overflow: hidden; 來限制圖片顯示範圍 -->
                             <div class="image-wrapper mb-3" style="height: 200px; overflow: hidden;">
                                 <!-- 輪播圖片的容器，設定為flex布局以顯示多張圖片 -->
                                 <div class="image-slider" style="display: flex; transition: transform 0.5s ease-in-out;">
                                     <!-- 使用 th:each 遍歷每張圖片並顯示 -->
-                                    <img th:each="activityPicture : ${activity.activityPictures}" 
-                                         th:src="@{|/activity/DBGifReader?activityPictureID=${activityPicture.activityPictureID}|}" 
+                                    <img th:each="activityPictureId : ${activityPictureIdList}"
+                                         th:src="@{|/activity/DBGifReader?activityPictureId=${activityPictureId}|}"
                                          class="img-fluid" alt="Activity Image" 
                                          style="object-fit: cover; width: 100%; height: 200px;"> <!-- 修改部分，設定圖片寬度與填滿樣式 -->
                                 </div>
@@ -242,7 +241,7 @@
                             <!-- 顯示活動名稱 -->
                             <h5 class="card-title" th:text="${activity.activityName}"></h5>
                             <p class="card-text" th:text="'日期：' + ${activity.sellTime}"></p>
-                            <p class="card-text" th:text="'地點：' + ${activity.venue.venueName}"></p>
+                            <p class="card-text" th:text="'地點：' + ${activity.venueName}"></p>
                         </a>
                     </div>
                 </div>
@@ -250,136 +249,133 @@
         </div>
     </div>
 
-        <div id="footer"></div>
+    <div id="footer"></div>
 
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-        <script>
-	     // 載入 header
-	        fetch('/header')
-	            .then(response => {
-	                if (!response.ok) {
-	                    throw new Error(`HTTP error! status: ${response.status}`);
-	                }
-	                return response.text();
-	            })
-	            .then(data => {
-	                document.getElementById('header').innerHTML = data;
-	            })
-	            .catch(error => {
-	                console.error('Error loading header:', error);
-	                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
-	            });
-	
-	        // 載入 footer
-	        fetch('/footer')
-	            .then(response => {
-	                if (!response.ok) {
-	                    throw new Error(`HTTP error! status: ${response.status}`);
-	                }
-	                return response.text();
-	            })
-	            .then(data => {
-	                document.getElementById('footer').innerHTML = data;
-	            })
-	            .catch(error => {
-	                console.error('Error loading footer:', error);
-	                document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
-	            });
-
-
-
-            var swiper = new Swiper('.swiper-container', {
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-
-            // Function to generate the calendar
-            function generateCalendar(year, month) {
-                const calendarBody = document.getElementById('calendar-body');
-                calendarBody.innerHTML = '';
-
-                const firstDay = new Date(year, month, 1).getDay();
-                const lastDate = new Date(year, month + 1, 0).getDate();
-                let date = 1;
-
-                for (let i = 0; i < 6; i++) {
-                    const row = document.createElement('tr');
-
-                    for (let j = 0; j < 7; j++) {
-                        const cell = document.createElement('td');
-                        if (i === 0 && j < firstDay) {
-                            cell.textContent = '';
-                        } else if (date > lastDate) {
-                            cell.textContent = '';
-                        } else {
-                            cell.textContent = `${month + 1}/${date}`;
-                            date++;
-                        }
-                        row.appendChild(cell);
-                    }
-                    calendarBody.appendChild(row);
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // 載入 header
+        fetch('/header')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            }
-
-            // Populate year and month dropdowns
-            const yearSelect = document.getElementById('year-select');
-            const monthSelect = document.getElementById('month-select');
-            const currentYear = new Date().getFullYear();
-
-            for (let i = currentYear - 5; i <= currentYear + 5; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-            }
-
-            for (let i = 0; i < 12; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i + 1;
-                monthSelect.appendChild(option);
-            }
-
-            // Set current year and month
-            yearSelect.value = currentYear;
-            monthSelect.value = new Date().getMonth();
-
-            // Generate initial calendar
-            generateCalendar(currentYear, new Date().getMonth());
-
-            // Update calendar when year or month changes
-            yearSelect.addEventListener('change', () => {
-                generateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                document.getElementById('header').innerHTML = '<p>Error loading header</p>';
             });
 
-            monthSelect.addEventListener('change', () => {
-                generateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        // 載入 footer
+        fetch('/footer')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
             });
 
-            
-       	  // 註釋掉 loginBtn 相關的
-       	  /*            
-           // 獲取會員登入超連結元素
-            var loginBtn = document.getElementById('loginBtn');
-            // 獲取登入浮動視窗元素
-            var loginPopup = document.querySelector('.login-popup');
+        var swiper = new Swiper('.swiper-container', {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
 
-            // 點擊會員登入超連結時顯示浮動視窗
-            loginBtn.addEventListener('click', function (event) {
-                event.preventDefault(); // 防止默認行為（如頁面跳轉）
+        // Function to generate the calendar
+        function generateCalendar(year, month) {
+            const calendarBody = document.getElementById('calendar-body');
+            calendarBody.innerHTML = '';
 
-                // 顯示登入浮動視窗
-                loginPopup.style.display = 'block';
-            }); 
-            */
-            
-        </script>
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('tr');
+
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement('td');
+                    if (i === 0 && j < firstDay) {
+                        cell.textContent = '';
+                    } else if (date > lastDate) {
+                        cell.textContent = '';
+                    } else {
+                        cell.textContent = `${month + 1}/${date}`;
+                        date++;
+                    }
+                    row.appendChild(cell);
+                }
+                calendarBody.appendChild(row);
+            }
+        }
+
+        // Populate year and month dropdowns
+        const yearSelect = document.getElementById('year-select');
+        const monthSelect = document.getElementById('month-select');
+        const currentYear = new Date().getFullYear();
+
+        for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        for (let i = 0; i < 12; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i + 1;
+            monthSelect.appendChild(option);
+        }
+
+        // Set current year and month
+        yearSelect.value = currentYear;
+        monthSelect.value = new Date().getMonth();
+
+        // Generate initial calendar
+        generateCalendar(currentYear, new Date().getMonth());
+
+        // Update calendar when year or month changes
+        yearSelect.addEventListener('change', () => {
+            generateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        });
+
+        monthSelect.addEventListener('change', () => {
+            generateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        });
+
+      // 註釋掉 loginBtn 相關的
+      /*
+       // 獲取會員登入超連結元素
+        var loginBtn = document.getElementById('loginBtn');
+        // 獲取登入浮動視窗元素
+        var loginPopup = document.querySelector('.login-popup');
+
+        // 點擊會員登入超連結時顯示浮動視窗
+        loginBtn.addEventListener('click', function (event) {
+            event.preventDefault(); // 防止默認行為（如頁面跳轉）
+
+            // 顯示登入浮動視窗
+            loginPopup.style.display = 'block';
+        });
+        */
+
+    </script>
 </body>
 
 </html>

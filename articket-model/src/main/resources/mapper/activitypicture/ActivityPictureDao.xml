@@ -66,6 +66,20 @@
             </choose>
         </where>
     </delete>
+
+    <!-- 依活動 ID 查詢活動圖片 ID 清單 -->
+    <select id="getByActivityId"
+            parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        SELECT
+            activity_picture_id
+        FROM
+            activity_picture
+        WHERE
+            activity_id = #{activityId}
+        ORDER BY
+            activity_picture_id
+    </select>
 <!-- method-->
 
 </mapper>

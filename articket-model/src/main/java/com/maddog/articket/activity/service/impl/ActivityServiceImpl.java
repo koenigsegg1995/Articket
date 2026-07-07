@@ -268,5 +268,24 @@ public class ActivityServiceImpl implements ActivityService {
 	public int setTicketSetStatusFinished(Integer activityId){
 		return activityDao.setTicketSetStatusFinished(activityId);
 	}
+
+	/**
+	 * 查詢 index.html 顯示用 VO 清單
+	 *
+	 * @return 活動 VO 清單
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<ActivityIndexForView> getActivityForIndex(){
+		// 查詢所有活動 VO 清單
+		List<ActivityIndexForView> result = activityDao.getActivityForIndex();
+
+		// 查詢每一個活動的圖片 ID 清單
+		for(ActivityIndexForView vo : result){
+			vo.setActivityPictureIdList(activityPictureSvc.getByActivityId(vo.getActivityId()));
+		}
+
+		return result;
+	}
 	
 }

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.partnermember.dao.PartnerMemberDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+    <!-- 全查詢 -->
+    <resultMap id="resultForSelect" type="com.maddog.articket.partnermember.entity.PartnerMember">
+        <id property="partnerId" column="partner_id" />
+        <result property="taxId" column="tax_id" />
+        <result property="partnerName" column="partner_name" />
+        <result property="partnerHeading" column="partner_heading" />
+        <result property="partnerAddress" column="partner_address" />
+        <result property="partnerPhone" column="partner_phone" />
+        <result property="partnerContactPerson" column="partner_contact_person" />
+        <result property="partnerPassword" column="partner_password" />
+        <result property="partnerEmail" column="partner_email" />
+        <result property="partnerCreateTime" column="partner_create_time" />
+        <result property="partnerAccountStatus" column="partner_account_status" />
+    </resultMap>
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.partnermember.entity.PartnerMember">
+        INSERT INTO
+            partner_member
+        (
+            tax_id,
+            partner_name,
+            partner_heading,
+            partner_address,
+            partner_phone,
+            partner_contact_person,
+            partner_password,
+            partner_email,
+            partner_account_status
+        )
+        VALUES
+        (
+            #{taxId},
+            #{partnerName},
+            #{partnerHeading},
+            #{partnerAddress},
+            #{partnerPhone},
+            #{partnerContactPerson},
+            #{partnerPassword},
+            #{partnerEmail},
+            #{partnerAccountStatus}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update"
+            parameterType="com.maddog.articket.partnermember.entity.PartnerMember">
+        UPDATE
+            partner_member
+        <set>
+            <if test=" taxId != null and taxId != '' ">
+                tax_id = #{taxId},
+            </if>
+
+            <if test=" partnerName != null and partnerName != '' ">
+                partner_name = #{partnerName},
+            </if>
+
+            <if test=" partnerHeading != null and partnerHeading != '' ">
+                partner_heading = #{partnerHeading},
+            </if>
+
+            <if test=" partnerAddress != null and partnerAddress != '' ">
+                partner_address = #{partnerAddress},
+            </if>
+
+            <if test=" partnerPhone != null and partnerPhone != '' ">
+                partner_phone = #{partnerPhone},
+            </if>
+
+            <if test=" partnerContactPerson != null and partnerContactPerson != '' ">
+                partner_contact_person = #{partnerContactPerson},
+            </if>
+
+            <if test=" partnerPassword != null and partnerPassword != '' ">
+                partner_password = #{partnerPassword},
+            </if>
+
+            <if test=" partnerEmail != null and partnerEmail != '' ">
+                partner_email = #{partnerEmail},
+            </if>
+
+            <if test=" partnerAccountStatus != null ">
+                partner_account_status = #{partnerAccountStatus},
+            </if>
+        </set>
+        WHERE
+            partner_id = #{partnerId}
+    </update>
+
+    <!-- 刪除 -->
+    <delete id="deleteById"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            partner_member
+        WHERE
+            partner_id = #{partnerId}
+    </delete>
+
+    <!-- 依廠商會員 ID 查詢 -->
+    <select id="findById"
+            parameterType="java.lang.Integer"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            partner_member
+        WHERE
+            partner_id = #{partnerId}
+    </select>
+
+    <!-- 查詢全部 -->
+    <select id="findAll"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            partner_member
+        ORDER BY
+            partner_id DESC
+    </select>
+
+    <!-- 依條件查詢 -->
+    <select id="findByCondition"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            partner_member
+        <where>
+            <if test=" partnerId != null ">
+                OR partner_id LIKE CONCAT('%', #{partnerId}, '%'),
+            </if>
+
+            <if test=" partnerAddress != null and partnerAddress != '' ">
+                OR partner_address LIKE CONCAT('%', #{partnerAddress}, '%'),
+            </if>
+
+            <if test=" taxId != null ">
+                OR tax_id LIKE CONCAT('%', #{taxId}, '%'),
+
+            </if>
+        </where>
+        ORDER BY
+            partner_id DESC
+    </select>
+
+    <!-- 依統一編號查詢 -->
+    <select id="findByTaxId"
+            parameterType="java.lang.Integer"
+            resultMap="resultForSelect">
+        SELECT
+            *
+        FROM
+            partner_member
+        WHERE
+            tax_id = #{taxId}
+    </select>
+<!-- method-->
+
+</mapper>

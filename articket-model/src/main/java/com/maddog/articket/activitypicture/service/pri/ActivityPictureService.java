@@ -2,6 +2,7 @@ package com.maddog.articket.activitypicture.service.pri;
 
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,5 +39,14 @@ public interface ActivityPictureService {
 	 * 		 	int
 	 */
 	int delete(Set<Integer> activityPictureId);
+
+	/**
+	 * 依活動 ID 查詢活動圖片 ID 清單
+	 *
+	 * @param activityId
+	 * 			活動 ID
+	 * @return 活動圖片 ID 清單
+	 */
+	List<Integer> getByActivityId(Integer activityId);
 
 }

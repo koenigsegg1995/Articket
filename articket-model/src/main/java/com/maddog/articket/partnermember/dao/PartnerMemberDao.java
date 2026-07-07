@@ -3,7 +3,6 @@ package com.maddog.articket.partnermember.dao;
 import com.maddog.articket.partnermember.dto.PartnerMemberQueryCondition;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -71,6 +70,6 @@ public interface PartnerMemberDao {
 	 * 			統一編號
 	 * @return 廠商會員
 	 */
-	PartnerMember findByTaxID(String taxId);
+	PartnerMember findByTaxId(String taxId);
 
 }

@@ -43,7 +43,7 @@ mybatis:
   type-aliases-package: com.maddog.articket # entity 套件路徑
   configuration:
     map-underscore-to-camel-case: true # 開啟駝峰命名轉換
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 開啟 SQL LOG
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 開啟 SQL LOG
 
 # Server 設定
 server:

@@ -142,5 +142,12 @@ public interface ActivityService {
 	 * 			Integer
 	 */
 	int setTicketSetStatusFinished(Integer activityId);
-	
+
+	/**
+	 * 查詢 index.html 顯示用 VO 清單
+	 *
+	 * @return 活動 VO 清單
+	 */
+	List<ActivityIndexForView> getActivityForIndex();
+
 }

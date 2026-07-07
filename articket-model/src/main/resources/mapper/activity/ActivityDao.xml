@@ -21,7 +21,7 @@
         a.activity_name,
         a.activity_post_time,
         a.activity_content,
-        a.activityTag,
+        a.activity_tag,
         v.venue_name,
         p.partner_name
     </sql>
@@ -31,7 +31,7 @@
         a.activity_id,
         a.activity_name,
         v.venue_name,
-        a.activityTag
+        a.activity_tag
     </sql>
 <!-- sql -->
 
@@ -62,6 +62,14 @@
         <result column="activity_status" property="activityStatus" />
         <result column="ticket_set_status" property="ticketSetStatus" />
         <result column="sell_time" property="sellTime" />
+    </resultMap>
+
+    <resultMap id="resultForIndexForView"
+               type="com.maddog.articket.activity.dto.ActivityIndexForView">
+        <id column="activity_id" property="activityId" />
+        <result column="activity_name" property="activityName" />
+        <result column="sell_time" property="sellTime" />
+        <result column="venue_name" property="venueName" />
     </resultMap>
 <!-- resultMap-->
 
@@ -169,7 +177,7 @@
         SELECT
             <include refid="columnsForViewForFrontEnd" />
         FROM
-            activity
+            activity a
         LEFT JOIN
             venue v
             ON
@@ -288,6 +296,24 @@
             partner_id = #{partnerId}
         ORDER BY
             activity_id DESC
+    </select>
+
+    <!-- 查詢 index.html 顯示用 VO 清單 -->
+    <select id="getActivityForIndex"
+            resultMap="resultForIndexForView">
+        SELECT
+            a.activity_id,
+            a.activity_name,
+            a.sell_time,
+            v.venue_name
+        FROM
+            activity a
+        LEFT JOIN
+            venue v
+            ON
+            a.venue_id = v.venue_id
+        ORDER BY
+            a.activity_post_time DESC
     </select>
 <!-- method-->
 

@@ -2,6 +2,7 @@ package com.maddog.articket;
 
 import java.util.List;
 
+import com.maddog.articket.activity.dto.ActivityIndexForView;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
@@ -9,7 +10,6 @@ import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +30,7 @@ public class IndexController {
 	
 	//導向首頁
     @GetMapping("/")
-    public String index(Model model) {
+    public String index() {
         return "index"; //view
     }
     
@@ -59,41 +59,42 @@ public class IndexController {
     }
 
     @GetMapping("/generalmember/select_page")
-	public String select_page(Model model) {
+	public String select_page() {
 		return "back-end/generalmember/select_page";
 	}
 	
 	@GetMapping("/partnermember/select_page")
-	public String select_page1(Model model) {
+	public String select_page1() {
 		return "back-end/partnermember/select_page";
 	}
 
 	@GetMapping("/generalmember/listAllGeneralMember")
-	public String listAllGeneralMember(Model model) {
+	public String listAllGeneralMember() {
 		return "back-end/generalmember/listAllGeneralMember";
 	}
 
 	@ModelAttribute("generalMemberListData") // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
-	protected List<GeneralMember> referenceListData(Model model) {
-
+	protected List<GeneralMember> referenceListData() {
 		List<GeneralMember> list = gmemberSvc.getAll();
-		return list;
+
+        return list;
 	}
+
     @GetMapping("/partnermember/listAllPartnerMember")
-    public String listAllPartnerMember(Model model) {
+    public String listAllPartnerMember() {
     	return "back-end/partnermember/listAllPartnerMember";
     }
     
     @ModelAttribute("partnerMemberListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
-    protected List<PartnerMember> referenceListData1(Model model) {
-    	
+    protected List<PartnerMember> referenceListData1() {
     	List<PartnerMember> list = partnerSvc.getAll();
-    	return list;
+
+        return list;
     }
     
- // 導向登入成功會員
+    // 導向登入成功會員
  	@GetMapping("/success")
- 	public String getsuccess() {
+ 	public String getSuccess() {
  		return "success";
  	}
  	
@@ -105,7 +106,7 @@ public class IndexController {
  	
  	// 導向註冊成功
  	@GetMapping("/successInRegister")
- 	public String getsuccessInRegister() {
+ 	public String getSuccessInRegister() {
  		return "successInRegister";
  	}
  	
@@ -120,16 +121,13 @@ public class IndexController {
  	public String getAdminSidebar() {
  	    return "back-end-admin/admin_sidebar";
  	}
- 	
- // inject(注入資料) via application.properties
-    @Value("${welcome.message}")
-    private String message;
     
- // http://......../hello?name=peter1
+    // http://......../hello?name=peter1
     @GetMapping("/hello")
-    public String indexWithParam(
-            @RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
+    public String indexWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name,
+                                 Model model) {
         model.addAttribute("message", name);
+
         return "index"; //view
     }
 	
@@ -137,6 +135,7 @@ public class IndexController {
     @GetMapping("/adminProsecute")
     public String getAdminProsecute(Model model) {
         model.addAttribute("message", "Welcome to Admin Prosecute Page");
+
         return "/back-end-admin/admin_prosecute";
     }
 
@@ -144,8 +143,8 @@ public class IndexController {
      * 顯示所有活動
      */
   	@ModelAttribute("activityListData")
-  	protected List<Activity> referenceListActivityData() {
-      	return activitySvc.getAll();
+  	public List<ActivityIndexForView> referenceListActivityData() {
+        return activitySvc.getActivityForIndex();
   	}
   	
   	//票務須知

@@ -1,12 +1,10 @@
 package com.maddog.articket.controller.ticket;
 
 import com.maddog.articket.activity.dto.ActivityDisplayForView;
-import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
 import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
-import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.bookticket.entity.BookTicket;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 票券 Controller
@@ -38,12 +35,6 @@ public class TicketController {
 	 */
 	@Autowired
 	private ActivityTimeSlotService activityTimeSlotService;
-
-	/**
-	 * 一般會員 Service
-	 */
-	@Autowired
-	private GeneralMemberService memberSvc;
 
 	/**
 	 * 票券訂單 Service
@@ -142,8 +133,11 @@ public class TicketController {
 	
 	//取消與結帳
 	@PostMapping("confirm")
-	public String confirm(@RequestParam("action") String action, @RequestParam("memberID") String memberID, @RequestParam("ticketMemberIDs") String[] ticketMemberIDs,
-			@RequestParam("totalPrice") String totalPrice, HttpSession session, ModelMap model) {
+	public String confirm(@RequestParam("action") String action,
+						  @RequestParam("memberID") String memberID,
+						  @RequestParam("ticketMemberIDs") String[] ticketMemberIDs,
+						  @RequestParam("totalPrice") String totalPrice,
+						  HttpSession session) {
 		//確認是否登入，未登入重導至會員登入頁面
 		if(session.getAttribute("memberID") == null) {
 			return "redirect:/generalmember/login";
@@ -153,52 +147,45 @@ public class TicketController {
 		if("cancel".equals(action)) {
 			return "redirect:/";
 		}
-		
-		//取得訂單
-		BookTicket bookTicket = new BookTicket();
-		
+
 		//取得選購票券
-		List<Ticket> ticketList = (List<Ticket>)session.getAttribute("ticketList");
-		
+		List<Ticket> ticketList = (List<Ticket>) session.getAttribute("ticketList");
+
+		//建立訂單
+		BookTicket bookTicket = new BookTicket();
+			//設置訂單資料
+		bookTicket.setMemberId(Integer.valueOf(memberID)); //未從 session 取帳號
+		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.getFirst().getActivityTimeSlotId());
+		bookTicket.setActivityId(activityTimeSlot.getActivityId());
+		bookTicket.setActivityTimeSlotId(activityTimeSlot.getActivityTimeSlotId());
+		bookTicket.setTicketQuantity(ticketList.size());
+		bookTicket.setTotalPrice(new BigDecimal(totalPrice));
+			//新增訂單
+		bookTicketSvc.addBookTicket(bookTicket);
+
 		//無輸入分票帳號，跳轉回首頁
 		if(ticketMemberIDs.length == 0) {
 			return "redirect:/";
 		}
+
 		//設定持有人給票券
 		for(int i = 0; i < ticketMemberIDs.length; i++) {
 			//該序號未輸入帳號，跳轉回首頁
 			if(ticketMemberIDs[i] == null) {
 				return "redirect:/";
 			}
+
 			//取得第 i 個持有人
 			try {
 				//取得第 i 張票券
 				Ticket ticket = ticketList.get(i);
 
 				ticket.setMemberId(Integer.valueOf(ticketMemberIDs[i]));
-				ticket.setBookTicketId(bookTicket);
+				ticket.setBookTicketId(bookTicket.getBookTicketId());
 			}catch (Exception e) {
 				return "redirect:/";
 			}
 		}
-		
-		//將票券設置至訂單
-		for(Ticket ticket : ticketList) {
-			bookTicket.getTickets().add(ticket);
-		}
-		
-		//設置訂單資料
-		bookTicket.setGeneralMember(memberSvc.getById(Integer.valueOf(memberID))); //未從 session 取帳號
-		
-		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.get(0).getActivityTimeSlotId());
-		bookTicket.setActivityId(activityTimeSlot.getActivityId());
-		bookTicket.setActivityTimeSlotId(activityTimeSlot.getActivityTimeSlotId());
-		
-		bookTicket.setTicketQuantity(ticketList.size());
-		bookTicket.setTotalPrice(new BigDecimal(totalPrice));
-		
-		//成立訂單存入資料庫
-		bookTicketSvc.addBookTicket(bookTicket);
 		
 		//session 移除選購票券
 		session.removeAttribute("ticketList");
