@@ -188,13 +188,13 @@
                                 <td th:text="${ticketStat.count}"></td>
                                 <td th:text="${ticket.activityName}"></td>
                                 <td th:switch="${ticket.activityTimeSlot}">
-                                    <span th:case="1" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 10:00'"></span>
-                                    <span th:case="2" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 14:00'"></span>
-                                    <span th:case="3" th:text="${ticket.activityTimeSlot.activityTimeSlotDate} + ' 18:00'"></span>
+                                    <span th:case="1" th:text="${ticket.getDateString()} + ' 10:00'"></span>
+                                    <span th:case="2" th:text="${ticket.getDateString()} + ' 14:00'"></span>
+                                    <span th:case="3" th:text="${ticket.getDateString()} + ' 18:00'"></span>
                                 </td>
-                                <td th:text="${ticket.activityTimeSlot.activity.venue.venueName}"></td>
-                                <td th:text="${ticket.seatStatus.seat.seatName}"></td>
-                                <td th:text="${'$' + ticket.activityAreaPrice.activityAreaPrice}"></td>
+                                <td th:text="${ticket.venueName}"></td>
+                                <td th:text="${ticket.seatName}"></td>
+                                <td th:text="${'$' + ticket.activityAreaPrice}"></td>
                                 <td style="width: 100px;">
                                     <form method="post" th:action="@{/ticket/deleteOneTicket}" style="margin-bottom: 0px;">
                                         <button type="submit" class="quantity">
@@ -219,7 +219,6 @@
 
             <!-- 付款資訊 -->
             <form method="post" th:action="@{/ticket/confirm}">
-                <input type="hidden" name="memberID" th:value="${session.memberID}">
                 <input type="hidden" name="totalPrice" th:value="${total}">
 
                 <div class="member-details">
@@ -227,7 +226,7 @@
                     <h6 style="color: red">* 請填入票券持有人</h6>
                     <div th:each="ticket:${session.ticketList}" style="margin: 10px 0">
                         <label>序號 <span th:text="${ticketStat.count}"></span> 
-                            會員帳號：<input type="text"  name="ticketMemberIDs">
+                            會員帳號：<input type="text"  name="ticketMemberAccounts">
                         </label>
                     </div>
                 </div>
@@ -235,31 +234,31 @@
                 <hr>
 
                 <!-- 信用卡資訊 -->
-                <div class="payment-details">
-                    <h2 style="margin: 20px 0"><b>付款資訊</b></h2>
-                    <div class="payment-method">
-                        <div>
-                            <label>
-                                持卡人：<input type="text" name="cardholder-name">
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                信用卡卡號：<input type="text" name="card-number" placeholder="XXXX-XXXX-XXXX-XXXX">
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                信用卡到期日：<input type="text" name="expiry-date" placeholder="MM/YY">
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                信用卡背面碼：<input type="text" name="cvv" placeholder="XXX">
-                            </label>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="payment-details">-->
+<!--                    <h2 style="margin: 20px 0"><b>付款資訊</b></h2>-->
+<!--                    <div class="payment-method">-->
+<!--                        <div>-->
+<!--                            <label>-->
+<!--                                持卡人：<input type="text" name="cardholder-name">-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <label>-->
+<!--                                信用卡卡號：<input type="text" name="card-number" placeholder="XXXX-XXXX-XXXX-XXXX">-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <label>-->
+<!--                                信用卡到期日：<input type="text" name="expiry-date" placeholder="MM/YY">-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <label>-->
+<!--                                信用卡背面碼：<input type="text" name="cvv" placeholder="XXX">-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <!-- 按鈕 -->
                 <div class="buttons" id="submit">

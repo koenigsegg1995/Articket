@@ -1,5 +1,6 @@
 package com.maddog.articket.bookticket.service.pri;
 
+import com.maddog.articket.bookticket.dto.BookedTicketForView;
 import com.maddog.articket.bookticket.entity.BookTicket;
 
 import java.util.List;
@@ -24,6 +25,6 @@ public interface BookTicketService {
 	 * 			一般會員ID(買家)
 	 * @return 票券訂單 VO 清單
 	 */
-	List<BookTicket> getTicketOrdersByMemberId(Integer memberId);
+	List<BookedTicketForView> getTicketOrdersByMemberId(Integer memberId);
 
 }

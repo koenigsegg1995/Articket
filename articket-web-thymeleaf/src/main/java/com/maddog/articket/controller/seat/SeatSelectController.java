@@ -11,7 +11,6 @@ import com.maddog.articket.seat.dto.SeatSelectForView;
 import com.maddog.articket.seat.service.pri.SeatService;
 import com.maddog.articket.seatstatus.entity.SeatStatus;
 import com.maddog.articket.seatstatus.service.pri.SeatStatusService;
-import com.maddog.articket.ticket.entity.Ticket;
 import com.maddog.articket.venue.service.pri.VenueService;
 import com.maddog.articket.venuearea.service.pri.VenueAreaService;
 import lombok.extern.slf4j.Slf4j;
@@ -96,7 +95,7 @@ public class SeatSelectController {
 		// 這裡可以添加更多需要傳遞給視圖的數據
 		
 		//把座位狀態傳到前端
-		List<SeatStatus> seatStatuses = seatStatusService.getAllSeatStatusByActivityTimeSlotID(activityTimeSlotId);
+		List<SeatStatus> seatStatuses = seatStatusService.getAllSeatStatusByActivityTimeSlotId(activityTimeSlotId);
 		model.addAttribute("seatStatuses", seatStatuses);
 		
 		// 將不可用的座位添加到模型中
@@ -171,7 +170,10 @@ public class SeatSelectController {
 						// Create a new Ticket object and add it to the list
 						BookTicketForView ticket = new BookTicketForView();
 						ticket.setActivityName(activity.getActivityName());
-						ticket.setActivityTimeSlot();
+						ticket.setActivityTimeSlot(activityTimeSlot);
+						ticket.setVenueName(venueService.getNameById(venueId));
+						ticket.setSeatName(seatName);
+						ticket.setActivityAreaPrice(activityAreaPrice.getActivityAreaPrice());
 						ticketList.add(ticket);
 					} else {
 						log.info("未找到座位狀態: {} 在區域ID: {}", seatName, venueAreaId);

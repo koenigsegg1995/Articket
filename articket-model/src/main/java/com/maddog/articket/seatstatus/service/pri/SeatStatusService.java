@@ -28,7 +28,7 @@ public interface SeatStatusService {
      *          活動時段 ID
      * @return 座位狀態清單
      */
-    List<SeatStatus> getAllSeatStatusByActivityTimeSlotID(Integer activityTimeSlotId);
+    List<SeatStatus> getAllSeatStatusByActivityTimeSlotId(Integer activityTimeSlotId);
 
     /**
      * 為了在seatSelectPage顯示不可選取的座位而寫的方法

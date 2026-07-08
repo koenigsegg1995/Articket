@@ -1,27 +1,17 @@
 package com.maddog.articket.bookticket.dto;
 
+import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 票券訂單 VO
+ * 票券結帳 VO
  */
 @Getter
 @Setter
-public class BookTicketForView implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 票券訂單 ID
-     */
-    private Integer bookTicketId;
+public class BookTicketForView {
 
     /**
      * 活動名稱
@@ -29,24 +19,9 @@ public class BookTicketForView implements Serializable {
     private String activityName;
 
     /**
-     * 日期
+     * 活動時段
      */
-    private Date activityTimeSlotDate;
-
-    /**
-     * 時段 1:早 2:午 3:晚
-     */
-    private Integer activityTimeSlot;
-
-    /**
-     * 數量
-     */
-    private Integer ticketQuantity;
-
-    /**
-     * 總金額
-     */
-    private BigDecimal ticketPrice;
+    private ActivityTimeSlot activityTimeSlot;
 
     /**
      * 場館名稱

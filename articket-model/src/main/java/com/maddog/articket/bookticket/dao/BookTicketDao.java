@@ -1,5 +1,6 @@
 package com.maddog.articket.bookticket.dao;
 
+import com.maddog.articket.bookticket.dto.BookedTicketForView;
 import com.maddog.articket.bookticket.entity.BookTicket;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +28,6 @@ public interface BookTicketDao {
 	 * 			一般會員ID(買家)
 	 * @return 票券訂單 VO 清單
 	 */
-	List<BookTicket> findByMemberIdForView(Integer memberId);
+	List<BookedTicketForView> findByMemberIdForView(Integer memberId);
 	
 }

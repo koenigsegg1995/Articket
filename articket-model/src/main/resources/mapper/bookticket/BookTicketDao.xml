@@ -9,7 +9,7 @@
 
 <!-- resultMap-->
     <resultMap id="resultMapForView"
-                type="com.maddog.articket.bookticket.dto.BookTicketForView">
+                type="com.maddog.articket.bookticket.dto.BookedTicketForView">
         <id column="book_ticket_id" property="bookTicketId" />
         <result column="activity_name" property="activityName" />
         <result column="activity_time_slot_date" property="activityTimeSlotDate" />

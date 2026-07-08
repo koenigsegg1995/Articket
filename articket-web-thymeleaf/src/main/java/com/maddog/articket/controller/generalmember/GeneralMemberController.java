@@ -2,11 +2,11 @@ package com.maddog.articket.controller.generalmember;
 
 import com.maddog.articket.articlecollection.dto.ArticleCollectionForView;
 import com.maddog.articket.articlecollection.service.pri.ArticleCollectionService;
+import com.maddog.articket.bookticket.dto.BookedTicketForView;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import com.maddog.articket.email.pri.MailService;
 import com.maddog.articket.generalmember.dto.GeneralMemberQueryCondition;
 import com.maddog.articket.generalmember.entity.GeneralMember;
-import com.maddog.articket.bookticket.entity.BookTicket;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.service.pri.OrdersService;
@@ -329,7 +329,7 @@ public class GeneralMemberController {
 			return "redirect:/login"; // 確保這是正確的登錄頁面路徑
 		}
 
-		List<BookTicket> orders = bookTicketService.getTicketOrdersByMemberId(memberId);
+		List<BookedTicketForView> orders = bookTicketService.getTicketOrdersByMemberId(memberId);
 
 		model.addAttribute("orders", orders);
 

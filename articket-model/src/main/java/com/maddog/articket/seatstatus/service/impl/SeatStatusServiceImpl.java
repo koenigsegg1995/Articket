@@ -46,12 +46,12 @@ public class SeatStatusServiceImpl implements SeatStatusService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<SeatStatus> getAllSeatStatusByActivityTimeSlotID(Integer activityTimeSlotId) {
+    public List<SeatStatus> getAllSeatStatusByActivityTimeSlotId(Integer activityTimeSlotId) {
         return seatStatusDao.findAllByActivityTimeSlotId(activityTimeSlotId);
     }
 
     /**
-     * 為了在seatSelectPage顯示不可選取的座位而寫的方法
+     * 為了在 seatSelectPage 顯示不可選取的座位而寫的方法
      *
      * @param activityTimeSlotId
      *          活動時段 ID

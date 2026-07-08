@@ -2,11 +2,12 @@ package com.maddog.articket.controller.ticket;
 
 import com.maddog.articket.activity.dto.ActivityDisplayForView;
 import com.maddog.articket.activity.service.pri.ActivityService;
-import com.maddog.articket.activityareaprice.service.pri.ActivityAreaPriceService;
 import com.maddog.articket.activitytimeslot.service.pri.ActivityTimeSlotService;
+import com.maddog.articket.bookticket.dto.BookTicketForView;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import com.maddog.articket.activitytimeslot.entity.ActivityTimeSlot;
 import com.maddog.articket.bookticket.entity.BookTicket;
+import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
@@ -49,16 +50,16 @@ public class TicketController {
 	private PartnerMemberService partnerSvc;
 
 	/**
-	 * 活動區域價格 Service
-	 */
-	@Autowired
-	private ActivityAreaPriceService activityAreaPriceService;
-
-	/**
 	 * 活動 Service
 	 */
 	@Autowired
 	private ActivityService  activityService;
+
+	/**
+	 * 一般會員 Service
+	 */
+	@Autowired
+	private GeneralMemberService generalMemberService;
 	
 /********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
@@ -70,12 +71,12 @@ public class TicketController {
 			return "redirect:/generalmember/login";
 		}
 		
-		List<Ticket> ticketList = (List<Ticket>)session.getAttribute("ticketList");
+		List<BookTicketForView> ticketList = (List<BookTicketForView>)session.getAttribute("ticketList");
 		BigDecimal total = BigDecimal.ZERO;
 		
 		//選購票券總價
-		for(Ticket ticket : ticketList) {
-			total = total.add(activityAreaPriceService.findById(ticket.getActivityAreaPriceId()).getActivityAreaPrice());
+		for(BookTicketForView ticket : ticketList) {
+			total = total.add(ticket.getActivityAreaPrice());
 		}
 		
 		model.addAttribute("total", total);
@@ -110,14 +111,14 @@ public class TicketController {
 /********************* action **********************/
 	//刪減票券
 	@PostMapping("deleteOneTicket")
-	public String deleteOneTicket(@RequestParam("count") Integer count, HttpSession session, ModelMap model) {
+	public String deleteOneTicket(@RequestParam("count") Integer count, HttpSession session) {
 		//確認是否登入，未登入重導至會員登入頁面
 		if(session.getAttribute("memberID") == null) {
 			return "redirect:/generalmember/login";
 		}
 		
-		List<Ticket> ticketList = (List<Ticket>)session.getAttribute("ticketList");
-		Integer id = ticketList.get(0).getActivityTimeSlotId();
+		List<BookTicketForView> ticketList = (List<BookTicketForView>)session.getAttribute("ticketList");
+		Integer id = ticketList.getFirst().getActivityTimeSlot().getActivityId();
 		
 		ticketList.remove(count - 1);
 		
@@ -134,13 +135,16 @@ public class TicketController {
 	//取消與結帳
 	@PostMapping("confirm")
 	public String confirm(@RequestParam("action") String action,
-						  @RequestParam("memberID") String memberID,
-						  @RequestParam("ticketMemberIDs") String[] ticketMemberIDs,
+						  @RequestParam("ticketMemberAccounts") String[] ticketMemberAccounts,
 						  @RequestParam("totalPrice") String totalPrice,
 						  HttpSession session) {
 		//確認是否登入，未登入重導至會員登入頁面
-		if(session.getAttribute("memberID") == null) {
+		Object memberIdObj = session.getAttribute("memberID");
+		Integer memberId;
+		if(memberIdObj == null) {
 			return "redirect:/generalmember/login";
+		} else {
+			memberId = (Integer) memberIdObj;
 		}
 				
 		//取消
@@ -149,43 +153,42 @@ public class TicketController {
 		}
 
 		//取得選購票券
-		List<Ticket> ticketList = (List<Ticket>) session.getAttribute("ticketList");
+		List<BookTicketForView> ticketList = (List<BookTicketForView>) session.getAttribute("ticketList");
 
 		//建立訂單
 		BookTicket bookTicket = new BookTicket();
 			//設置訂單資料
-		bookTicket.setMemberId(Integer.valueOf(memberID)); //未從 session 取帳號
-		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.getFirst().getActivityTimeSlotId());
+		bookTicket.setMemberId(memberId);
+		ActivityTimeSlot activityTimeSlot = activityTimeSlotService.getActivityTimeSlotById(ticketList.getFirst().getActivityTimeSlot().getActivityTimeSlotId());
 		bookTicket.setActivityId(activityTimeSlot.getActivityId());
 		bookTicket.setActivityTimeSlotId(activityTimeSlot.getActivityTimeSlotId());
 		bookTicket.setTicketQuantity(ticketList.size());
 		bookTicket.setTotalPrice(new BigDecimal(totalPrice));
-			//新增訂單
-		bookTicketSvc.addBookTicket(bookTicket);
-
-		//無輸入分票帳號，跳轉回首頁
-		if(ticketMemberIDs.length == 0) {
-			return "redirect:/";
-		}
 
 		//設定持有人給票券
-		for(int i = 0; i < ticketMemberIDs.length; i++) {
+		for(int i = 0; i < ticketMemberAccounts.length; i++) {
 			//該序號未輸入帳號，跳轉回首頁
-			if(ticketMemberIDs[i] == null) {
+			if(ticketMemberAccounts[i] == null) {
 				return "redirect:/";
 			}
 
 			//取得第 i 個持有人
 			try {
 				//取得第 i 張票券
-				Ticket ticket = ticketList.get(i);
+//				Ticket ticket = ticketList.get(i);
 
-				ticket.setMemberId(Integer.valueOf(ticketMemberIDs[i]));
+				GeneralMember member = generalMemberService.getByMemberAccount(ticketMemberAccounts[i]);
+				Ticket ticket = new Ticket();
+				ticket.setMemberId(member.getMemberId());
+				ticket.setSeatStatusId();
 				ticket.setBookTicketId(bookTicket.getBookTicketId());
 			}catch (Exception e) {
 				return "redirect:/";
 			}
 		}
+
+		//新增訂單
+		bookTicketSvc.addBookTicket(bookTicket);
 		
 		//session 移除選購票券
 		session.removeAttribute("ticketList");

@@ -1,6 +1,7 @@
 package com.maddog.articket.bookticket.service.impl;
 
 import com.maddog.articket.bookticket.dao.BookTicketDao;
+import com.maddog.articket.bookticket.dto.BookedTicketForView;
 import com.maddog.articket.bookticket.entity.BookTicket;
 import com.maddog.articket.bookticket.service.pri.BookTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class BookTicketServiceImpl implements BookTicketService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<BookTicket> getTicketOrdersByMemberId(Integer memberId) {
+	public List<BookedTicketForView> getTicketOrdersByMemberId(Integer memberId) {
 	    return bookTicketDao.findByMemberIdForView(memberId);
 	}
 
