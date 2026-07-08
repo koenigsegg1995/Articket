@@ -74,6 +74,7 @@
 
     <!-- 獲取 seatStatus 為 2 的座位名稱 -->
     <select id="findSeatNamesWithStatus2"
+            parameterType="java.lang.Integer"
             resultType="java.lang.String">
         SELECT
             s.seat_name
@@ -105,6 +106,17 @@
             AND
             ss.seat_status = 3
     </select>
+
+    <!-- 依座位狀態 ID ，更新狀蓋為已售出 -->
+    <update id="updateToSoldById"
+            parameterType="java.lang.Integer">
+        UPDATE
+            seat_status
+        SET
+            seat_status = 1
+        WHERE
+            seat_status_id = #{seatStatusId}
+    </update>
 <!-- method-->
 
 </mapper>

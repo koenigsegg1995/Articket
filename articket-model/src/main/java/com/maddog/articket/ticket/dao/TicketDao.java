@@ -12,6 +12,15 @@ import java.util.List;
 public interface TicketDao {
 
 	/**
+	 * 新增
+	 *
+	 * @param ticket
+	 * 			票券
+	 * @return 成功筆數
+	 */
+	int insert(Ticket ticket);
+
+	/**
 	 * 查全部
 	 *
 	 * @return 票券清單

@@ -174,6 +174,8 @@ public class SeatSelectController {
 						ticket.setVenueName(venueService.getNameById(venueId));
 						ticket.setSeatName(seatName);
 						ticket.setActivityAreaPrice(activityAreaPrice.getActivityAreaPrice());
+						ticket.setSeatStatusId(seatStatus.getSeatStatusId());
+						ticket.setActivityAreaPriceId(activityAreaPrice.getActivityAreaPriceId());
 						ticketList.add(ticket);
 					} else {
 						log.info("未找到座位狀態: {} 在區域ID: {}", seatName, venueAreaId);

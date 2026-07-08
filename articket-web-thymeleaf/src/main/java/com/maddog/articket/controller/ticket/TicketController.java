@@ -11,7 +11,9 @@ import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
 import com.maddog.articket.partnermember.service.pri.PartnerMemberService;
+import com.maddog.articket.seatstatus.service.pri.SeatStatusService;
 import com.maddog.articket.ticket.entity.Ticket;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +63,12 @@ public class TicketController {
 	 */
 	@Autowired
 	private GeneralMemberService generalMemberService;
+
+	/**
+	 * 座位狀態 Service
+	 */
+	@Autowired
+	private SeatStatusService  seatStatusService;
 	
 /********************* 跳轉 **********************/
 //////////////// 前台 ////////////////
@@ -166,29 +175,33 @@ public class TicketController {
 		bookTicket.setTotalPrice(new BigDecimal(totalPrice));
 
 		//設定持有人給票券
+		List<Ticket> ticketListForInsert = new ArrayList<>();
 		for(int i = 0; i < ticketMemberAccounts.length; i++) {
 			//該序號未輸入帳號，跳轉回首頁
-			if(ticketMemberAccounts[i] == null) {
+			if(StringUtils.isBlank(ticketMemberAccounts[i])) {
 				return "redirect:/";
 			}
 
 			//取得第 i 個持有人
 			try {
 				//取得第 i 張票券
-//				Ticket ticket = ticketList.get(i);
-
+				BookTicketForView bookTicketForView = ticketList.get(i);
 				GeneralMember member = generalMemberService.getByMemberAccount(ticketMemberAccounts[i]);
+
 				Ticket ticket = new Ticket();
 				ticket.setMemberId(member.getMemberId());
-				ticket.setSeatStatusId();
-				ticket.setBookTicketId(bookTicket.getBookTicketId());
-			}catch (Exception e) {
+				ticket.setSeatStatusId(bookTicketForView.getSeatStatusId());
+				ticket.setActivityAreaPriceId(bookTicketForView.getActivityAreaPriceId());
+				ticket.setActivityTimeSlotId(bookTicketForView.getActivityTimeSlot().getActivityTimeSlotId());
+
+				ticketListForInsert.add(ticket);
+			} catch (Exception e) {
 				return "redirect:/";
 			}
 		}
 
 		//新增訂單
-		bookTicketSvc.addBookTicket(bookTicket);
+		bookTicketSvc.addBookTicket(bookTicket, ticketListForInsert);
 		
 		//session 移除選購票券
 		session.removeAttribute("ticketList");

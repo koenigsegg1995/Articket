@@ -31,7 +31,7 @@ public interface SeatStatusService {
     List<SeatStatus> getAllSeatStatusByActivityTimeSlotId(Integer activityTimeSlotId);
 
     /**
-     * 為了在seatSelectPage顯示不可選取的座位而寫的方法
+     * 為了在 seatSelectPage 顯示不可選取的座位而寫的方法
      *
      * @param activityTimeSlotId
      *          活動時段 ID
@@ -40,7 +40,7 @@ public interface SeatStatusService {
     List<String> getUnavailableSeatNames(Integer activityTimeSlotId);
 
     /**
-     * 將狀態設置為 3（保留）
+     * 將狀態設置為 2（保留）
      *
      * @param seatId
      *          座位 ID

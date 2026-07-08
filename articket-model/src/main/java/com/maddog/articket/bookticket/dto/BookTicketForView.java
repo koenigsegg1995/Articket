@@ -38,4 +38,14 @@ public class BookTicketForView {
      */
     private BigDecimal activityAreaPrice;
 
+    /**
+     * 座位狀態 ID (僅供 TicketController comfirm() 取用)
+     */
+    private Integer seatStatusId;
+
+    /**
+     * 活動區域價格 ID (僅供 TicketController comfirm() 取用)
+     */
+    private Integer activityAreaPriceId;
+
 }

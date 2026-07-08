@@ -142,7 +142,7 @@ CREATE TABLE seat_status(
 	seat_status_id                   INT          AUTO_INCREMENT     COMMENT "座位狀態ID",
 	activity_time_slot_id            INT          NOT NULL           COMMENT "活動時段ID",
 	seat_id                          INT          NOT NULL           COMMENT "座位ID",
-	seat_status                      INT          NOT NULL           COMMENT "座位狀態 0: 空位 1: 已經購買 2: 廠商保留位 3: 不可使用",
+	seat_status                      INT          NOT NULL           COMMENT "座位狀態 0: 空位 1: 已經售出 2: 廠商保留位 3: 不可使用",
     
 	CONSTRAINT pk_seat_status_id PRIMARY KEY (seat_status_id)
 ) COMMENT "座位狀態";

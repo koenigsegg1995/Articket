@@ -20,6 +20,29 @@
 <!-- resultMap-->
 
 <!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.ticket.entity.Ticket">
+        INSERT INTO
+            ticket
+        (
+            member_id,
+            seat_status_id,
+            activity_area_price_id,
+            book_ticket_id,
+            activity_time_slot_id
+        )
+        VALUES
+        (
+            #{memberId},
+            #{seatStatusId},
+            #{activityAreaPriceId},
+            #{bookTicketId},
+            #{activityTimeSlotId}
+        )
+
+    </insert>
+
     <!-- 查全部 -->
     <select id="findAll"
             resultMap="resultMapForSelect">

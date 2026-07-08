@@ -48,13 +48,14 @@
 
     <!-- 依 memberId 查詢票券訂單 VO 清單 -->
     <select id="findByMemberIdForView"
+            parameterType="java.lang.Integer"
             resultMap="resultMapForView">
         SELECT
-            bt.book_ticket_id
-            bt.ticket_quantity
-            bt.ticket_price
-            a.activity_name
-            ats.activity_time_slot_date
+            bt.book_ticket_id,
+            bt.ticket_quantity,
+            bt.ticket_price,
+            a.activity_name,
+            ats.activity_time_slot_date,
             ats.activity_time_slot
         FROM
             book_ticket bt

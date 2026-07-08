@@ -65,7 +65,7 @@ public class SeatStatusServiceImpl implements SeatStatusService {
     }
 
     /**
-     * 將狀態設置為 3（保留）
+     * 將狀態設置為 2 （保留）
      *
      * @param seatId
      *          座位 ID
@@ -75,7 +75,7 @@ public class SeatStatusServiceImpl implements SeatStatusService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateSeatStatusToReserved(Integer seatId, Integer activityTimeSlotId) {
-        updateSeatStatus(seatId, activityTimeSlotId, 3);
+        updateSeatStatus(seatId, activityTimeSlotId, 2);
     }
 
     /**

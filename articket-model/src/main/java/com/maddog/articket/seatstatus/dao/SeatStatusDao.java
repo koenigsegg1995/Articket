@@ -43,7 +43,7 @@ public interface SeatStatusDao {
     List<SeatStatus> findAllByActivityTimeSlotId(Integer activityTimeSlotId);
 
     /**
-     * 為了在seatSelectPage顯示不可選取的座位而寫的方法
+     * 為了在 seatSelectPage 顯示不可選取的座位而寫的方法
      *
      * @param activityTimeSlotId
      *          活動時段 ID
@@ -74,5 +74,14 @@ public interface SeatStatusDao {
      * @return 座位名稱清單
      */
     List<String> findSeatNamesWithStatus3(Integer activityTimeSlotId);
+
+    /**
+     * 依座位狀態 ID ，更新狀蓋為已售出
+     *
+     * @param seatStatusId
+     *          座位狀態 ID
+     * @return 成功筆數
+     */
+    int updateToSoldById(Integer seatStatusId);
 
 }

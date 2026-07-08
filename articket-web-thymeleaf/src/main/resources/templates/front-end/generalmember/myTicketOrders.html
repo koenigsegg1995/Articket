@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <tr th:each="order : ${orders}">
-                    <td th:text="${order.bookTicketID}"></td>
+                    <td th:text="${order.bookTicketId}"></td>
                     <td th:text="${order.activityTimeSlot.activity.activityName}"></td>
                     <td th:text="${#dates.format(order.activityTimeSlot.activityTimeSlotDate, 'yyyy-MM-dd') + ' ' + 
                         (order.activityTimeSlot.activityTimeSlot == 1 ? '09:00-12:00' : 

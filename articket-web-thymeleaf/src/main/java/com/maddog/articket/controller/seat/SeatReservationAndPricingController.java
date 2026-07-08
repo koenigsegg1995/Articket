@@ -104,7 +104,7 @@ public class SeatReservationAndPricingController {
 					Integer seatId = seatService.findSeatId(venueId, seatName);
 					if (seatId != null) {
 						seatStatusService.updateSeatStatusToReserved(seatId, activityTimeSlotID);
-						log.info("   Updated seat status for Seat ID: {} to Reserved (3)", seatId);
+						log.info("   Updated seat status for Seat ID: {} to Reserved (2)", seatId);
 
 						String venueAreaName = getVenueAreaNameFromSeatName(seatName);
 						if (venueAreaName != null) {
