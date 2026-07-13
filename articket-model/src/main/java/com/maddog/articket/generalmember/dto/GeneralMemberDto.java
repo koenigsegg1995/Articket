@@ -38,11 +38,6 @@ public class GeneralMemberDto {
     private String memberAccount;
 
     /**
-     * 密碼
-     */
-    private String memberPassword;
-
-    /**
      * 身分證字號
      */
     private String nationalId;

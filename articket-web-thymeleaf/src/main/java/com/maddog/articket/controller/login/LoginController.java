@@ -142,7 +142,6 @@ public class LoginController {
 		generalMemberForUpdate.setMemberPhone(generalMember.getMemberPhone());
 		generalMemberForUpdate.setMemberAddress(generalMember.getMemberAddress());
 		generalMemberForUpdate.setMemberAccount(generalMember.getMemberAccount());
-		generalMemberForUpdate.setMemberPassword(generalMember.getMemberPassword());
 		generalMemberForUpdate.setNationalId(generalMember.getNationalId());
 		generalMemberForUpdate.setBirthday(generalMember.getBirthday());
 		generalMemberForUpdate.setGender(generalMember.getGender());
