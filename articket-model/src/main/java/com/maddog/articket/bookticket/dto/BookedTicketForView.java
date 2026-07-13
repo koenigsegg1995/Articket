@@ -46,6 +46,6 @@ public class BookedTicketForView implements Serializable {
     /**
      * 總金額
      */
-    private BigDecimal ticketPrice;
+    private BigDecimal totalPrice;
 
 }

@@ -15,7 +15,7 @@
         <result column="activity_time_slot_date" property="activityTimeSlotDate" />
         <result column="activity_time_slot" property="activityTimeSlot" />
         <result column="ticket_quantity" property="ticketQuantity" />
-        <result column="ticket_price" property="ticketPrice" />
+        <result column="total_price" property="totalPrice" />
     </resultMap>
     <!-- resultMap-->
 
@@ -53,7 +53,7 @@
         SELECT
             bt.book_ticket_id,
             bt.ticket_quantity,
-            bt.ticket_price,
+            bt.total_price,
             a.activity_name,
             ats.activity_time_slot_date,
             ats.activity_time_slot

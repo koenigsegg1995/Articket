@@ -9,7 +9,7 @@
     <div class="container mt-5">
     <h1>修改會員資料</h1>
     <form th:action="@{/generalmember/updateMember}" th:object="${generalMember}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:field="*{memberID}" />
+        <input type="hidden" th:field="*{memberId}" />
         
         <div class="form-group">
             <label for="memberName"><strong>姓名:</strong></label>
@@ -37,8 +37,8 @@
         </div>
         
         <div class="form-group">
-            <label for="nationalID"><strong>身分證字號</strong></label>
-            <input type="text" id="memberIDNumber" class="form-control" th:field="*{nationalID}" required disabled/>
+            <label for="nationalId"><strong>身分證字號</strong></label>
+            <input type="text" id="nationalId" class="form-control" th:field="*{nationalId}" required disabled/>
         </div>
         
         <div class="form-group">

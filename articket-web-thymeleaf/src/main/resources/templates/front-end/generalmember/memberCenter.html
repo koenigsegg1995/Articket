@@ -110,7 +110,7 @@
         <h1>會員中心</h1>
         
         <div class="nav-links">
-            <a th:href="@{/generalmember/editMember/{memberID}(memberID=${generalMember.memberID})}">修改會員資料</a>
+            <a th:href="@{/generalmember/editMember/{memberId}(memberId=${generalMember.memberId})}">修改會員資料</a>
             <a th:href="@{/generalmember/myCollections}">我的收藏文章</a>
             <a th:href="@{/generalmember/myOrders}">我的商品訂單</a>
             <a th:href="@{/generalmember/myTicketOrders}">我的票券訂單</a>
@@ -123,10 +123,10 @@
             <h2>會員資訊</h2>
             <div class="member-details">
                 <div class="info">
-                    <p><strong>會員編號:</strong> <span th:text="${generalMember.memberID}"></span></p>
+                    <p><strong>會員編號:</strong> <span th:text="${generalMember.memberId}"></span></p>
                     <p><strong>名稱:</strong> <span th:text="${generalMember.memberName}"></span></p>
                     <p><strong>帳號:</strong> <span th:text="${generalMember.memberAccount}"></span></p>
-                    <p><strong>身分證字號:</strong> <span th:text="${generalMember.nationalID}"></span></p>
+                    <p><strong>身分證字號:</strong> <span th:text="${generalMember.nationalId}"></span></p>
                     <p><strong>性別:</strong> <span th:text="${generalMember.gender}"></span></p>
                     <p><strong>生日:</strong> <span th:text="${generalMember.birthday}"></span></p>
                     <p><strong>電話:</strong> <span th:text="${generalMember.memberPhone}"></span></p>
@@ -135,7 +135,7 @@
                     <p><strong>建立時間:</strong> <span th:text="${generalMember.memberCreateTime}"></span></p>
                 </div>
                 <div class="image">
-                    <img th:src="@{/generalmember/MemberDBGifReader(memberID=${generalMember.memberID})}" width="150px">
+                    <img th:src="@{/generalmember/MemberDBGifReader(memberId=${generalMember.memberId})}" width="150px">
                 </div>
             </div>
         </div>

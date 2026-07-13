@@ -296,14 +296,6 @@ public class GeneralMemberController {
 	}
 
 	// 會員收藏文章列表
-//	@GetMapping("/myCollections")
-//	public String showAllArticles(Model model) {
-//	    List<Article> articles = articeSvc.getAll();
-//	    model.addAttribute("articles", articles);
-//	    return "front-end/generalmember/myCollections";
-//	}
-
-	// 會員收藏文章列表
 	@GetMapping("myCollections")
 	public String showMyCollections(Model model, HttpSession session) {
 		// 假設你在session中存儲了用戶ID
