@@ -1,4 +1,4 @@
-package com.maddog.articket.controller.reader;
+package com.maddog.articket.controller.dbgifreader;
 
 import com.maddog.articket.articleimg.service.pri.ArticleImgService;
 import org.springframework.beans.factory.annotation.Autowired;

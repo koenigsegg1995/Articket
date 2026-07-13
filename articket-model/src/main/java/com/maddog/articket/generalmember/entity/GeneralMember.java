@@ -18,12 +18,12 @@ public class GeneralMember implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 會員ID
+	 * 會員 ID
 	 */
 	private Integer memberId;
 
 	/**
-	 * 帳號(E-mail)
+	 * 帳號 (E-mail)
 	 */
 	private String memberAccount;
 

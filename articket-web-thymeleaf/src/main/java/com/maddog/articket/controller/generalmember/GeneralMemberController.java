@@ -180,7 +180,7 @@ public class GeneralMemberController {
 			// 發送驗證郵件
 			String subject = "您的驗證碼";
 			String messageText = "您的驗證碼是：" + verificationCode + "有效時間30分鐘";
-			mailService.sendMail("kai199202232578@gmail.com", subject, messageText);
+			mailService.sendMail("test@gmail.com", subject, messageText);
 
 			// 將驗證碼存入會話
 			session.setAttribute("verificationCode", verificationCode);

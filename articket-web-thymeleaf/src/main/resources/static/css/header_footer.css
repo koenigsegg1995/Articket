@@ -1,10 +1,8 @@
-/* style.css */
-
 /* Header styles */
 
 .header {
     font-family: 'Noto Sans TC', sans-serif;
-    background-color: #E4D1BA    ;
+    background-color: #E4D1BA;
     color: white;
     padding: 20px 50px;
     display: flex;
@@ -177,4 +175,3 @@
         margin: 5px 10px;
     }
 }
-

@@ -54,7 +54,7 @@ public class GeneralMemberServiceImpl implements GeneralMemberService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int update(GeneralMember generalMember) {
-		return generalMemberDao.insert(generalMember);
+		return generalMemberDao.update(generalMember);
 	}
 
 	/**

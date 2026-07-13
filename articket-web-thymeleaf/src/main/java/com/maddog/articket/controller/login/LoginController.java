@@ -1,5 +1,6 @@
 package com.maddog.articket.controller.login;
 
+import com.maddog.articket.generalmember.dto.GeneralMemberDto;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.partnermember.entity.PartnerMember;
@@ -9,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -21,10 +25,10 @@ import jakarta.servlet.http.HttpSession;
 public class LoginController {
 
 	@Autowired
-    GeneralMemberService gmemberSvc;
+    private GeneralMemberService gmemberSvc;
 
 	@Autowired
-    PartnerMemberService partnerSvc;
+    private PartnerMemberService partnerSvc;
 
 	@GetMapping("/login")
 	public String getLogin() {
@@ -114,20 +118,34 @@ public class LoginController {
 	}
 
 	// 修改會員中心編輯頁面
-	@GetMapping("/editMember/{memberID}")
-	public String showEditMemberForm(@PathVariable Integer memberID, HttpSession session, Model model) {
+	@GetMapping("/editMember/{memberId}")
+	public String showEditMemberForm(@PathVariable Integer memberId,
+									 HttpSession session,
+									 Model model) {
 		// 檢查用戶是否已登入
 		if (session.getAttribute("memberAccount") == null) {
 			return "redirect:/generalmember/login";
 		}
 
 		// 從數據庫獲取會員資料
-		GeneralMember generalMember = gmemberSvc.getById(memberID);
+		GeneralMember generalMember = gmemberSvc.getById(memberId);
 
 		if (generalMember == null) {
 			// 處理找不到會員的情況
 			return "redirect:/memberCenter";
 		}
+
+		// 將資料轉進 DTO
+		GeneralMemberDto generalMemberForUpdate = new GeneralMemberDto();
+		generalMemberForUpdate.setMemberId(generalMember.getMemberId());
+		generalMemberForUpdate.setMemberName(generalMember.getMemberName());
+		generalMemberForUpdate.setMemberPhone(generalMember.getMemberPhone());
+		generalMemberForUpdate.setMemberAddress(generalMember.getMemberAddress());
+		generalMemberForUpdate.setMemberAccount(generalMember.getMemberAccount());
+		generalMemberForUpdate.setMemberPassword(generalMember.getMemberPassword());
+		generalMemberForUpdate.setNationalId(generalMember.getNationalId());
+		generalMemberForUpdate.setBirthday(generalMember.getBirthday());
+		generalMemberForUpdate.setGender(generalMember.getGender());
 
 		// 將會員資料添加到模型中
 		model.addAttribute("generalMember", generalMember);
@@ -137,10 +155,10 @@ public class LoginController {
 
 	// 更新會員中心資料
 	@PostMapping("/updateMember")
-	public String updateMember(@ModelAttribute GeneralMember generalMember,
+	public String updateMember(@ModelAttribute GeneralMemberDto generalMember,
+							   @RequestParam(value = "memberPictureForUpdate", required = false) MultipartFile memberPictureForUpdate,
 	                           HttpSession session, 
 	                           RedirectAttributes redirectAttributes) {
-	    
 	    log.info("Entering updateMember method");
 	    
 	    if (session.getAttribute("memberAccount") == null) {
@@ -150,33 +168,31 @@ public class LoginController {
 	    }
 
 	    try {
-	        // 獲取數據庫中現有的會員資料
-	        GeneralMember existingMember = gmemberSvc.getById(generalMember.getMemberId());
-	        
-	        // 如果有新的文件上傳，則更新 memberPicture
-//	        if (generalMember.getMemberPictureFile() != null && !generalMember.getMemberPictureFile().isEmpty()) {
-//	            generalMember.setMemberPicture(generalMember.getMemberPictureFile().getBytes());
-//	        } else {
-//	            // 如果沒有新的文件上傳，保留原有的 memberPicture
-//	            generalMember.setMemberPicture(existingMember.getMemberPicture());
-//	        }
+			GeneralMember generalMemberForUpdate = new GeneralMember();
 
-	        // 更新其他可能沒有在表單中提交的字段
-	        generalMember.setMemberAccount(existingMember.getMemberAccount());
-	        generalMember.setMemberPassword(existingMember.getMemberPassword());
-	        generalMember.setNationalId(existingMember.getNationalId());
-	        generalMember.setBirthday(existingMember.getBirthday());
-	        // ... 其他需要保留的字段
+			// 轉交資料給 DO
+			generalMemberForUpdate.setMemberId(generalMember.getMemberId());
+			generalMemberForUpdate.setMemberName(generalMember.getMemberName());
+			generalMemberForUpdate.setMemberPhone(generalMember.getMemberPhone());
+			generalMemberForUpdate.setMemberNickName(generalMember.getMemberNickName());
+			generalMemberForUpdate.setMemberAddress(generalMember.getMemberAddress());
+				// 如果有新的圖片上傳，則更新 memberPicture
+			if (memberPictureForUpdate != null && !memberPictureForUpdate.isEmpty()) {
+				generalMemberForUpdate.setMemberPicture(memberPictureForUpdate.getBytes());
+			}
 
-	        log.info("Updating member data for account: {}", generalMember.getMemberAccount());
-	        gmemberSvc.update(generalMember);
-	        log.info("Member data updated successfully");
-
-	        redirectAttributes.addFlashAttribute("message", "資料已成功更新！");
+			log.info("Updating member data for account: {}", generalMemberForUpdate.getMemberAccount());
+	        int success = gmemberSvc.update(generalMemberForUpdate);
+	        if(success == 1) {
+				log.info("Member data updated successfully");
+				redirectAttributes.addFlashAttribute("message", "資料已成功更新！");
+			} else if(success == 0) {
+				throw new RuntimeException("service update 回傳 0 ");
+			}
 
 			return "redirect:/generalmember/memberCenter";
 	    } catch (Exception e) {
-	        log.error("Error updating member data", e);
+	        log.error("Error updating member data: {}", e.getMessage());
 
 			redirectAttributes.addFlashAttribute("error", "更新資料時發生錯誤：" + e.getMessage());
 
