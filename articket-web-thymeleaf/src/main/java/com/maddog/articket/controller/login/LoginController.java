@@ -143,11 +143,12 @@ public class LoginController {
 		generalMemberForUpdate.setMemberAddress(generalMember.getMemberAddress());
 		generalMemberForUpdate.setMemberAccount(generalMember.getMemberAccount());
 		generalMemberForUpdate.setNationalId(generalMember.getNationalId());
+		generalMemberForUpdate.setMemberNickName(generalMember.getMemberNickName());
 		generalMemberForUpdate.setBirthday(generalMember.getBirthday());
 		generalMemberForUpdate.setGender(generalMember.getGender());
 
 		// 將會員資料添加到模型中
-		model.addAttribute("generalMember", generalMember);
+		model.addAttribute("generalMember", generalMemberForUpdate);
 
 		return "front-end/generalmember/editMember"; // 返回編輯頁面的視圖名稱
 	}
