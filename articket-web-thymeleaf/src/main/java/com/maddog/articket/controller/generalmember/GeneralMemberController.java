@@ -302,7 +302,7 @@ public class GeneralMemberController {
 		Integer memberId = (Integer) session.getAttribute("memberID");
 		if (memberId == null) {
 			// 如果用戶未登錄，重定向到登錄頁面
-			return "redirect:/login";
+			return "redirect:/generalmember/login";
 		}
 
 		List<ArticleCollectionForView> collections = artCollSvc.getCollectionsByMemberId(memberId);
@@ -318,7 +318,7 @@ public class GeneralMemberController {
 		Integer memberId = (Integer) session.getAttribute("memberID");
 		if (memberId == null) {
 			// 如果用戶未登錄，重定向到登錄頁面
-			return "redirect:/login"; // 確保這是正確的登錄頁面路徑
+			return "redirect:/generalmember/login"; // 確保這是正確的登錄頁面路徑
 		}
 
 		List<BookedTicketForView> orders = bookTicketService.getTicketOrdersByMemberId(memberId);

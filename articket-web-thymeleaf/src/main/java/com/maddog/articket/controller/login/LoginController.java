@@ -87,7 +87,9 @@ public class LoginController {
 
 	// 會員中心
 	@GetMapping("/memberCenter")
-	public String memberCenter(HttpSession session, Model model, @RequestParam(required = false) Boolean updated) {
+	public String memberCenter(HttpSession session,
+                               Model model,
+                               @RequestParam(required = false) Boolean updated) {
 		log.info("Entering memberCenter method");
 
 		if (updated != null && updated) {
@@ -97,7 +99,7 @@ public class LoginController {
 		if (session.getAttribute("memberAccount") == null) {
 			log.info("User not logged in, redirecting to login");
 
-			return "redirect:/login";
+			return "redirect:/generalmember/login";
 		}
 
 		String memberAccount = (String) session.getAttribute("memberAccount");
@@ -108,7 +110,7 @@ public class LoginController {
 		if (generalMember == null) {
 			log.warn("Member not found for account: {}", memberAccount);
 
-			return "redirect:/login";
+			return "redirect:/generalmember/login";
 		}
 
 		log.info("Member data retrieved successfully");
@@ -157,14 +159,14 @@ public class LoginController {
 	@PostMapping("/updateMember")
 	public String updateMember(@ModelAttribute GeneralMemberDto generalMember,
 							   @RequestParam(value = "memberPictureForUpdate", required = false) MultipartFile memberPictureForUpdate,
-	                           HttpSession session, 
+	                           HttpSession session,
 	                           RedirectAttributes redirectAttributes) {
 	    log.info("Entering updateMember method");
-	    
+
 	    if (session.getAttribute("memberAccount") == null) {
 	        log.info("User not logged in, redirecting to login");
 
-			return "redirect:/login";
+			return "redirect:/generalmember/login";
 	    }
 
 	    try {
@@ -246,7 +248,7 @@ public class LoginController {
 		}
 
 	}
-	
+
 	// 廠商會員中心
 	@GetMapping("/partnerCenter")
 	public String partnerCenter(HttpSession session, Model model, @RequestParam(required = false) Boolean updated) {
@@ -279,7 +281,7 @@ public class LoginController {
 
 		return "back-end/partnermember/partnerCenter";
 	}
-	
+
 	// 登出
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
