@@ -16,14 +16,24 @@
 
 <!-- resultMap-->
     <resultMap id="resultMapForSelect" type="com.maddog.articket.article.entity.Article">
-        <id column="article_id " property="articleId" />
+        <id column="article_id" property="articleId" />
         <result column="article_category" property="articleCategory" />
-        <result column="article_title " property="articleTitle" />
+        <result column="article_title" property="articleTitle" />
         <result column="member_id" property="memberId" />
         <result column="article_content" property="articleContent" />
         <result column="board_id" property="boardId" />
         <result column="article_status" property="articleStatus" />
         <result column="article_create_time" property="articleCreateTime" />
+    </resultMap>
+
+    <resultMap id="resultMapForView" type="com.maddog.articket.article.dto.ArticleForView">
+        <id column="article_id" property="articleId" />
+        <result column="article_category" property="articleCategory" />
+        <result column="article_title" property="articleTitle" />
+        <result column="article_create_time" property="articleCreateTime" />
+        <result column="board_id" property="boardId" />
+        <result column="board_name" property="boardName" />
+        <result column="member_nickname" property="memberNickname" />
     </resultMap>
 <!-- resultMap-->
 
@@ -105,11 +115,25 @@
 
     <!-- 查詢所有文章，按創建時間降序排序 -->
     <select id="findAll"
-            resultMap="resultMapForSelect">
+            resultMap="resultMapForView">
         SELECT
-            *
+            a.article_id,
+            a.article_category,
+            a.article_title,
+            a.article_create_time,
+            a.board_id,
+            b.board_name,
+            g.member_nickname
         FROM
-            article
+            article a
+        LEFT JOIN
+            board b
+            ON
+            a.board_id = b.board_id
+        LEFT JOIN
+            general_member g
+            ON
+            a.member_id = g.member_id
         ORDER BY
             article_create_time DESC
     </select>
@@ -157,7 +181,7 @@
     <select id="findAllCategories"
             resultType="java.lang.String">
         SELECT DISTINCT
-            articleCategory
+            article_category
         FROM
             article
         WHERE

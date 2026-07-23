@@ -1,5 +1,6 @@
 package com.maddog.articket.controller.article;
 
+import com.maddog.articket.article.dto.ArticleForView;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.article.service.pri.ArticleService;
@@ -52,21 +53,21 @@ public class ArticleController {
 	private BoardService boardSvc;
     
 	@GetMapping("/forum")
-	public String showForumPage(@RequestParam(required = false) Integer boardID, Model model) {
-	    List<Article> allArticles = articleSvc.findByCondition();
+	public String showForumPage(@RequestParam(required = false) Integer boardId, Model model) {
+	    List<ArticleForView> allArticles = articleSvc.findAll();
 	    List<Board> boardList = boardSvc.getAll();
 
 	    // 如果有指定 boardID，則篩選文章
-	    if (boardID != null) {
+	    if (boardId != null) {
 	        allArticles = allArticles.stream()
-	            .filter(article -> article.getBoardId().equals(boardID))
+	            .filter(article -> article.getBoardId().equals(boardId))
 	            .collect(Collectors.toList());
 	    }
-	    allArticles.sort(Comparator.comparing(Article::getArticleCreateTime).reversed()); //按文章時間排序
+	    allArticles.sort(Comparator.comparing(ArticleForView::getArticleCreateTime).reversed()); //按文章時間排序
 
 		model.addAttribute("articleList", allArticles);
 	    model.addAttribute("boardList", boardList);
-	    model.addAttribute("selectedBoardID", boardID); 
+	    model.addAttribute("selectedBoardID", boardId);
 
 	    return "front-end/forum/forum";
 	}
@@ -100,11 +101,10 @@ public class ArticleController {
         return "front-end/forum/post";
     }
     
-    
-    @GetMapping("OneArticle/{articleID}")
-    public String showOneArticle(@PathVariable("articleID") String articleID, ModelMap model) {
+    @GetMapping("OneArticle/{articleId}")
+    public String showOneArticle(@PathVariable("articleId") String articleId, ModelMap model) {
         try {
-            int id = Integer.parseInt(articleID);
+            int id = Integer.parseInt(articleId);
             Article article = articleSvc.getOneArticle(id);
             
             if (article == null) {
@@ -113,12 +113,12 @@ public class ArticleController {
 				return "front-end/forum/forum";
             }            
             
-    		List<Article> list = articleSvc.findByCondition();
-    		model.addAttribute("articleListData", list); 
+    		List<ArticleForView> articleList = articleSvc.findAll();
+    		model.addAttribute("articleListData", articleList);
     		model.addAttribute("board", new Board()); 
     		
-    		List<Board> list2 = boardSvc.getAll();
-        	model.addAttribute("boardListData",list2);   
+    		List<Board> boardList = boardSvc.getAll();
+        	model.addAttribute("boardListData", boardList);
         	
     	    
     	    List<String> categories = articleSvc.getAllCategories();
@@ -136,9 +136,6 @@ public class ArticleController {
 			return "front-end/forum/forum";
         }
     }
-    
-
-    
 
 //    @GetMapping("/select_page")
 //	public String select_page(Model model) {
@@ -150,18 +147,16 @@ public class ArticleController {
 //		return "front-end/forum/listAllArticle";
 //	}
     
-    @ModelAttribute("articleListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
-	protected List<Article> referenceListData(Model model) {
-		
-    	List<Article> list = articleSvc.findByCondition();
-		return list;
+    @ModelAttribute("articleListData")
+	protected List<ArticleForView> referenceListData(Model model) {
+		return articleSvc.findAll();
 	}
     
-	@ModelAttribute("boardListData") // for select_page.html 第135行用
+	@ModelAttribute("boardListData")
 	protected List<Board> referenceListData_Board(Model model) {
-		model.addAttribute("board", new Board()); // for select_page.html 第133行用
-		List<Board> list = boardSvc.getAll();
-		return list;
+		model.addAttribute("board", new Board());
+
+		return boardSvc.getAll();
 	}
 	
 	@GetMapping("addArticle")
@@ -261,7 +256,7 @@ public class ArticleController {
 	    }
 			
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
-		List<Article> list = articleSvc.findByCondition();
+		List<ArticleForView> list = articleSvc.findAll();
 
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (新增成功)");
@@ -392,7 +387,7 @@ public class ArticleController {
 		// ArticleService articleSvc = new ArticleService();
 		articleSvc.deleteArticle(Integer.valueOf(articleID));
 		/*************************** 3.刪除完成,準備轉交(Send the Success view) **************/
-		List<Article> list = articleSvc.findByCondition();
+		List<ArticleForView> list = articleSvc.findAll();
 		model.addAttribute("articleListData", list);
 		model.addAttribute("success", "- (刪除成功)");
 
@@ -432,7 +427,7 @@ public class ArticleController {
 	public String listAllArticle(@ModelAttribute ArticleQueryCondition condition,
 								 Model model) {
 
-	    List<Article> articleList = articleSvc.findByCondition(condition);
+	    List<Article> articleList = articleSvc.findAll(condition);
 	    model.addAttribute("articleList", articleList);
 
 	    List<Board> boardList = boardSvc.getAll();
@@ -469,7 +464,7 @@ public class ArticleController {
 //		ArticleService articleSvc = new ArticleService();
 		Article article = articleSvc.getOneArticle(Integer.valueOf(articleID));
 		
-		List<Article> list = articleSvc.findByCondition();
+		List<ArticleForView> list = articleSvc.findAll();
 		model.addAttribute("articleListData", list);
 		model.addAttribute("board", new Board());
 		
@@ -533,7 +528,7 @@ public class ArticleController {
     	model.addAttribute("article", articleSvc);
     	
 	    // 加載所有文章
-		List<Article> list = articleSvc.findByCondition();
+		List<ArticleForView> list = articleSvc.findAll();
 		model.addAttribute("articleListData", list);     // for select_page.html 第97 109行用
 		model.addAttribute("board", new Board());  // for select_page.html 第133行用
 		
@@ -548,7 +543,7 @@ public class ArticleController {
 	
     //設置通用的model
     private void setCommonModelAttributes(ModelMap model) {
-		model.addAttribute("articleListData", articleSvc.findByCondition());
+		model.addAttribute("articleListData", articleSvc.findAll());
 		model.addAttribute("boardListData", boardSvc.getAll());
 		model.addAttribute("articleCategories", articleSvc.getAllCategories());
 		model.addAttribute("generalMemberListData", generalMemberSvc.getAll());

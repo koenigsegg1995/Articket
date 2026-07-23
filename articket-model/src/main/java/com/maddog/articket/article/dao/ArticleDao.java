@@ -1,5 +1,6 @@
 package com.maddog.articket.article.dao;
 
+import com.maddog.articket.article.dto.ArticleForView;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
@@ -58,7 +59,7 @@ public interface ArticleDao {
 	 * @return 文章清單
 	 * 			List<Article>
 	 */
-	List<Article> findAll();
+	List<ArticleForView> findAll();
 
 	/**
 	 * 依標題查詢，依創建時間降序排序

@@ -1,5 +1,6 @@
 package com.maddog.articket.article.service.pri;
 
+import com.maddog.articket.article.dto.ArticleForView;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 
@@ -53,7 +54,7 @@ public interface ArticleService {
 	 * @return 文章清單
 	 * 			List<Article>
 	 */
-	List<Article> findByCondition();
+	List<ArticleForView> findAll();
 
 	/**
 	 * 依標題查詢，依創建時間降序排序
@@ -73,7 +74,7 @@ public interface ArticleService {
 	 * @return 文章清單
 	 * 			List<Article>
 	 */
-	List<Article> findByCondition(ArticleQueryCondition condition);
+	List<Article> findAll(ArticleQueryCondition condition);
 	/**
 	 * 查詢現有文章類別
 	 *

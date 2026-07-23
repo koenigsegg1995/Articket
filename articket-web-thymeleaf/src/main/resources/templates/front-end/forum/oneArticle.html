@@ -41,19 +41,19 @@
 <!-- 								</select> -->
 <!-- 								data-member-id='1'之後改會員驗證登入 -->
 								<button class="action-btn heart-btn"
-									th:attr="data-articleID=${article.articleID}, data-memberID='1'">
+									th:attr="data-articleID=${article.articleId}, data-memberID='1'">
 									<!-- 文章按讚 -->
 									<i class="far fa-heart"></i> <span class="count"
 										th:text="${article.hearts.size()}">0</span>
 								</button>
 								<button class="action-btn bookmark-btn"
-									th:attr="data-articleID=${article.articleID}, data-memberID='1'">
+									th:attr="data-articleID=${article.articleId}, data-memberID='1'">
 									<!-- 文章收藏 -->
 									<i class="far fa-bookmark"></i> <span class="count"
 										th:text="${article.articleCollections.size()}">0</span>
 								</button>
 								<button class="action-btn report-btn"
-									th:attr="data-articleid=${article.articleID}">
+									th:attr="data-articleid=${article.articleId}">
 									<i class="fa-solid fa-shield-halved"></i> <span class="count">檢舉</span>
 								</button>
 							</div>
@@ -98,7 +98,7 @@
 
 					<form id="comment-form" class="mt-4">
 						<input type="hidden" id="articleID"
-							th:value="${article.articleID}">
+							th:value="${article.articleId}">
 
 						<div class="mb-3">
 							<textarea class="form-control" id="commentContent" rows="3"

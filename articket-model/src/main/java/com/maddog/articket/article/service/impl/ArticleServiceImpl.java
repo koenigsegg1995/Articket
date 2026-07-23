@@ -1,6 +1,7 @@
 package com.maddog.articket.article.service.impl;
 
 import com.maddog.articket.article.dao.ArticleDao;
+import com.maddog.articket.article.dto.ArticleForView;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
 import com.maddog.articket.article.service.pri.ArticleService;
@@ -84,7 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<Article> findByCondition() {
+	public List<ArticleForView> findAll() {
 		return articleDao.findAll();
 	}
 
@@ -112,7 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<Article> findByCondition(ArticleQueryCondition condition) {
+	public List<Article> findAll(ArticleQueryCondition condition) {
 		return articleDao.findByCondition(condition);
 	}
 	/**
