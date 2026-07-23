@@ -43,12 +43,12 @@
         <h1 class="text-center">會員登入</h1>
         <form method="post" th:action="@{/generalmember/login}">
             <div class="form-group">
-                <label for="email">帳號</label>
+                <label for="memberAccount">帳號</label>
                 <input type="text" class="form-control" id="memberAccount" name="memberAccount" placeholder="輸入E-Mail" required>
             </div>
             <div class="form-group">
                 <label for="password">密碼</label>
-                <input type="password" class="form-control" name="memberPassword" placeholder="輸入密碼" required>
+                <input type="password" class="form-control" id="password" name="memberPassword" placeholder="輸入密碼" required>
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="remember">

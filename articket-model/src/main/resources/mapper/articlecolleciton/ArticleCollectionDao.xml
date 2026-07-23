@@ -100,12 +100,12 @@
             parameterType="java.lang.Integer"
             resultMap="resultMapForView">
         SELECT
-            ac.articleId,
-            ac.collectionCreateTime
-            a.articleCategory,
-            a.articleTitle,
-            gm.memberName,
-            b.boardName
+            ac.article_id,
+            ac.collection_create_time,
+            a.article_category,
+            a.article_title,
+            gm.member_name,
+            b.board_name
         FROM
             article_collection ac
         JOIN
