@@ -89,4 +89,14 @@ public interface ArticleDao {
 	 */
     List<String> findAllCategories();
 
+	/**
+	 * 依 ID 查詢 VO
+	 *
+	 * @param articleId
+	 * 			Integer
+	 * @return 文章
+	 * 			ArticleForView
+	 */
+	ArticleForView findVoById(Integer articleId);
+
 }

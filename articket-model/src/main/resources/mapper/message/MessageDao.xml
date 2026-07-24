@@ -120,7 +120,7 @@
             m.member_id,
             gm.member_name,
             m.message_content,
-            m.message_createTime
+            m.message_create_time
         FROM
             message m
         LEFT JOIN

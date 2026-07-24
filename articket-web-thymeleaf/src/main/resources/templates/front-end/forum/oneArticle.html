@@ -44,13 +44,13 @@
 									th:attr="data-articleID=${article.articleId}, data-memberID='1'">
 									<!-- 文章按讚 -->
 									<i class="far fa-heart"></i> <span class="count"
-										th:text="${article.hearts.size()}">0</span>
+										th:text="${article.heartCount}">0</span>
 								</button>
 								<button class="action-btn bookmark-btn"
 									th:attr="data-articleID=${article.articleId}, data-memberID='1'">
 									<!-- 文章收藏 -->
 									<i class="far fa-bookmark"></i> <span class="count"
-										th:text="${article.articleCollections.size()}">0</span>
+										th:text="${article.articleCollectionCount}">0</span>
 								</button>
 								<button class="action-btn report-btn"
 									th:attr="data-articleid=${article.articleId}">
@@ -61,9 +61,9 @@
 						<div class="d-flex justify-content-between align-items-center">
 							<div>
 								<span class="category-badge"
-									th:text="${article.board.boardName} ">分類版名稱</span> <span
+									th:text="${article.boardName} ">分類版名稱</span> <span
 									class="text-muted"
-									th:text="${article.generalMember.memberNickName}">作者名稱</span>
+									th:text="${article.memberNickname}">作者名稱</span>
 								<!--名稱前面可以加入會員大頭貼-->
 							</div>
 							<span class="text-muted"
@@ -76,9 +76,9 @@
 
 						<!-- 文章圖片 -->
 						<div class="article-images row">
-							<div th:each="img : ${article.articleImgs}" class="col-md-4 mb-3">
+							<div th:each="img : ${articleImgList}" class="col-md-4 mb-3">
 								<img
-									th:src="@{/article/ArticleDBGifReader(articleImgID=${img.articleImgID})}"
+									th:src="@{/article/ArticleDBGifReader(articleImgId=${img.articleImgId})}"
 									alt="文章圖片" class="img-fluid">
 							</div>
 						</div>

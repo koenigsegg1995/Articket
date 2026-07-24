@@ -30,6 +30,7 @@
         <id column="article_id" property="articleId" />
         <result column="article_category" property="articleCategory" />
         <result column="article_title" property="articleTitle" />
+        <result column="article_content" property="articleContent" />
         <result column="article_create_time" property="articleCreateTime" />
         <result column="board_id" property="boardId" />
         <result column="board_name" property="boardName" />
@@ -186,6 +187,31 @@
             article
         WHERE
             article_category IS NOT NULL
+    </select>
+
+    <select id="findVoById"
+            resultMap="resultMapForView">
+        SELECT
+            a.article_id,
+            a.article_category,
+            a.article_title,
+            a.article_content,
+            a.article_create_time,
+            a.board_id,
+            b.board_name,
+            g.member_nickname
+        FROM
+            article a
+        LEFT JOIN
+            board b
+            ON
+            a.board_id = b.board_id
+        LEFT JOIN
+            general_member g
+            ON
+            a.member_id = g.member_id
+        WHERE
+            a.article_id = #{articleId}
     </select>
 <!-- method-->
 

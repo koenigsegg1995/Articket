@@ -68,7 +68,7 @@ public class ArticleImgServiceImpl implements ArticleImgService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ArticleImg> getArticleImgsByArticleID(Integer articleId) {
+	public List<ArticleImg> getArticleImgsByArticleId(Integer articleId) {
         return articleImgDao.findByArticleId(articleId);
     }
 

@@ -105,13 +105,15 @@ public class ArticleController {
     public String showOneArticle(@PathVariable("articleId") String articleId, ModelMap model) {
         try {
             int id = Integer.parseInt(articleId);
-            Article article = articleSvc.getOneArticle(id);
+            ArticleForView article = articleSvc.getOneArticleForView(id);
             
             if (article == null) {
                 model.addAttribute("errorMessage", "查無資料");
 
 				return "front-end/forum/forum";
-            }            
+            }
+
+			List<ArticleImg> articleImgList = articleImgSvc.getArticleImgsByArticleId(id);
             
     		List<ArticleForView> articleList = articleSvc.findAll();
     		model.addAttribute("articleListData", articleList);
@@ -128,6 +130,7 @@ public class ArticleController {
 
     	    model.addAttribute("generalMemberListData", generalMemberList);
             model.addAttribute("article", article);
+			model.addAttribute("articleImgList", articleImgList);
 
 			return "front-end/forum/OneArticle";
         } catch (NumberFormatException e) {
@@ -296,7 +299,7 @@ public class ArticleController {
 	    model.addAttribute("generalMemberListData", generalMemberList);
 	    
 	   // 查詢對應文章的所有圖片
-	    List<ArticleImg> articleImgs = articleImgSvc.getArticleImgsByArticleID(articleID);
+	    List<ArticleImg> articleImgs = articleImgSvc.getArticleImgsByArticleId(articleID);
 	    model.addAttribute("articleImgs", articleImgs);
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/

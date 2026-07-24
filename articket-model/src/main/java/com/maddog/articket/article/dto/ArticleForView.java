@@ -33,6 +33,11 @@ public class ArticleForView implements Serializable {
     private String articleTitle;
 
     /**
+     * 文章內容
+     */
+    private String articleContent;
+
+    /**
      * 文章建立時間
      */
     private Date articleCreateTime;
@@ -51,5 +56,15 @@ public class ArticleForView implements Serializable {
      * 會員暱稱
      */
     private String memberNickname;
+
+    /**
+     * 點讚數
+     */
+    private Integer heartCount;
+
+    /**
+     * 收藏數
+     */
+    private Integer articleCollectionCount;
 
 }

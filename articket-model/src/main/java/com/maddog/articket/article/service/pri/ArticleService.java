@@ -3,6 +3,7 @@ package com.maddog.articket.article.service.pri;
 import com.maddog.articket.article.dto.ArticleForView;
 import com.maddog.articket.article.dto.ArticleQueryCondition;
 import com.maddog.articket.article.entity.Article;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -82,5 +83,15 @@ public interface ArticleService {
 	 * 			List<String>
 	 */
     List<String> getAllCategories();
+
+	/**
+	 * 依 ID 查詢 VO
+	 *
+	 * @param articleId
+	 * 			Integer
+	 * @return 文章 VO
+	 * 			ArticleForView
+	 */
+	ArticleForView getOneArticleForView(Integer articleId);
 
 }

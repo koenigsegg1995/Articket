@@ -43,7 +43,7 @@ public interface ArticleImgService {
 	 * 			文章 ID
 	 * @return 文章圖片 DO 清單
 	 */
-	List<ArticleImg> getArticleImgsByArticleID(Integer articleId);
+	List<ArticleImg> getArticleImgsByArticleId(Integer articleId);
 
 	/**
 	 * 查詢所有文章圖片 DO
