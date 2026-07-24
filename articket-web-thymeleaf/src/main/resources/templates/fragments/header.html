@@ -1,4 +1,8 @@
-<div class="header" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="header" class="header">
     <div class="top-bar">
         <div class="logo">
             <a th:href="@{/}">
@@ -27,7 +31,7 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg bg-transparent">
+    <nav class="navbar">
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="/news/allNews">最新消息</a></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/activity/activityInfoAll}">活動資訊</a></li>
@@ -39,3 +43,6 @@
         </ul>
     </nav>
 </div>
+
+</body>
+</html>
