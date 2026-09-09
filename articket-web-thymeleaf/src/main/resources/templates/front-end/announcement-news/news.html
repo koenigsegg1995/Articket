@@ -4,6 +4,7 @@
     <link rel="icon" href="/images/icon.ico">
     <meta charset="UTF-8">
     <title>最新消息</title>
+    <th:block th:replace="~{fragments/head :: commonCss}"></th:block>
     <!-- 添加必要的CSS引用 -->
     <style>
         body {
@@ -14,12 +15,15 @@
         }
 
         .content {
-            max-width: 800px;
+            max-width: 1200px;
+            width: 100%;
             margin: 2rem auto;
+            align-self: center;
             padding: 1rem;
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -158,124 +162,85 @@
     </style>
 </head>
 <body>
-<div id="header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
 
+    <div class="content">
+        <h1>最新消息</h1>
 
-<div class="content">
-    <h1>最新消息</h1>
-
-    <div th:each="news : ${newsList}" class="news-item">
-        <div class="news-header">
-            <div class="news-date"
-                 th:text="${#dates.format(news.newsCreateTime, 'yyyy/MM/dd')}"></div>
+        <div th:each="news : ${newsList}" class="news-item">
+            <div class="news-header">
+                <div class="news-date"
+                     th:text="${#dates.format(news.newsCreateTime, 'yyyy/MM/dd')}"></div>
+            </div>
+            <h3 th:text="${news.newsTitle}" class="news-title"></h3>
+            <div th:text="${news.newsContent}" class="news-content"
+                 style="display: none;"></div>
         </div>
-        <h3 th:text="${news.newsTitle}" class="news-title"></h3>
-        <div th:text="${news.newsContent}" class="news-content"
-             style="display: none;"></div>
     </div>
-</div>
 
-<div class="pagination" th:if="${totalPages > 1}">
-    <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
-    <a th:if="${currentPage > 1}"
-       th:href="@{'/news/allNews?page=' + ${currentPage - 1}}">上一頁</a>
-    <a th:if="${currentPage < totalPages}"
-       th:href="@{'/news/allNews?page=' + ${currentPage + 1}}">下一頁</a>
-</div>
-<!--
-<div class="pagination">
-<button id="prevBtn" onclick="changePage(-1)">
-    <i class="fas fa-chevron-left"></i> 上一頁
-</button>
-<span id="pageInfo">第 1 頁，共 1 頁</span>
-<button id="nextBtn" onclick="changePage(1)">
-    下一頁 <i class="fas fa-chevron-right"></i>
-</button>
-</div>
--->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <div id="modalContent"></div>
+    <div class="pagination" th:if="${totalPages > 1}">
+        <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+        <a th:if="${currentPage > 1}"
+           th:href="@{'/news/allNews?page=' + ${currentPage - 1}}">上一頁</a>
+        <a th:if="${currentPage < totalPages}"
+           th:href="@{'/news/allNews?page=' + ${currentPage + 1}}">下一頁</a>
     </div>
-</div>
+    <!--
+    <div class="pagination">
+    <button id="prevBtn" onclick="changePage(-1)">
+        <i class="fas fa-chevron-left"></i> 上一頁
+    </button>
+    <span id="pageInfo">第 1 頁，共 1 頁</span>
+    <button id="nextBtn" onclick="changePage(1)">
+        下一頁 <i class="fas fa-chevron-right"></i>
+    </button>
+    </div>
+    -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 
-<div id="footer"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-<script th:inline="javascript">
-    // 顯示模態框的JavaScript代碼
-    var modal = document.getElementById("modal");
-    var span = document.getElementsByClassName("close")[0];
+    <script th:inline="javascript">
+        // 顯示模態框的JavaScript代碼
+        var modal = document.getElementById("modal");
+        var span = document.getElementsByClassName("close")[0];
 
-    document.querySelectorAll('.news-title').forEach(item => {
-        item.addEventListener('click', function () {
-            var content = this.nextElementSibling.textContent;
-            var title = this.textContent;
-            document.getElementById("modalTitle").textContent = title;
-            document.getElementById("modalContent").innerHTML = content;
-            modal.style.display = "block";
+        document.querySelectorAll('.news-title').forEach(item => {
+            item.addEventListener('click', function () {
+                var content = this.nextElementSibling.textContent;
+                var title = this.textContent;
+                document.getElementById("modalTitle").textContent = title;
+                document.getElementById("modalContent").innerHTML = content;
+                modal.style.display = "block";
+            });
         });
-    });
 
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function (event) {
-        if (event.target == modal) {
+        span.onclick = function () {
             modal.style.display = "none";
         }
-    }
-</script>
 
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
-<script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        // 初始化所有的 tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化所有的 tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
         });
-
-        // 動態載入 header
-        if (!document.getElementById('header').innerHTML.trim()) {
-            fetch('/header')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error loading header:', error);
-                    document.getElementById('header').innerHTML = '<p>Error loading header</p>';
-                });
-        }
-
-        // 動態載入 footer
-        if (!document.getElementById('footer').innerHTML.trim()) {
-            fetch('/footer')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('footer').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error loading footer:', error);
-                    document.getElementById('footer').innerHTML = '<p>Error loading footer</p>';
-                });
-        }
-
-    });
-</script>
+    </script>
 
 </body>
 </html>

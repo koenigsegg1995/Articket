@@ -29,6 +29,7 @@
         .row {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             margin: -10px -10px 40px -10px;
         }
 
@@ -39,7 +40,8 @@
 
         @media (min-width: 768px) {
             .row-cols-md-3 > .col {
-                width: calc(33.333% - 20px);
+                width: 300px;
+                flex: 0 0 auto;
             }
         }
 
@@ -51,6 +53,10 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+
+        .card-info {
+            text-align: center;
         }
 
         .card-body {
@@ -189,15 +195,17 @@
                            class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
                             <div class="image-wrapper mb-3" style="height: 200px; overflow: hidden;">
                                 <div class="image-slider" style="display: flex; transition: transform 0.5s ease-in-out;">
-                                    <img th:each="activityPictureId : ${activityPictureIdList}"
+                                    <img th:each="activityPictureId : ${activity.activityPictureIdList}"
                                          th:src="@{|/activity/DBGifReader?activityPictureId=${activityPictureId}|}"
                                          class="img-fluid" alt="Activity Image"
                                          style="object-fit: cover; width: 100%; height: 200px;">
                                 </div>
                             </div>
-                            <h5 class="card-title" th:text="${activity.activityName}"></h5>
-                            <p class="card-text" th:text="'日期：' + ${activity.sellTime}"></p>
-                            <p class="card-text" th:text="'地點：' + ${activity.venueName}"></p>
+                            <div class="card-info">
+                                <h5 class="card-title" th:text="${activity.activityName}"></h5>
+                                <p class="card-text" th:text="'日期：' + ${#dates.format(activity.sellTime, 'yyyy-MM-dd (E)')}"></p>
+                                <p class="card-text" th:text="'地點：' + ${activity.venueName}"></p>
+                            </div>
                         </a>
                     </div>
                 </div>

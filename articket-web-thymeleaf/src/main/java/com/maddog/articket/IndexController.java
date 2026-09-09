@@ -18,40 +18,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IndexController {
-	
-	@Autowired
+
+    @Autowired
     private GeneralMemberService gmemberSvc;
-	
-	@Autowired
+
+    @Autowired
     private PartnerMemberService partnerSvc;
-	
+
     @Autowired
     private ActivityService activitySvc;
-	
-	//導向首頁
+
+    //導向首頁
     @GetMapping("/")
     public String index() {
         return "index"; //view
     }
-    
+
     //網站 Header
     @GetMapping("/header")
     public String getHeader() {
         return "header";
     }
-    
+
     //網站 Footer
     @GetMapping("/footer")
     public String getFooter() {
         return "footer";
     }
-    
+
     //導向後台主頁
     @GetMapping("/backEndPartner")
     public String getPartner() {
         return "/back-end-partner/partner";
     }
-    
+
     //後臺主頁側邊欄，用於 partner.js 第二行
     @GetMapping("/partnerSidebar")
     public String getPartnerSidebar() {
@@ -59,69 +59,69 @@ public class IndexController {
     }
 
     @GetMapping("/generalmember/select_page")
-	public String select_page() {
-		return "back-end/generalmember/select_page";
-	}
-	
-	@GetMapping("/partnermember/select_page")
-	public String select_page1() {
-		return "back-end/partnermember/select_page";
-	}
+    public String select_page() {
+        return "back-end/generalmember/select_page";
+    }
 
-	@GetMapping("/generalmember/listAllGeneralMember")
-	public String listAllGeneralMember() {
-		return "back-end/generalmember/listAllGeneralMember";
-	}
+    @GetMapping("/partnermember/select_page")
+    public String select_page1() {
+        return "back-end/partnermember/select_page";
+    }
 
-	@ModelAttribute("generalMemberListData") // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
-	protected List<GeneralMember> referenceListData() {
-		List<GeneralMember> list = gmemberSvc.getAll();
+    @GetMapping("/generalmember/listAllGeneralMember")
+    public String listAllGeneralMember() {
+        return "back-end/generalmember/listAllGeneralMember";
+    }
+
+    @ModelAttribute("generalMemberListData") // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+    protected List<GeneralMember> referenceListData() {
+        List<GeneralMember> list = gmemberSvc.getAll();
 
         return list;
-	}
+    }
 
     @GetMapping("/partnermember/listAllPartnerMember")
     public String listAllPartnerMember() {
-    	return "back-end/partnermember/listAllPartnerMember";
+        return "back-end/partnermember/listAllPartnerMember";
     }
-    
+
     @ModelAttribute("partnerMemberListData")  // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
     protected List<PartnerMember> referenceListData1() {
-    	List<PartnerMember> list = partnerSvc.getAll();
+        List<PartnerMember> list = partnerSvc.getAll();
 
         return list;
     }
-    
-    // 導向登入成功會員
- 	@GetMapping("/success")
- 	public String getSuccess() {
- 		return "success";
- 	}
- 	
- 	// 導向登入成功廠商
- 	@GetMapping("/successpartner")
- 	public String getSuccessPartner() {
- 		return "successpartner";
- 	}
- 	
- 	// 導向註冊成功
- 	@GetMapping("/successInRegister")
- 	public String getSuccessInRegister() {
- 		return "successInRegister";
- 	}
- 	
- 	// 導向後臺主頁
- 	@GetMapping("/admin")
-     public String getAdmin() {
-         return "/back-end-admin/admin";
-     }
 
- 	// 導向管理員後台側邊攔
- 	@GetMapping("/adminSidebar")
- 	public String getAdminSidebar() {
- 	    return "back-end-admin/admin_sidebar";
- 	}
-    
+    // 導向登入成功會員
+    @GetMapping("/success")
+    public String getSuccess() {
+        return "success";
+    }
+
+    // 導向登入成功廠商
+    @GetMapping("/successpartner")
+    public String getSuccessPartner() {
+        return "successpartner";
+    }
+
+    // 導向註冊成功
+    @GetMapping("/successInRegister")
+    public String getSuccessInRegister() {
+        return "successInRegister";
+    }
+
+    // 導向後臺主頁
+    @GetMapping("/admin")
+    public String getAdmin() {
+        return "/back-end-admin/admin";
+    }
+
+    // 導向管理員後台側邊攔
+    @GetMapping("/adminSidebar")
+    public String getAdminSidebar() {
+        return "back-end-admin/admin_sidebar";
+    }
+
     // http://......../hello?name=peter1
     @GetMapping("/hello")
     public String indexWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name,
@@ -130,7 +130,7 @@ public class IndexController {
 
         return "index"; //view
     }
-	
+
     //管理員檢舉管理
     @GetMapping("/adminProsecute")
     public String getAdminProsecute(Model model) {
@@ -142,19 +142,20 @@ public class IndexController {
     /**
      * 顯示所有活動
      */
-  	@ModelAttribute("activityListData")
-  	public List<ActivityIndexForView> referenceListActivityData() {
-        return activitySvc.getActivityForIndex();
-  	}
-  	
-  	//票務須知
- 	@GetMapping("/ticketInfo")
+    @ModelAttribute("activityListData")
+    public List<ActivityIndexForView> referenceListActivityData() {
+        List<ActivityIndexForView> voList = activitySvc.getActivityForIndex();
+        return voList;
+    }
+
+    //票務須知
+    @GetMapping("/ticketInfo")
     public String getTicketInfo() {
         return "/ticketInfo";
     }
- 	
-  	//常見問題
- 	@GetMapping("/qa")
+
+    //常見問題
+    @GetMapping("/qa")
     public String getQA() {
         return "/QA";
     }
