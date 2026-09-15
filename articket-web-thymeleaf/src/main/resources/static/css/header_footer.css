@@ -57,13 +57,14 @@ body {
     width: 100%;
 }
 
-.navbar-nav {
+.header .navbar-nav {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding: 0;
     margin: 0;
     list-style: none;
+    flex-direction: row;
 }
 
 .navbar-nav .nav-item {

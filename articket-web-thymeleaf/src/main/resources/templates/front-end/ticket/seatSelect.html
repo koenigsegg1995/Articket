@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>活動訂票系統-座位選擇</title>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap"
-            rel="stylesheet">
     <link rel="icon" href="/images/icon.ico">
-
+	<th:block th:replace="~{fragments/head :: commonCss}"></th:block>
     <style>
         /* ====================================
                    全區樣式設定
@@ -28,11 +25,14 @@
         }
 
         .main-content {
-            max-width: 1200px;
+			width: 100%;
+			max-width: 1200px;
             margin: 20px auto;
+			align-self: center;
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			box-sizing: border-box;
         }
 
         /* ====================================
@@ -129,7 +129,7 @@
         /* ====================================
                    主容器及座位圖樣式
         ==================================== */
-        .container {
+        .seat-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -304,7 +304,7 @@
                    響應式設計
         ==================================== */
         @media ( max-width: 1024px) {
-            .container {
+            .seat-container {
                 flex-direction: column;
                 align-items: center;
             }
@@ -360,7 +360,7 @@
 </head>
 
 <body>
-	<div id="header"></div>
+	<div th:replace="~{fragments/header :: header}"></div>
 
 	<div class="main-content" th:object="${seatSelectForView}">
 		<div class="custom-progress-container">
@@ -392,7 +392,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<div class="seat-container">
 			<div class="seat-map" id="seatMap">
 				<h2 class="seat-selection-title">座位選擇</h2>
 				<!-- 座位圖會在這裡生成 -->
@@ -467,6 +467,8 @@
 			</form>
 		</div>
 	</div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
 
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -670,8 +672,6 @@
 		// 當 DOM 完全加載後執行初始化
 		document.addEventListener('DOMContentLoaded', init);
 	</script>
-
-	<script src="/js/loadHeaderFooter.js"></script>
 </body>
 
 </html>

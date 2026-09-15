@@ -7,12 +7,12 @@
     <title>會員登入</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="/css/header_footer.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments/head :: commonCss}"></th:block>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2e1e1;
+            background-color: white;
             margin: 0;
             padding: 0;
         }
@@ -29,8 +29,12 @@
             font-weight: bolder;
         }
 
+        .header .navbar-nav {
+            flex-direction: row;
+        }
+
         .custom-btn {
-            background-color: rgb(243, 121, 142);
+            background-color: #E4D1BA;
             color: white;
             width: 10%;
         }
@@ -38,7 +42,8 @@
 </head>
 
 <body>
-    <div id="header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
+
     <div class="container">
         <h1 class="text-center">會員登入</h1>
         <form method="post" th:action="@{/generalmember/login}">
@@ -82,6 +87,8 @@
         </div>
     </div>
 
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -89,22 +96,6 @@
 
     <script>
         $(document).ready(function() {
-            // 載入 header
-            fetch('/header')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error loading header:', error);
-                    document.getElementById('header').innerHTML = '<p>Error loading header</p>';
-                });
-
             // 綁定忘記密碼連結的點擊事件
             $('#forgotPassword').on('click', function(e) {
                 e.preventDefault();
