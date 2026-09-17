@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>藝票人 場館介紹</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link href="/css/venueIntroduction.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藝票人 場館介紹</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/venueIntroduction.css" rel="stylesheet">
+    <th:block th:replace="~{fragments/head :: commonCss}"></th:block>
 </head>
 <body>
-	<div id="header"></div>
+	<div th:replace="~{fragments/header :: header}"></div>
 
 	<div class="container my-5">
 		<div class="content-wrapper">
@@ -91,10 +90,8 @@
 		</div>
 	</div>
 
-	<div id="footer"></div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="/js/venueIntroduction.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.maddog.articket.ticket.dao;
 
+import com.maddog.articket.ticket.dto.TicketForView;
 import com.maddog.articket.ticket.entity.Ticket;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,6 +35,6 @@ public interface TicketDao {
 	 * 			一般會員 ID
 	 * @return 票券清單
 	 */
-	List<Ticket> findByGeneralMemberMemberId(Integer memberId);
+	List<TicketForView> findByGeneralMemberMemberId(Integer memberId);
 		
 }

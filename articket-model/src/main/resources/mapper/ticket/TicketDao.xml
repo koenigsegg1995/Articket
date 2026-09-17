@@ -17,6 +17,16 @@
         <result column="book_ticket_id" property="bookTicketId" />
         <result column="activity_time_slot_id" property="activityTimeSlotId" />
     </resultMap>
+
+    <resultMap id="resultMapForView"
+               type="com.maddog.articket.ticket.dto.TicketForView">
+        <id column="ticket_id" property="ticketId" />
+        <result column="activity_name" property="activityName" />
+        <result column="activity_time_slot_date" property="activityTimeSlotDate" />
+        <result column="seat_row" property="seatRow" />
+        <result column="seat_number" property="seatNumber" />
+        <result column="activity_area_price" property="activityAreaPrice" />
+    </resultMap>
 <!-- resultMap-->
 
 <!-- method-->
@@ -56,15 +66,40 @@
 
     <!-- 依一般會員 ID 查詢 -->
     <select id="findByGeneralMemberMemberId"
-            resultMap="resultMapForSelect">
+            resultMap="resultMapForView">
         SELECT
-            *
+            t.ticket_id,
+            a.activity_name,
+            at.activity_time_slot_date,
+            s.seat_row,
+            s.seat_number,
+            ap.activity_area_price
         FROM
-            ticket
+            ticket t
+        LEFT JOIN
+            activity_time_slot at
+            ON
+            at.activity_time_slot_id = t.activity_time_slot_id
+        LEFT JOIN
+            activity a
+            ON
+            a.activity_id = at.activity_id
+        LEFT JOIN
+            seat_status ss
+            ON
+            ss.seat_status_id = t.seat_status_id
+        LEFT JOIN
+            seat s
+            ON
+            s.seat_id = ss.seat_id
+        LEFT JOIN
+            activity_area_price ap
+            ON
+            ap.activity_area_price_id = t.activity_area_price_id
         WHERE
-            member_id = #{memberId}
+            t.member_id = #{memberId}
         ORDER BY
-            ticket_id
+            t.ticket_id DESC
     </select>
 <!-- method-->
 

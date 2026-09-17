@@ -1,5 +1,6 @@
 package com.maddog.articket.ticket.service.pri;
 
+import com.maddog.articket.ticket.dto.TicketForView;
 import com.maddog.articket.ticket.entity.Ticket;
 
 import java.util.List;
@@ -23,6 +24,6 @@ public interface TicketService {
 	 * 			一般會員 ID
 	 * @return 票券清單
 	 */
-	List<Ticket> getTicketsByMemberId(Integer memberId);
+	List<TicketForView> getTicketsByMemberId(Integer memberId);
 		
 }

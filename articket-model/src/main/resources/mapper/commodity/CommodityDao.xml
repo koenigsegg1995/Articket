@@ -181,10 +181,17 @@
     <!-- 查詢所有商品的活動 -->
     <select id="findAllDistinctActivities"
             resultMap="resultMapForActivity">
-        SELECT DISTINCT
-            activity
+        SELECT
+            *
         FROM
-            commodity
+            activity
+        WHERE
+            activity_id IN (
+                SELECT
+                    activity_id
+                FROM
+                    commodity
+            )
         ORDER BY
             activity_id DESC
     </select>

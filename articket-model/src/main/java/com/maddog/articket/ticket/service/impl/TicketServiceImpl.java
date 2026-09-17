@@ -1,6 +1,7 @@
 package com.maddog.articket.ticket.service.impl;
 
 import com.maddog.articket.ticket.dao.TicketDao;
+import com.maddog.articket.ticket.dto.TicketForView;
 import com.maddog.articket.ticket.entity.Ticket;
 import com.maddog.articket.ticket.service.pri.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class TicketServiceImpl implements TicketService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<Ticket> getTicketsByMemberId(Integer memberId) {
+	public List<TicketForView> getTicketsByMemberId(Integer memberId) {
 		return dao.findByGeneralMemberMemberId(memberId);
 	}
 		

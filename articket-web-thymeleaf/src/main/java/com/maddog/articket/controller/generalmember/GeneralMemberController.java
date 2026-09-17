@@ -11,6 +11,7 @@ import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.service.pri.OrdersService;
 import com.maddog.articket.passwordchangeform.dto.PasswordChangeForm;
+import com.maddog.articket.ticket.dto.TicketForView;
 import com.maddog.articket.ticket.entity.Ticket;
 import com.maddog.articket.ticket.service.pri.TicketService;
 import lombok.extern.slf4j.Slf4j;
@@ -336,9 +337,9 @@ public class GeneralMemberController {
 			return "redirect:/generalmember/login";
 		}
 
-		List<Ticket> tickets = ticketSvc.getTicketsByMemberId(memberId);
+		List<TicketForView> ticketList = ticketSvc.getTicketsByMemberId(memberId);
 
-		model.addAttribute("tickets", tickets);
+		model.addAttribute("tickets", ticketList);
 
 		return "front-end/generalmember/myTickets";
 	}

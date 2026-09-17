@@ -64,9 +64,10 @@ public class CommodityController {
     //	 首頁商城活動頁面的Mapping
     @GetMapping("/mall_activity")
     public String mallActivity(Model model, @RequestParam(defaultValue = "1") int page) {
-        List<Activity> activities = commoditySvc.getAllActivities();
-        model.addAttribute("activities", activities);
-        System.out.println("Activities size: " + activities.size());
+        List<Activity> activityList = commoditySvc.getAllActivities();
+        model.addAttribute("activityList", activityList);
+
+        log.info("Activities size: {}", activityList.size());
 
         return "front-end/mall/mallActivity";
     }
