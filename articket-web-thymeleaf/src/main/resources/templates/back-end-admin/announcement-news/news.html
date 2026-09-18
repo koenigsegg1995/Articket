@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -223,89 +222,85 @@
         }
     </style>
 </head>
-
 <body>
-<!--	<div class="sidebar"></div>-->
-<div id="sidebar-placeholder"></div>
+    <!--	<div class="sidebar"></div>-->
+    <div id="sidebar-placeholder"></div>
 
+    <div class="content">
+        <div id="dynamic-content">
+            <div id="news-management" class="section">
+                <div class="container">
+                    <h1>消息管理</h1>
 
-<div class="content">
-    <div id="dynamic-content">
-        <div id="news-management" class="section">
-            <div class="container">
-                <h1>消息管理</h1>
+                    <!--            <form class="search-form" th:action="@{/news/listAllNews}" method="get">
+                                       <label for="newsTitle">輸入公告標題:</label>
+                                       <input type="text" id="newsTitle" name="newsTitle" th:value="${param.newsTitle}">
 
-                <!--            <form class="search-form" th:action="@{/news/listAllNews}" method="get">
-                                   <label for="newsTitle">輸入公告標題:</label>
-                                   <input type="text" id="newsTitle" name="newsTitle" th:value="${param.newsTitle}">
+                                       <label for="newsCreateTime">公告日期:</label>
+                                       <input type="date" id="newsCreateTime" name="newsCreateTime" th:value="${param.newsCreateTime}">
 
-                                   <label for="newsCreateTime">公告日期:</label>
-                                   <input type="date" id="newsCreateTime" name="newsCreateTime" th:value="${param.newsCreateTime}">
+                                       <input type="submit" value="搜尋">
+                                   </form>
+               -->
+                    <div class="controls">
+                        <a th:href="@{/news/addNews}" class="btn btn-primary">+ 新增消息</a>
+                    </div>
 
-                                   <input type="submit" value="搜尋">
-                               </form>
-           -->
-                <div class="controls">
-                    <a th:href="@{/news/addNews}" class="btn btn-primary">+ 新增消息</a>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>編號</th>
+                            <th>標題</th>
+                            <th>內容</th>
+                            <th>狀態</th>
+                            <th>發布時間</th>
+                            <th>修改</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="news : ${newsListData}">
+                            <td th:text="${news.newsID}"></td>
+                            <td th:text="${news.newsTitle}"></td>
+                            <td th:text="${news.newsContent}"></td>
+                            <td th:text="${news.newsStatus == 0 ? '隱藏' : (news.newsStatus == 1 ? '正常顯示' : '置頂')}"></td>
+                            <td th:text="${#dates.format(news.newsCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <!--							<td>-->
+                            <!--								<a th:href="@{/news/getOne_For_Update(newsID=${news.newsID})}" class="btn btn-secondary">修改</a>-->
+                            <!--							</td>-->
+                            <td>
+                                <form method="post" th:action="@{/news/getOne_For_Update}"
+                                      style="margin-bottom: 0px;">
+                                    <input type="submit" value="修改">
+                                    <input type="hidden"
+                                           name="newsID" th:value="${news.newsID}">
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination" th:if="${totalPages > 1}">
+                        <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
+                        <a th:if="${currentPage > 1}" th:href="@{'/news/listAllNews?page=' + ${currentPage - 1}}">上一頁</a>
+                        <a th:if="${currentPage < totalPages}" th:href="@{'/news/listAllNews?page=' + ${currentPage + 1}}">下一頁</a>
+                    </div>
+
                 </div>
-
-                <table>
-                    <thead>
-                    <tr>
-                        <th>編號</th>
-                        <th>標題</th>
-                        <th>內容</th>
-                        <th>狀態</th>
-                        <th>發布時間</th>
-                        <th>修改</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="news : ${newsListData}">
-                        <td th:text="${news.newsID}"></td>
-                        <td th:text="${news.newsTitle}"></td>
-                        <td th:text="${news.newsContent}"></td>
-                        <td th:text="${news.newsStatus == 0 ? '隱藏' : (news.newsStatus == 1 ? '正常顯示' : '置頂')}"></td>
-                        <td th:text="${#dates.format(news.newsCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <!--							<td>-->
-                        <!--								<a th:href="@{/news/getOne_For_Update(newsID=${news.newsID})}" class="btn btn-secondary">修改</a>-->
-                        <!--							</td>-->
-                        <td>
-                            <form method="post" th:action="@{/news/getOne_For_Update}"
-                                  style="margin-bottom: 0px;">
-                                <input type="submit" value="修改">
-                                <input type="hidden"
-                                       name="newsID" th:value="${news.newsID}">
-                            </form>
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="pagination" th:if="${totalPages > 1}">
-                    <span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
-                    <a th:if="${currentPage > 1}" th:href="@{'/news/listAllNews?page=' + ${currentPage - 1}}">上一頁</a>
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/news/listAllNews?page=' + ${currentPage + 1}}">下一頁</a>
-                </div>
-
             </div>
         </div>
     </div>
-</div>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    window.onload = function () {
-        var error = /*[[${error}]]*/ null;
-        if (error) {
-            alert(error);
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.onload = function () {
+            var error = /*[[${error}]]*/ null;
+            if (error) {
+                alert(error);
+            }
         }
-    }
-    /*]]>*/
-</script>
-<script src="/js/admin.js"></script>
-<script src="/js/admin_sidebar.js"></script>
-
+        /*]]>*/
+    </script>
+    <script src="/js/admin.js"></script>
+    <script src="/js/admin_sidebar.js"></script>
 </body>
 
 </html>

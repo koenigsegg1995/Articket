@@ -51,4 +51,13 @@ public interface ActivityPictureDao {
 	 */
 	List<Integer> getByActivityId(Integer activityId);
 
+	/**
+	 * 依活動 ID 查詢第一個活動圖片 ID
+	 *
+	 * @param activityId
+	 * 			活動 ID
+	 * @return 活動圖片 ID
+	 */
+	ActivityPicture getFirstByActivityId(Integer activityId);
+
 }

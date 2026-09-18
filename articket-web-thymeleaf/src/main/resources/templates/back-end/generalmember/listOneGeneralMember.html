@@ -1,72 +1,61 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>會員資料修改成功</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet" href="/css/admin_sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>會員資料修改成功</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin_sidebar.css">
 
-<style>
-body {
-	background-color: #f8f9fa;
-}
-
-.content {
-	margin-left: 250px; /* 與側邊欄寬度相同 */
-	padding: 20px;
-}
-
-.info-container {
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	padding: 30px;
-	margin-top: 20px;
-}
-
-.info-item {
-	margin-bottom: 10px;
-}
-
-.info-label {
-	font-weight: bold;
-	margin-right: 10px;
-}
-
-.member-image {
-	max-width: 150px;
-	height: auto;
-	border-radius: 10%;
-	margin-top: 20px;
-}
-
-@media ( max-width : 768px) {
-	.content {
-		margin-left: 0;
-	}
-	
-	.btn-container {
-            margin-top: 30px;
-            text-align: center;
+    <style>
+        body {
+            background-color: #f8f9fa;
         }
-        .btn-confirm {
-            min-width: 150px;
+
+        .content {
+            margin-left: 250px; /* 與側邊欄寬度相同 */
+            padding: 20px;
         }
-}
-</style>
+
+        .info-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .member-image {
+            max-width: 150px;
+            height: auto;
+            border-radius: 10%;
+            margin-top: 20px;
+        }
+
+        @media ( max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+
+            .btn-container {
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .btn-confirm {
+                min-width: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
 	<div id="sidebar-placeholder"></div>
@@ -122,23 +111,21 @@ body {
 						</div>
 						<div class="text-center">
 							<img
-								th:src="@{/generalmember/MemberDBGifReader} + '?memberID=' + ${generalMember.memberID}"
-								alt="會員照片" class="member-image">
+									th:src="@{/generalmember/MemberDBGifReader} + '?memberID=' + ${generalMember.memberID}"
+									alt="會員照片" class="member-image">
 						</div>
-						
+
 						<div class="btn-container">
-                            <a th:href="@{/generalmember/listAllGeneralMember}" class="btn btn-primary btn-confirm">確認並返回會員列表</a>
-                        </div>
+							<a th:href="@{/generalmember/listAllGeneralMember}" class="btn btn-primary btn-confirm">確認並返回會員列表</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="/js/memberListAll.js"></script>
 	<script src="/js/admin_sidebar.js"></script>
 </body>

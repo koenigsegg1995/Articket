@@ -1,66 +1,53 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>廠商資料修改成功</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet" href="/css/admin_sidebar.css">
-<style>
-body {
-	background-color: #f8f9fa;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>廠商資料修改成功</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin_sidebar.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
 
-.content {
-	margin-left: 250px; /* 與側邊欄寬度相同 */
-	padding: 20px;
-}
+        .content {
+            margin-left: 250px; /* 與側邊欄寬度相同 */
+            padding: 20px;
+        }
 
-.info-container {
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	padding: 30px;
-	margin-top: 20px;
-}
+        .info-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
 
-.info-item {
-	margin-bottom: 10px;
-}
+        .info-item {
+            margin-bottom: 10px;
+        }
 
-.info-label {
-	font-weight: bold;
-	margin-right: 10px;
-}
+        .info-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
 
-@media ( max-width : 768px) {
-	.content {
-		margin-left: 0;
-	}
-}
+        @media ( max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+        }
 
-.btn-container {
-	margin-top: 30px;
-	text-align: center;
-}
+        .btn-container {
+            margin-top: 30px;
+            text-align: center;
+        }
 
-.btn-confirm {
-	min-width: 150px;
-}
-</style>
-
+        .btn-confirm {
+            min-width: 150px;
+        }
+    </style>
 </head>
 <body>
 	<div id="sidebar-placeholder"></div>
@@ -121,7 +108,7 @@ body {
 
 						<div class="btn-container">
 							<a th:href="@{/partnermember/listAllPartnerMember}"
-								class="btn btn-primary btn-confirm">確認並返回廠商列表</a>
+							   class="btn btn-primary btn-confirm">確認並返回廠商列表</a>
 						</div>
 					</div>
 				</div>
@@ -131,9 +118,9 @@ body {
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="/js/memberListAll.js"></script>
 	<script src="/js/admin_sidebar.js"></script>
 </body>

@@ -1,6 +1,7 @@
 package com.maddog.articket.activitypicture.service.pri;
 
 import com.maddog.articket.activitypicture.entity.ActivityPicture;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -48,5 +49,14 @@ public interface ActivityPictureService {
 	 * @return 活動圖片 ID 清單
 	 */
 	List<Integer> getByActivityId(Integer activityId);
+
+	/**
+	 * 依活動 ID 查詢第一個活動圖片 ID
+	 *
+	 * @param activityId
+	 * 			活動 ID
+	 * @return 活動圖片 ID
+	 */
+	ActivityPicture getFirstByActivityId(Integer activityId);
 
 }

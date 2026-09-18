@@ -77,5 +77,18 @@ public class ActivityPictureServiceImpl implements ActivityPictureService {
 	public List<Integer> getByActivityId(Integer activityId){
 		return  activityPictureDao.getByActivityId(activityId);
 	}
+
+	/**
+	 * 依活動 ID 查詢第一個活動圖片 ID
+	 *
+	 * @param activityId
+	 * 			活動 ID
+	 * @return 活動圖片 ID
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public ActivityPicture getFirstByActivityId(Integer activityId){
+		return  activityPictureDao.getFirstByActivityId(activityId);
+	}
 	
 }

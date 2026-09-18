@@ -74,21 +74,23 @@ public class CommodityController {
 
     //  首頁商城活動商品頁面的Mapping
     @GetMapping("/mall_listActivityCommodities")
-    public String listActivityCommodities(@RequestParam(required = false) Integer activityID, Model model,
+    public String listActivityCommodities(@RequestParam(required = false) Integer activityId, Model model,
                                           @RequestParam(defaultValue = "1") int page) {
-        if (activityID == null) {
+        if (activityId == null) {
             // 如果沒有提供 activityID，可以重定向到一個錯誤頁面或者首頁
             return "redirect:/error";
         }
 
         int pageSize = 9; // 每頁顯示的商品數量
-        Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(activityID,
-                PageRequest.of(page - 1, pageSize));
+        Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(
+                activityId,
+                PageRequest.of(page - 1, pageSize)
+        );
 
         model.addAttribute("commodityList", commodityPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", commodityPage.getTotalPages());
-        model.addAttribute("activityID", activityID);
+        model.addAttribute("activityId", activityId);
 
         return "front-end/mall/listActivityCommodities";
     }
@@ -96,9 +98,10 @@ public class CommodityController {
 
     //  首頁商城商品頁面的Mapping
     @GetMapping("/mall_listOneCommodity")
-    public String listOneCommodity(@RequestParam("commodityID") String commodityID, ModelMap model) {
-        Commodity commodity = commoditySvc.getOneCommodity(Integer.valueOf(commodityID));
+    public String listOneCommodity(@RequestParam("commodityId") String commodityId, ModelMap model) {
+        Commodity commodity = commoditySvc.getOneCommodity(Integer.valueOf(commodityId));
         model.addAttribute("commodity", commodity);
+
         return "front-end/mall/listOneCommodity";
     }
 
