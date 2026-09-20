@@ -95,7 +95,6 @@ public class CommodityController {
         return "front-end/mall/listActivityCommodities";
     }
 
-
     //  首頁商城商品頁面的Mapping
     @GetMapping("/mall_listOneCommodity")
     public String listOneCommodity(@RequestParam("commodityId") String commodityId, ModelMap model) {
@@ -108,7 +107,7 @@ public class CommodityController {
     //  測試修改廠商後臺顯示ID為1的商品PR
     //  後台商城活動頁面,根據 partnerID 顯示已申請的活動
     @GetMapping("/activityCommodityList")
-    public String getActivityByPartnerID(ModelMap model, HttpSession session) {
+    public String getActivityByPartnerId(ModelMap model, HttpSession session) {
         Integer partnerId = (Integer) session.getAttribute("partnerID");
         if (partnerId == null) {
             // 如果 session 中沒有 partnerID，可能用戶未登錄
@@ -120,17 +119,18 @@ public class CommodityController {
         model.addAttribute("activities", activities);
 
         // 添加這行用於調試
-        System.out.println("Activities size: " + activities.size());
+        log.info("Activities size: {}", activities.size());
+
         return "/back-end-partner/commodity/activityCommodity";
     }
 
     @GetMapping("/listAllCommodity")
-    public String listAllCommodity(@RequestParam Integer activityID,
+    public String listAllCommodity(@RequestParam Integer activityId,
                                    @RequestParam(defaultValue = "1") int page,
                                    ModelMap model,
                                    HttpSession session) {
-        Integer partnerID = (Integer) session.getAttribute("partnerID");
-        if (partnerID == null) {
+        Integer partnerId = (Integer) session.getAttribute("partnerID");
+        if (partnerId == null) {
             log.warn("Attempt to access commodity list without login");
             return "redirect:/partnermember/partnerLogin";
         }
@@ -139,30 +139,34 @@ public class CommodityController {
 
         try {
             // 首先獲取活動信息
-            Activity activity = activitySvc.getOneActivity(activityID);
+            Activity activity = activitySvc.getOneActivity(activityId);
             if (activity == null) {
-                log.warn("Activity not found for ID: {}", activityID);
+                log.warn("Activity not found for ID: {}", activityId);
+
                 model.addAttribute("error", "找不到指定的活動");
+
                 return "back-end-partner/error";
             }
 
             // 檢查該活動是否屬於當前登錄的合作夥伴
-            if (!commoditySvc.isActivityOwnedByPartner(activityID, partnerID)) {
-                log.warn("Partner {} attempted to access activity {} which they don't own", partnerID, activityID);
+            if (!commoditySvc.isActivityOwnedByPartner(activityId, partnerId)) {
+                log.warn("Partner {} attempted to access activity {} which they don't own", partnerId, activityId);
+
                 model.addAttribute("error", "您沒有權限查看此活動的商品");
+
                 return "back-end-partner/error";
             }
 
             // 獲取分頁的商品列表
-            Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(activityID, PageRequest.of(page - 1, pageSize));
+            Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(activityId, PageRequest.of(page - 1, pageSize));
 
             // 獲取該活動的所有商品（不分頁）
-            List<Commodity> commodities = commoditySvc.getCommoditiesByActivity(activityID);
+            List<Commodity> commodities = commoditySvc.getCommoditiesByActivity(activityId);
 
             // 添加活動信息到模型
             model.addAttribute("activity", activity);
             model.addAttribute("activityName", activity.getActivityName());
-            model.addAttribute("activityID", activityID);
+            model.addAttribute("activityID", activityId);
 
             // 添加商品信息到模型
             model.addAttribute("commodityList", commodityPage.getContent());
@@ -171,10 +175,12 @@ public class CommodityController {
             model.addAttribute("totalPages", commodityPage.getTotalPages());
 
             log.info("Retrieved {} commodities for activity ID: {} ({}), partner ID: {}",
-                    commodityPage.getContent().size(), activityID, activity.getActivityName(), partnerID);
+                    commodityPage.getContent().size(), activityId, activity.getActivityName(), partnerId);
         } catch (Exception e) {
-            log.error("Error retrieving commodities for activity ID: " + activityID + " and partner ID: " + partnerID, e);
+            log.error("Error retrieving commodities for activity ID: {}  and partner ID: {}", activityId, partnerId, e);
+
             model.addAttribute("error", "無法獲取商品列表，請稍後再試");
+
             return "back-end-partner/error";
         }
 
@@ -182,14 +188,13 @@ public class CommodityController {
     }
 
     @ModelAttribute("commodityListData")
-    protected List<Commodity> referenceListData(Model model) {
-        List<Commodity> list = commoditySvc.getAll();
-        return list;
+    protected List<Commodity> referenceListData() {
+        return commoditySvc.getAll();
     }
 
     // 新增商品
     @GetMapping("addCommodity")
-    public String addCommodity(@RequestParam Integer activityID,
+    public String addCommodity(@RequestParam Integer activityId,
                                ModelMap model,
                                HttpSession session) {
         Integer partnerId = (Integer) session.getAttribute("partnerID");
@@ -198,17 +203,17 @@ public class CommodityController {
         }
 
         Commodity commodity = new Commodity();
-        Activity activity = activitySvc.getOneActivity(activityID);
+        Activity activity = activitySvc.getOneActivity(activityId);
 
         if (activity == null || !activity.getPartnerId().equals(partnerId)) {
             model.addAttribute("error", "無效的活動ID");
-            return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
+            return "redirect:/commodity/listAllCommodity?activityId=" + activityId;
         }
 
         commodity.setPartnerId(partnerId);
-        commodity.setActivityId(activityID);
+        commodity.setActivityId(activityId);
         model.addAttribute("commodity", commodity);
-        model.addAttribute("activityID", activityID);
+        model.addAttribute("activityId", activityId);
 
         return "back-end-partner/commodity/addCommodity";
     }
@@ -216,7 +221,7 @@ public class CommodityController {
     @PostMapping("insert")
     public String insert(@Valid Commodity commodity,
                          BindingResult result,
-                         @RequestParam Integer activityID,
+                         @RequestParam Integer activityId,
                          @RequestParam(value = "commodityPic", required = false) MultipartFile[] parts,
                          RedirectAttributes redirectAttributes,
                          HttpSession session) throws IOException {
@@ -231,7 +236,7 @@ public class CommodityController {
 
         // 確保商品關聯到正確的合作夥伴和活動
         commodity.setPartnerId(partnerId);
-        commodity.setActivityId(activityID);
+        commodity.setActivityId(activityId);
 
         // 保存商品
         commoditySvc.addCommodity(commodity);
@@ -250,13 +255,13 @@ public class CommodityController {
 
         redirectAttributes.addFlashAttribute("success", "商品新增成功");
 
-        return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
+        return "redirect:/commodity/listAllCommodity?activityId=" + activityId;
     }
 
 
     @PostMapping("updateCommodity")
-    public String updateCommodity(@RequestParam("commodityID") String commodityIDStr,
-                                  @RequestParam("activityID") Integer activityID,
+    public String updateCommodity(@RequestParam("commodityId") Integer commodityId,
+                                  @RequestParam("activityId") Integer activityId,
                                   ModelMap model,
                                   HttpSession session) {
         Integer partnerId = (Integer) session.getAttribute("partnerID");
@@ -264,17 +269,16 @@ public class CommodityController {
             return "redirect:/partnermember/partnerLogin";
         }
 
-        Integer commodityID = Integer.valueOf(commodityIDStr);
-        Commodity commodity = commoditySvc.getOneCommodity(commodityID);
+        Commodity commodity = commoditySvc.getOneCommodity(commodityId);
 
         // 檢查商品是否屬於當前登錄的合作夥伴
         if (!commodity.getPartnerId().equals(partnerId)) {
             model.addAttribute("error", "您沒有權限修改此商品");
-            return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
+            return "redirect:/commodity/listAllCommodity?activityId=" + activityId;
         }
 
         model.addAttribute("commodity", commodity);
-        model.addAttribute("activityID", activityID);
+        model.addAttribute("activityId", activityId);
 
         return "back-end-partner/commodity/updateCommodity";
     }
@@ -283,7 +287,7 @@ public class CommodityController {
     @PostMapping("update")
     public String update(@Valid Commodity commodity,
                          BindingResult result,
-                         @RequestParam("activityID") Integer activityID,
+                         @RequestParam("activityId") Integer activityId,
                          @RequestParam(value = "commodityPic", required = false) MultipartFile[] parts,
                          RedirectAttributes redirectAttributes,
                          HttpSession session) throws IOException {
@@ -295,7 +299,7 @@ public class CommodityController {
 
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "表單驗證失敗，請檢查輸入");
-            return "redirect:/commodity/updateCommodity?commodityID=" + commodity.getCommodityId() + "&activityID=" + activityID;
+            return "redirect:/commodity/updateCommodity?commodityId=" + commodity.getCommodityId() + "&activityId=" + activityId;
         }
 
         try {
@@ -305,7 +309,7 @@ public class CommodityController {
             // 檢查商品是否屬於當前登錄的合作夥伴
             if (!originalCommodity.getPartnerId().equals(partnerId)) {
                 redirectAttributes.addFlashAttribute("error", "您沒有權限修改此商品");
-                return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
+                return "redirect:/commodity/listAllCommodity?activityId=" + activityId;
             }
 
             // 確保活動ID和合作夥伴ID不變
@@ -330,28 +334,32 @@ public class CommodityController {
             redirectAttributes.addFlashAttribute("success", "商品修改成功");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "更新商品時發生錯誤: " + e.getMessage());
-            return "redirect:/commodity/updateCommodity?commodityID=" + commodity.getCommodityId() + "&activityID=" + activityID;
+            return "redirect:/commodity/updateCommodity?commodityId=" + commodity.getCommodityId() + "&activityId=" + activityId;
         }
 
-        return "redirect:/commodity/listAllCommodity?activityID=" + activityID;
+        return "redirect:/commodity/listAllCommodity?activityId=" + activityId;
     }
 
 
     @PostMapping("delete")
-    public String delete(@RequestParam("commodityID") String commodityID, ModelMap model) {
-        commoditySvc.deleteCommodity(Integer.valueOf(commodityID));
+    public String delete(@RequestParam("commodityId") Integer commodityId, ModelMap model) {
+        commoditySvc.deleteCommodity(commodityId);
         List<Commodity> list = commoditySvc.getAll();
         model.addAttribute("commodityListData", list);
         model.addAttribute("success", "- (刪除成功)");
+
         return "back-end-partner/commodity/commodity";
     }
 
     @PostMapping("getOne_For_Display")
-    public String getOne_For_Display(
-            @NotEmpty(message = "商品編號: 請勿空白") @Digits(integer = 4, fraction = 0, message = "商品編號: 請填數字-請勿超過{integer}位數") @Min(value = 1, message = "商品編號: 不能小於{value}") @Max(value = 1000, message = "商品編號: 不能超過{value}") @RequestParam("commodityID") String commodityID,
-            ModelMap model) {
+    public String getOne_For_Display(@NotEmpty(message = "商品編號: 請勿空白")
+                                     @Digits(integer = 4, fraction = 0, message = "商品編號: 請填數字-請勿超過{integer}位數")
+                                     @Min(value = 1, message = "商品編號: 不能小於{value}")
+                                     @Max(value = 1000, message = "商品編號: 不能超過{value}")
+                                     @RequestParam("commodityID") String commodityId,
+                                     ModelMap model) {
 
-        Commodity commodity = commoditySvc.getOneCommodity(Integer.valueOf(commodityID));
+        Commodity commodity = commoditySvc.getOneCommodity(Integer.valueOf(commodityId));
 
         if (commodity == null) {
             model.addAttribute("errorMessage", "查無資料");
@@ -364,10 +372,11 @@ public class CommodityController {
         return "back-end-partner/commodity/commodity";
     }
 
-    @GetMapping("/listByActivity/{activityID}")
-    public String listCommoditiesByActivity(@PathVariable Integer activityID, Model model) {
-        List<Commodity> commodities = commoditySvc.getCommoditiesByActivity(activityID);
+    @GetMapping("/listByActivity/{activityId}")
+    public String listCommoditiesByActivity(@PathVariable Integer activityId, Model model) {
+        List<Commodity> commodities = commoditySvc.getCommoditiesByActivity(activityId);
         model.addAttribute("commodities", commodities);
+
         return "back-end-partner/commodity/commodityByActivity"; // 需要創建這個新的視圖
     }
 

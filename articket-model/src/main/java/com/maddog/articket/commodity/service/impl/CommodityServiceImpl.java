@@ -3,6 +3,7 @@ package com.maddog.articket.commodity.service.impl;
 import com.maddog.articket.activity.dao.ActivityDao;
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.commodity.dao.CommodityDao;
+import com.maddog.articket.commodity.dto.CommodityForView;
 import com.maddog.articket.commodity.entity.Commodity;
 import com.maddog.articket.commodity.service.pri.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,7 +121,7 @@ public class CommodityServiceImpl implements CommodityService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Commodity> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable) {
+    public Page<CommodityForView> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable) {
         // 查詢分頁結果
         List<Commodity> result = commodityDao.findByActivityIdPaginated(activityId, (int) pageable.getOffset(), pageable.getPageSize());
 

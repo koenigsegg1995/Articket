@@ -1,6 +1,7 @@
 package com.maddog.articket.commodity.service.pri;
 
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.commodity.dto.CommodityForView;
 import com.maddog.articket.commodity.entity.Commodity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -73,7 +74,7 @@ public interface CommodityService {
      *          分頁資訊
      * @return 分頁結果
      */
-    Page<Commodity> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable);
+    Page<CommodityForView> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable);
 
     /**
      * 查詢所有商品的活動

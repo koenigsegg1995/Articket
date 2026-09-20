@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="/images/icon.ico">
@@ -9,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<th:block th:replace="~{fragments/head :: commonCss}"></th:block>
+    <th:block th:replace="~{fragments/head :: commonCss}"></th:block>
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -221,16 +220,15 @@
 
 		<div class="product-grid">
 			<div th:each="commodity : ${commodityList}" class="product-card">
-				<form method="get" th:action="@{/commodity/mall_listOneCommodity}"
-					  style="margin-bottom: 0px;">
+				<form method="get" th:action="@{/commodity/mall_listOneCommodity}" style="margin-bottom: 0px;">
 					<input type="hidden" name="commodityId" th:value="${commodity.commodityId}">
 					<button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; height: 100%;">
 						<div class="product-image-container">
 							<img th:if="${not #lists.isEmpty(commodity.commodityPictures)}"
 								 th:src="@{/commodity/CommodityDBGifReader(commodityPictureId=${commodity.commodityPictures[0].commodityPictureId})}"
 								 alt="商品圖片" class="product-image">
-							<div th:if="${#lists.isEmpty(commodity.commodityPictures)}"
-								 class="placeholder-image">無圖片
+							<div th:if="${#lists.isEmpty(commodity.commodityPictures)}" class="placeholder-image">
+								無圖片
 							</div>
 						</div>
 					</button>
@@ -241,11 +239,12 @@
 					<p class="price" th:text="${'$' + commodity.commodityPrice}">價格</p>
 					<p class="description" th:text="${commodity.commodityName}">商品名稱</p>
 					<div class="button-container">
-						<button onclick="addToCart(this)"
-								th:data-id="${commodity.commodityId}" class="add-to-cart">加入購物車
+						<button onclick="addToCart(this)" th:data-id="${commodity.commodityId}" class="add-to-cart">
+							加入購物車
 						</button>
-						<a th:href="@{'/cart/add?commodityId=' + ${commodity.commodityId} + '&quantity=1&redirect=checkout'}"
-						   class="buy-now">直接購買</a>
+						<a th:href="@{'/cart/add?commodityId=' + ${commodity.commodityId} + '&quantity=1&redirect=checkout'}" class="buy-now">
+							直接購買
+						</a>
 					</div>
 				</div>
 			</div>
@@ -263,11 +262,11 @@
 	<div class="pagination" th:if="${totalPages > 1}">
 		<span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
 		<a th:if="${currentPage > 1}"
-		   th:href="@{'/commodity/mall_listActivityCommodities'(page=${currentPage - 1}, activityID=${activityID})}">
+		   th:href="@{'/commodity/mall_listActivityCommodities'(page=${currentPage - 1}, activityId=${activityId})}">
 			上一頁
 		</a>
 		<a th:if="${currentPage < totalPages}"
-		   th:href="@{'/commodity/mall_listActivityCommodities'(page=${currentPage + 1}, activityID=${activityID})}">
+		   th:href="@{'/commodity/mall_listActivityCommodities'(page=${currentPage + 1}, activityId=${activityId})}">
 			下一頁
 		</a>
 	</div>
@@ -293,14 +292,14 @@
 			document.querySelectorAll('.add-to-cart').forEach(button => {
 				button.addEventListener('click', function (event) {
 					event.preventDefault();
-					var commodityID = this.getAttribute('data-id');
+					var commodityId = this.getAttribute('data-id');
 
 					fetch('/cart/addAjax', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 						},
-						body: 'commodityID=' + commodityID + '&quantity=1'
+						body: 'commodityId=' + commodityId + '&quantity=1'
 					})
 						.then(response => response.text())
 						.then(data => {
@@ -320,22 +319,13 @@
 
 			// 當用戶點擊模態框外的任何地方，關閉它
 			window.addEventListener('click', function (event) {
-				if (event.target == modal) {
+				if (event.target === modal) {
 					modal.style.display = "none";
 				}
 			});
 		});
 	</script>
 
-	<script th:inline="javascript">
-		document.addEventListener('DOMContentLoaded', function () {
-			// 初始化所有的 tooltips
-			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-			var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-				return new bootstrap.Tooltip(tooltipTriggerEl);
-			});
-		});
-	</script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </body>
 </html>
