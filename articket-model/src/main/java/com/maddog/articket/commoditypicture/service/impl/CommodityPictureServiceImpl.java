@@ -59,4 +59,17 @@ public class CommodityPictureServiceImpl implements CommodityPictureService {
         return commodityPictureDao.findAll();
     }
 
+    /**
+     * 依商品 ID 查詢第一個商品圖片
+     *
+     * @param commodityId
+     * 			商品 ID
+     * @return 商品圖片
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public CommodityPicture getFirstByCommodityId(Integer commodityId){
+        return commodityPictureDao.getFirstByCommodityId(commodityId);
+    }
+
 }

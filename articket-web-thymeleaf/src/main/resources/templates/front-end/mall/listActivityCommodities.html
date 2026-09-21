@@ -23,35 +23,27 @@
         }
 
         .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
             gap: 20px;
         }
 
         .product-card {
+			width: 300px;
+			flex: 0 0 auto;
             border: 1px solid #ddd;
             padding: 10px;
             text-align: center;
-            height: auto; /* 移除固定高度 */
             display: flex;
             flex-direction: column;
         }
 
-        .product-image-container {
-            position: relative;
-            width: 100%;
-            padding-top: 100%; /* 創建一個正方形容器 */
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .product-image, .placeholder-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .product-image {
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+			margin-bottom: 10px;
         }
 
         .product-info {
@@ -68,7 +60,7 @@
 
         .product-card .price {
             font-size: 16px;
-            color: #e74c3c;
+            color: black;
             margin: 5px 0;
         }
 
@@ -78,54 +70,21 @@
             margin: 5px 0;
         }
 
-        .product-card button {
-            width: 100%;
-            margin-bottom: 5px;
-            padding: 8px 0;
-        }
-
-        .product-card .buy-now {
-            background-color: #2ecc71;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .product-card .buy-now:hover {
-            background-color: #27ae60;
-        }
-
-        .product-card .add-to-cart {
-            background-color: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .product-card .add-to-cart:hover {
-            background-color: #c0392b;
-        }
-
-        .product-card:hover {
-            transform: scale(1.05);
-        }
-
-        .placeholder-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0; /* 可選：設置背景顏色 */
-            color: #999; /* 可選：設置文字顏色 */
-            font-size: 16px; /* 可選：設置文字大小 */
+        .product-card .add-to-cart,
+		.product-card .buy-now{
+			display: block;          /* 統一成 block */
+			width: 100%;
+			padding: 10px 20px;      /* 一樣的 padding */
+			font-family: inherit;    /* 一樣的字型 */
+			font-size: 16px;         /* 一樣的字級 */
+			line-height: 1.5;        /* 一樣的行高 */
+			box-sizing: border-box;  /* 一樣的盒模型 */
+			text-align: center;
+			background-color: #e4d1ba;
+			color: #fff;
+			border: none;
+			text-decoration: none;
+			cursor: pointer;
         }
 
         /* 加入購物車 */
@@ -183,21 +142,10 @@
             border-radius: 5px;
         }
 
-        .pagination a:hover:not(.disabled) {
-            background-color: #e57373;
-            color: white;
-        }
-
-        .pagination .active {
-            background-color: #e57373;
+        .pagination {
+            background-color: #e4d1ba;
             color: white;
             border: 1px solid #4a69bd;
-        }
-
-        .pagination .disabled {
-            color: #ddd;
-            pointer-events: none;
-            background-color: #f8f8f8;
         }
 
         .button-container {
@@ -220,22 +168,12 @@
 
 		<div class="product-grid">
 			<div th:each="commodity : ${commodityList}" class="product-card">
-				<form method="get" th:action="@{/commodity/mall_listOneCommodity}" style="margin-bottom: 0px;">
-					<input type="hidden" name="commodityId" th:value="${commodity.commodityId}">
-					<button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; height: 100%;">
-						<div class="product-image-container">
-							<img th:if="${not #lists.isEmpty(commodity.commodityPictures)}"
-								 th:src="@{/commodity/CommodityDBGifReader(commodityPictureId=${commodity.commodityPictures[0].commodityPictureId})}"
-								 alt="商品圖片" class="product-image">
-							<div th:if="${#lists.isEmpty(commodity.commodityPictures)}" class="placeholder-image">
-								無圖片
-							</div>
-						</div>
-					</button>
-				</form>
+				<a th:href="@{/commodity/mall_listOneCommodity(commodityId=${commodity.commodityId})}" style="margin-bottom: 0;">
+					<img th:src="@{/commodity/DBGifReaderByCommodityId(commodityId=${commodity.commodityId})}" alt="商品圖片" class="product-image">
+				</a>
 
 				<div class="product-info">
-					<h3 th:text="${commodity.getActivity().getActivityName()}">活動名稱</h3>
+					<h3 th:text="${commodity.activityName}">活動名稱</h3>
 					<p class="price" th:text="${'$' + commodity.commodityPrice}">價格</p>
 					<p class="description" th:text="${commodity.commodityName}">商品名稱</p>
 					<div class="button-container">
@@ -251,14 +189,6 @@
 		</div>
 	</div>
 
-	<!-- 添加彈跳窗口 -->
-	<div id="cartModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p id="modalMessage"></p>
-		</div>
-	</div>
-
 	<div class="pagination" th:if="${totalPages > 1}">
 		<span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
 		<a th:if="${currentPage > 1}"
@@ -271,28 +201,18 @@
 		</a>
 	</div>
 
-	<!--
-		<div class="pagination" th:if="${totalPages > 1}">
-			<span th:text="'第 ' + ${currentPage} + ' 頁，共 ' + ${totalPages} + ' 頁'"></span>
-			<a th:if="${currentPage > 1}"
-				th:href="@{'/commodity/mall_listActivityCommodities?page=' + ${currentPage - 1}}">上一頁</a>
-			<a th:if="${currentPage < totalPages}"
-				th:href="@{'/commodity/mall_listActivityCommodities?page=' + ${currentPage + 1}}">下一頁</a>
-		</div>
-	-->
-
 	<div th:replace="~{fragments/footer :: footer}"></div>
 
-	<script th:inline="javascript">
+	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			var modal = document.getElementById("cartModal");
-			var closeBtn = document.querySelector('.close');
+			let modal = document.getElementById("cartModal");
+			let closeBtn = document.querySelector('.close');
 
 			// 處理加入購物車的邏輯
 			document.querySelectorAll('.add-to-cart').forEach(button => {
 				button.addEventListener('click', function (event) {
 					event.preventDefault();
-					var commodityId = this.getAttribute('data-id');
+					let commodityId = this.getAttribute('data-id');
 
 					fetch('/cart/addAjax', {
 						method: 'POST',
@@ -300,15 +220,24 @@
 							'Content-Type': 'application/x-www-form-urlencoded',
 						},
 						body: 'commodityId=' + commodityId + '&quantity=1'
-					})
-						.then(response => response.text())
-						.then(data => {
+					}).then(response => {
+						if (response.status === 401) {
+							// 未登入 → 前端跳轉登入頁
+							alert('請先登入帳號');
+							window.location.href = '/generalmember/login';
+
+							return;
+						}
+
+						return response.text();
+					}).then(data => {
+						if(data) {
 							document.getElementById('modalMessage').innerText = data;
 							modal.style.display = "block";
-						})
-						.catch((error) => {
-							console.error('Error:', error);
-						});
+						}
+					}).catch((error) => {
+						console.error('Error:', error);
+					});
 				});
 			});
 

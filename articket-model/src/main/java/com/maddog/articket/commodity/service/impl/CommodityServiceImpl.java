@@ -123,7 +123,7 @@ public class CommodityServiceImpl implements CommodityService {
     @Transactional(readOnly = true)
     public Page<CommodityForView> getCommoditiesByActivityPaginated(Integer activityId, Pageable pageable) {
         // 查詢分頁結果
-        List<Commodity> result = commodityDao.findByActivityIdPaginated(activityId, (int) pageable.getOffset(), pageable.getPageSize());
+        List<CommodityForView> result = commodityDao.findByActivityIdPaginated(activityId, (int) pageable.getOffset(), pageable.getPageSize());
 
         // 總筆數
         int total = commodityDao.countByActivityId(activityId);

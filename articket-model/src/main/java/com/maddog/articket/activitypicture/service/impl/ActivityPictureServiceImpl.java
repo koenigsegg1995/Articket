@@ -79,11 +79,11 @@ public class ActivityPictureServiceImpl implements ActivityPictureService {
 	}
 
 	/**
-	 * 依活動 ID 查詢第一個活動圖片 ID
+	 * 依活動 ID 查詢第一個活動圖片
 	 *
 	 * @param activityId
 	 * 			活動 ID
-	 * @return 活動圖片 ID
+	 * @return 活動圖片
 	 */
 	@Override
 	@Transactional(readOnly = true)

@@ -56,6 +56,21 @@
         ORDER BY
             commodity_picture_id DESC
     </select>
+
+    <!-- 依商品 ID 查詢第一個商品圖片 -->
+    <select id="getFirstByCommodityId"
+            parameterType="java.lang.Integer"
+            resultMap="resultMapForSelect">
+        SELECT
+            *
+        FROM
+            commodity_picture
+        WHERE
+            commodity_id = #{commodityId}
+        ORDER BY
+            commodity_picture_id
+        LIMIT 1
+    </select>
 <!-- method-->
 
 </mapper>

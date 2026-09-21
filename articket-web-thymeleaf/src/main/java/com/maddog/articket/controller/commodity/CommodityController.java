@@ -2,6 +2,7 @@ package com.maddog.articket.controller.commodity;
 
 import com.maddog.articket.activity.entity.Activity;
 import com.maddog.articket.activity.service.pri.ActivityService;
+import com.maddog.articket.commodity.dto.CommodityForView;
 import com.maddog.articket.commodity.entity.Commodity;
 import com.maddog.articket.commodity.service.pri.CommodityService;
 import com.maddog.articket.commoditypicture.entity.CommodityPicture;
@@ -82,7 +83,7 @@ public class CommodityController {
         }
 
         int pageSize = 9; // 每頁顯示的商品數量
-        Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(
+        Page<CommodityForView> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(
                 activityId,
                 PageRequest.of(page - 1, pageSize)
         );
@@ -158,7 +159,7 @@ public class CommodityController {
             }
 
             // 獲取分頁的商品列表
-            Page<Commodity> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(activityId, PageRequest.of(page - 1, pageSize));
+            Page<CommodityForView> commodityPage = commoditySvc.getCommoditiesByActivityPaginated(activityId, PageRequest.of(page - 1, pageSize));
 
             // 獲取該活動的所有商品（不分頁）
             List<Commodity> commodities = commoditySvc.getCommoditiesByActivity(activityId);

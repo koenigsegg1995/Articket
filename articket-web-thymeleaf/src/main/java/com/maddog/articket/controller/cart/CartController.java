@@ -6,7 +6,9 @@ import com.maddog.articket.cartitem.service.pri.CartItemService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
 import com.maddog.articket.orders.entity.Orders;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,11 +40,11 @@ public class CartController {
 	}
 
 	@PostMapping("/add")
-	public String addToCart(@RequestParam Integer commodityID, 
-            @RequestParam Integer quantity,
-            @RequestParam(required = false) String redirect) {
+	public String addToCart(@RequestParam Integer commodityId,
+							@RequestParam Integer quantity,
+							@RequestParam(required = false) String redirect) {
 			Integer generalMember = 1; // 假定會員ID為1
-		cartService.addToCart(generalMember, commodityID, quantity);
+		cartService.addToCart(generalMember, commodityId, quantity);
 		
 		if ("checkout".equals(redirect)) {
             return "redirect:/cart/checkout";
@@ -59,20 +61,33 @@ public class CartController {
 	
 	@PostMapping("/addAjax")
     @ResponseBody
-    public ResponseEntity<?> addToCartAjax(@RequestParam Integer commodityID, 
-                                           @RequestParam Integer quantity) {
+    public ResponseEntity<?> addToCartAjax(@RequestParam Integer commodityId,
+										   @RequestParam Integer quantity,
+										   HttpSession session) {
+		//確認是否登入，未登入重導至會員登入頁面
+		if(session.getAttribute("memberID") == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body("未登入帳號！");
+		}
+
         try {
-            Integer memberId = 1; // 假設會員ID為1
-            cartService.addToCart(memberId, commodityID, quantity);
-            return ResponseEntity.ok().body("商品已成功加入購物車！");
+            Integer memberId = (Integer) session.getAttribute("memberID");
+            cartService.addToCart(memberId, commodityId, quantity);
+
+			return ResponseEntity
+					.ok()
+					.body("商品已成功加入購物車！");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("添加商品到購物車失敗：" + e.getMessage());
+            return ResponseEntity
+					.badRequest()
+					.body("添加商品到購物車失敗：" + e.getMessage());
         }
     }
 	
 	@PostMapping("/update/{cartItemId}")
-	public String updateCartItem(@PathVariable Integer cartItemId, @RequestParam(required = false) Integer change,
-			@RequestParam(required = false) Integer quantity) {
+	public String updateCartItem(@PathVariable Integer cartItemId,
+								 @RequestParam(required = false) Integer change,
+								 @RequestParam(required = false) Integer quantity) {
 		try {
 			if (change != null) {
 				cartService.changeQuantity(cartItemId, change);

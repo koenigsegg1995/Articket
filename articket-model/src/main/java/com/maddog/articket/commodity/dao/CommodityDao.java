@@ -1,6 +1,7 @@
 package com.maddog.articket.commodity.dao;
 
 import com.maddog.articket.activity.entity.Activity;
+import com.maddog.articket.commodity.dto.CommodityForView;
 import com.maddog.articket.commodity.entity.Commodity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -76,9 +77,9 @@ public interface CommodityDao {
 	 * 			筆數
 	 * @return 商品清單
 	 */
-    List<Commodity> findByActivityIdPaginated(@Param("activityId") Integer activityId,
-											  @Param("offset") int offset,
-											  @Param("limit") int limit);
+    List<CommodityForView> findByActivityIdPaginated(@Param("activityId") Integer activityId,
+													 @Param("offset") int offset,
+													 @Param("limit") int limit);
 
 	/**
 	 * 依活動ID查詢商品總筆數

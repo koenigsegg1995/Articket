@@ -81,7 +81,7 @@
             activity_picture_id
     </select>
 
-    <!-- 依活動 ID 查詢第一個活動圖片 ID -->
+    <!-- 依活動 ID 查詢第一個活動圖片 -->
     <select id="getFirstByActivityId"
             parameterType="java.lang.Integer"
             resultMap="selectResultMap">

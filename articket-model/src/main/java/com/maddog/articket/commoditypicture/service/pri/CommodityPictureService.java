@@ -34,4 +34,13 @@ public interface CommodityPictureService {
      */
     List<CommodityPicture> getAll();
 
+    /**
+     * 依商品 ID 查詢第一個商品圖片
+     *
+     * @param commodityId
+     * 			商品 ID
+     * @return 商品圖片
+     */
+    CommodityPicture getFirstByCommodityId(Integer commodityId);
+
 }

@@ -2,6 +2,7 @@ package com.maddog.articket.commoditypicture.dao;
 
 import com.maddog.articket.commoditypicture.entity.CommodityPicture;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,5 +36,14 @@ public interface CommodityPictureDao {
 	 * @return 商品圖片清單
 	 */
 	List<CommodityPicture> findAll();
+
+	/**
+	 * 依商品 ID 查詢第一個商品圖片
+	 *
+	 * @param commodityId
+	 * 			商品 ID
+	 * @return 商品圖片
+	 */
+	CommodityPicture getFirstByCommodityId(Integer commodityId);
 
 }

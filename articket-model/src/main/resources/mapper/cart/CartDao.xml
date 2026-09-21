@@ -21,10 +21,9 @@
     <!-- 新增 -->
     <insert id="insert"
             parameterType="com.maddog.articket.cart.entity.Cart"
-            useGeneratedKeys="true">
+            useGeneratedKeys="true"
             keyProperty="cartId">
-        INSERT INTO
-            cart
+        INSERT INTO cart
         (
             member_id,
             cart_total_price
@@ -70,11 +69,11 @@
     <select id="findByMemberId"
             resultMap="resultMapForSelect">
         SELECT
-        *
+            *
         FROM
-        cart
+            cart
         WHERE
-        member_id = #{memberId}
+            member_id = #{memberId}
     </select>
 <!-- method-->
 
