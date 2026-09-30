@@ -34,7 +34,7 @@ public class CartController {
 	public String viewCart(Model model) {
 		Integer generalMember = 1; // 假定會員ID為1
 		Cart cart = cartService.getCartByMemberId(generalMember);
-		cartService.calculateTotalPrice(cart); // 添加這行
+		cartService.updateTotalPrice(cart); // 添加這行
 		model.addAttribute("cart", cart);
 		return "/front-end/mall/mallCart";
 	}
@@ -42,21 +42,25 @@ public class CartController {
 	@PostMapping("/add")
 	public String addToCart(@RequestParam Integer commodityId,
 							@RequestParam Integer quantity,
-							@RequestParam(required = false) String redirect) {
-			Integer generalMember = 1; // 假定會員ID為1
+							@RequestParam(required = false) String redirect,
+							HttpSession session) {
+		Integer generalMember = (Integer) session.getAttribute("memberID");
+
 		cartService.addToCart(generalMember, commodityId, quantity);
 		
 		if ("checkout".equals(redirect)) {
             return "redirect:/cart/checkout";
         }
+
         return "redirect:/cart/view";
 	}
 	
 	@GetMapping("/add")
-    public String addToCartAndRedirect(@RequestParam Integer commodityID, 
+    public String addToCartAndRedirect(@RequestParam Integer commodityId,
                                        @RequestParam Integer quantity,
-                                       @RequestParam(required = false) String redirect) {
-        return addToCart(commodityID, quantity, redirect);
+                                       @RequestParam(required = false) String redirect,
+									   HttpSession session) {
+        return addToCart(commodityId, quantity, redirect, session);
     }
 	
 	@PostMapping("/addAjax")

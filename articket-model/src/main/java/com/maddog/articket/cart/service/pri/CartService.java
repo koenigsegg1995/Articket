@@ -30,28 +30,12 @@ public interface CartService {
     void addToCart(Integer memberId, Integer commodityId, Integer quantity);
 
     /**
-     * 計算購物車總金額
+     * 更新購物車總金額
      *
      * @param cart
      *          購物車
      */
-    void calculateTotalPrice(Cart cart);
-    /**
-     * 更新購物車總價
-     *
-     * @param cart
-     *          購物車
-     */
-    void updateCartTotalPrice(Cart cart);
-
-    /**
-     * 取得或新增購物車
-     *
-     * @param memberId
-     *          會員ID
-     * @return 購物車
-     */
-    Cart getOrCreateCart(Integer memberId);
+    void updateTotalPrice(Cart cart);
 
     /**
      * 修改數量
