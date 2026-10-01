@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.maddog.articket.orderitem.dao.OrderItemDao">
+
+<!-- sql -->
+
+<!-- sql -->
+
+<!-- resultMap-->
+
+<!-- resultMap-->
+
+<!-- method-->
+    <!-- 新增 -->
+    <insert id="insert"
+            parameterType="com.maddog.articket.orderitem.entity.OrderItem">
+        INSERT INTO
+            order_item
+        (
+            order_id,
+            commodity_id,
+            commodity_order_price,
+            order_item_quantity,
+            order_item_total_price
+        )
+        VALUES
+        (
+            #{orderId},
+            #{commodityId},
+            #{commodityOrderPrice},
+            #{orderItemQuantity},
+            #{orderItemTotalPrice}
+        )
+    </insert>
+<!-- method-->
+
+</mapper>

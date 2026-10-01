@@ -6,6 +6,8 @@ import com.maddog.articket.cart.service.pri.CartService;
 import com.maddog.articket.cartitem.entity.CartItem;
 import com.maddog.articket.cartitem.dao.CartItemDao;
 import com.maddog.articket.commodity.service.pri.CommodityService;
+import com.maddog.articket.orderitem.dao.OrderItemDao;
+import com.maddog.articket.orderitem.entity.OrderItem;
 import com.maddog.articket.orders.entity.Orders;
 import com.maddog.articket.orders.dao.OrdersDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 購物車 Service Implementation
@@ -44,6 +47,12 @@ public class CartServiceImpl implements CartService {
      */
     @Autowired
     private OrdersDao ordersDao;
+
+    /**
+     * 訂單明細 DAO
+     */
+    @Autowired
+    private OrderItemDao orderItemDao;
 
     /**
      * 依會員ID查詢
@@ -198,9 +207,14 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public Orders processCheckout(Integer memberId, String recipient, String recipientPhone, String recipientEmail, String recipientAddress) {
+    public Orders processCheckout(Integer memberId,
+                                  String recipient,
+                                  String recipientPhone,
+                                  String recipientEmail,
+                                  String recipientAddress) {
         Cart cart = getCartByMemberId(memberId);
-        if (cartItemDao.findByCartId(cart.getCartId()).isEmpty()) {
+        List<CartItem> cartItemList = cartItemDao.findByCartId(cart.getCartId());
+        if (cartItemList.isEmpty()) {
             throw new RuntimeException("購物車是空的");
         }
 
@@ -219,9 +233,26 @@ public class CartServiceImpl implements CartService {
 
         // 保存訂單
         ordersDao.insert(order);
+        Integer orderId = order.getOrderId();
+
+        // 保存訂單明細
+        for(CartItem cartItem : cartItemList){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrderId(orderId);
+            orderItem.setCommodityId(cartItem.getCommodityId());
+
+            // 下訂時價格，若套用折價券則須計算折扣後價格
+            BigDecimal commodityOrderPrice = commodityService.getOneCommodity(cartItem.getCommodityId()).getCommodityPrice();
+            orderItem.setCommodityOrderPrice(commodityOrderPrice);
+
+            orderItem.setOrderItemQuantity(cartItem.getCheckedQuantity());
+            orderItem.setOrderItemTotalPrice(commodityOrderPrice.multiply(BigDecimal.valueOf(orderItem.getOrderItemQuantity())));
+
+            orderItemDao.insert(orderItem);
+        }
 
         // 清空購物車
-        cartItemDao.findByCartId(cart.getCartId()).clear();
+        cartItemDao.deleteByCartId(cart.getCartId());
         cart.setCartTotalPrice(BigDecimal.ZERO);
         cartDao.update(cart);
 

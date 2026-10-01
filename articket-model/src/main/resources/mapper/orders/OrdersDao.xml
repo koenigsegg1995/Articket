@@ -28,6 +28,7 @@
 <!-- method-->
     <!-- 新增 -->
     <insert id="insert"
+            parameterType="com.maddog.articket.orders.entity.Orders"
             useGeneratedKeys="true"
             keyProperty="orderId">
         INSERT INTO

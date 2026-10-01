@@ -56,4 +56,13 @@ public interface CartItemDao {
 	 */
     List<CartItem> findByCartId(Integer cartId);
 
+	/**
+	 * 依購物車ID刪除購物車明細
+	 *
+	 * @param cartId
+	 * 			購物車ID
+	 * @return 成功筆數
+	 */
+	int deleteByCartId(Integer cartId);
+
 }

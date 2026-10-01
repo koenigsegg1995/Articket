@@ -1,9 +1,22 @@
 package com.maddog.articket.orderitem.dao;
 
+import com.maddog.articket.orderitem.entity.OrderItem;
+import org.apache.ibatis.annotations.Mapper;
+
 /**
  * 訂單明細 DAO
  */
+@Mapper
 public interface OrderItemDao {
+
+    /**
+     * 新增
+     *
+     * @param orderItem
+     *          訂單明細
+     * @return 成功筆數
+     */
+    int insert(OrderItem orderItem);
 
 //    void deleteByOrderItemID(@Param("orderItemID") int orderItemID);
 //

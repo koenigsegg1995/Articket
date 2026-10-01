@@ -89,6 +89,15 @@
         WHERE
             cart_id = #{cartId}
     </select>
+
+    <!-- 依購物車ID刪除購物車明細 -->
+    <delete id="deleteByCartId"
+            parameterType="java.lang.Integer">
+        DELETE FROM
+            cart_item
+        WHERE
+            cart_id = #{cartId}
+    </delete>
 <!-- method-->
 
 </mapper>
