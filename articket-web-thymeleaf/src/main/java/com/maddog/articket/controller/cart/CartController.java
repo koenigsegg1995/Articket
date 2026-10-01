@@ -44,6 +44,10 @@ public class CartController {
 							@RequestParam Integer quantity,
 							@RequestParam(required = false) String redirect,
 							HttpSession session) {
+		//確認是否登入，未登入重導至會員登入頁面
+		if(session.getAttribute("memberID") == null) {
+			return "redirect:/generalmember/login";
+		}
 		Integer generalMember = (Integer) session.getAttribute("memberID");
 
 		cartService.addToCart(generalMember, commodityId, quantity);
