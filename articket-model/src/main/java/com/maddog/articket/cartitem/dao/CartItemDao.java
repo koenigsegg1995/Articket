@@ -1,5 +1,6 @@
 package com.maddog.articket.cartitem.dao;
 
+import com.maddog.articket.cartitem.dto.CartItemForView;
 import com.maddog.articket.cartitem.entity.CartItem;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -64,5 +65,14 @@ public interface CartItemDao {
 	 * @return 成功筆數
 	 */
 	int deleteByCartId(Integer cartId);
+
+	/**
+	 * 依會員 ID 查詢
+	 *
+	 * @param memberId
+	 *          會員 ID
+	 * @return 購物車明細清單
+	 */
+	List<CartItemForView> findByMemberId(Integer memberId);
 
 }

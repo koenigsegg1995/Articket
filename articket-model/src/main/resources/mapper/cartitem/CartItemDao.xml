@@ -98,6 +98,24 @@
         WHERE
             cart_id = #{cartId}
     </delete>
+
+    <select id="findByMemberId"
+            parameterType="java.lang.Integer"
+            resultMap="">
+        SELECT
+            ci.commodity_id,
+            c.commodity_name,
+            c.commodity_price,
+            ci.checked_quantity
+        FROM
+            cart_item ci
+        JOIN
+            commodity c
+            ON
+            ci.commodity_id = c.commodity_id
+        WHERE
+            member_id = #{memberId}
+    </select>
 <!-- method-->
 
 </mapper>

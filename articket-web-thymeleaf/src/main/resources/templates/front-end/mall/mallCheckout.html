@@ -275,100 +275,94 @@
 					<td th:text="${item.commodity.commodityName}"></td>
 					<td th:text="${'$' + item.commodity.commodityPrice}"></td>
 					<td th:text="${item.checkedQuantity}"></td>
-					<td
-							th:text="${'$' + item.commodity.commodityPrice * item.checkedQuantity}"></td>
+					<td th:text="${'$' + item.commodity.commodityPrice * item.checkedQuantity}"></td>
 				</tr>
 				</tbody>
 			</table>
 
-
 			<!-- 優惠券 -->
 			<div class="coupon-section">
-				<label for="coupon" class="coupon-label">優惠券：</label> <select
-					id="coupon" name="couponId" class="coupon-select"
-					th:onchange="'applyCoupon()'">
-				<option value="">選擇優惠券</option>
-				<option th:each="coupon : ${availableCoupons}"
-						th:value="${coupon.id}" th:text="${coupon.name}"></option>
-			</select>
+				<label for="coupon" class="coupon-label">優惠券：</label>
+				<select id="coupon" name="couponId" class="coupon-select" th:onchange="'applyCoupon()'">
+					<option value="">選擇優惠券</option>
+					<option th:each="coupon : ${availableCoupons}"
+							th:value="${coupon.id}" th:text="${coupon.name}"></option>
+				</select>
 				<p id="discountInfo" class="discount-info"></p>
 			</div>
 
 			<p class="total">
-				共 <span
-					th:text="${#aggregates.sum(cart.cartItems.![checkedQuantity])}">0</span>
-				件商品 <br> 合計：<span id="totalAmount"
-									   th:text="${'$' + cart.cartTotalPrice}"></span>
+				共 <span th:text="${#aggregates.sum(cart.cartItems.![checkedQuantity])}">0</span> 件商品
+				<br>
+				合計：<span id="totalAmount" th:text="${'$' + cart.cartTotalPrice}"></span>
 			</p>
-
 
 			<!--訂購人資料-->
 			<div class="form-section">
 				<h3>訂購人資料</h3>
 				<div class="form-group">
-					<label for="orderName">姓名：</label> <input type="text"
-																id="orderName" name="orderName"
-																th:value="${member.memberName}"
-																readonly>
+					<label for="orderName">姓名：</label>
+					<input type="text"
+						   id="orderName" name="orderName"
+						   th:value="${member.memberName}"
+						   readonly>
 				</div>
 				<div class="form-group">
-					<label for="orderPhone">電話：</label> <input type="tel"
-																 id="orderPhone" name="orderPhone"
-																 th:value="${member.memberPhone}"
-																 readonly>
+					<label for="orderPhone">電話：</label>
+					<input type="tel"
+						   id="orderPhone" name="orderPhone"
+						   th:value="${member.memberPhone}"
+						   readonly>
 				</div>
 				<div class="form-group">
-					<label for="orderEmail">E-mail：</label> <input type="email"
-																   id="orderEmail" name="orderEmail"
-																   th:value="${member.memberAccount}" readonly>
+					<label for="orderEmail">E-mail：</label>
+					<input type="email"
+						   id="orderEmail" name="orderEmail"
+						   th:value="${member.memberAccount}"
+						   readonly>
 				</div>
 			</div>
 
-
 			<!--收件人資料-->
-
 			<div class="form-section">
 				<h3>收件人資料</h3>
 				<div class="form-group">
-					<label for="recipient">姓名：</label> <input type="text"
-																id="recipient" name="recipient" required
-																th:value="${order.recipient}">
+					<label for="recipient">姓名：</label>
+					<input type="text"
+						   id="recipient" name="recipient"
+						   th:value="${order.recipient}"
+						   required>
 				</div>
 				<div class="form-group">
-					<label for="recipientPhone">電話：</label> <input type="tel"
-																	 id="recipientPhone" name="recipientPhone" required
-																	 th:value="${order.recipientPhone}">
+					<label for="recipientPhone">電話：</label>
+					<input type="tel"
+						   id="recipientPhone"
+						   name="recipientPhone"
+						   th:value="${order.recipientPhone}"
+						   required>
 				</div>
 				<div class="form-group">
-					<label for="recipientEmail">E-mail：</label> <input type="email"
-																	   id="recipientEmail" name="recipientEmail" required
-																	   th:value="${order.recipientEmail}">
+					<label for="recipientEmail">E-mail：</label>
+					<input type="email"
+						   id="recipientEmail"
+						   name="recipientEmail"
+						   th:value="${order.recipientEmail}"
+						   required>
 				</div>
 				<div class="form-group">
-					<label for="recipientAddress">地址：</label> <input type="text"
-																	   id="recipientAddress" name="recipientAddress"
-																	   required
-																	   th:value="${order.recipientAddress}">
+					<label for="recipientAddress">地址：</label>
+					<input type="text"
+						   id="recipientAddress"
+						   name="recipientAddress"
+						   th:value="${order.recipientAddress}"
+						   required>
 				</div>
 				<!-- 如果有優惠券，添加以下字段 -->
-				<input type="hidden" id="memberCouponId" name="memberCouponId"
+				<input type="hidden"
+					   id="memberCouponId"
+					   name="memberCouponId"
 					   th:value="${selectedCouponId}">
 			</div>
-
-
-			<!-- 隱藏的表單，用於提交數據 -->
-			<form id="checkoutForm" th:action="@{/cart/checkout}" method="post"
-				  style="display: none;">
-				<input type="hidden" name="recipient" th:value="${order.recipient}">
-				<input type="hidden" name="recipientPhone"
-					   th:value="${order.recipientPhone}"> <input type="hidden"
-																  name="recipientEmail" th:value="${order.recipientEmail}">
-				<input
-						type="hidden" name="recipientAddress"
-						th:value="${order.recipientAddress}"> <input type="hidden"
-																	 name="memberCouponId" th:value="${selectedCouponId}">
-			</form>
-
 
 			<!-- 付款資訊 -->
 			<div class="form-section" id="paymentInfo">
@@ -376,44 +370,36 @@
 				<div class="payment-info">
 					<div class="payment-methods">
 						<!-- 付款方式圖標 -->
-						<img
-								src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
-								alt="Visa"> <img
-							src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
-							alt="Mastercard"> <img
-							src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/2560px-JCB_logo.svg.png"
-							alt="JCB">
+						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa">
+						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard">
+						<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/JCB_logo.svg/2560px-JCB_logo.svg.png" alt="JCB">
 					</div>
 					<div class="form-group">
 						<label for="cardHolder">持卡人：</label>
 						<input type="text" id="cardHolder" name="cardHolder" placeholder="請輸入持卡人姓名" required>
 					</div>
 					<div class="form-group">
-						<label for="cardNumber">信用卡號：</label>
-						<div class="card-number">
-							<input type="text" maxlength="4" name="cardNumber1" placeholder="xxxx" required pattern="\d{4}"
-								   inputmode="numeric">
-							<input type="text" maxlength="4" name="cardNumber2" placeholder="xxxx" required pattern="\d{4}"
-								   inputmode="numeric">
-							<input type="text" maxlength="4" name="cardNumber3" placeholder="xxxx" required pattern="\d{4}"
-								   inputmode="numeric">
-							<input type="text" maxlength="4" name="cardNumber4" placeholder="xxxx" required pattern="\d{4}"
-								   inputmode="numeric">
+						<label for="card-number">信用卡號：</label>
+						<div id="card-number" class="card-number">
+							<input type="text" maxlength="4" name="cardNumber1" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+							<input type="text" maxlength="4" name="cardNumber2" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+							<input type="text" maxlength="4" name="cardNumber3" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
+							<input type="text" maxlength="4" name="cardNumber4" placeholder="xxxx" required pattern="\d{4}" inputmode="numeric">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="cvv">信用卡安全碼：</label>
-						<input type="text" id="cvv" name="cvv" maxlength="3" placeholder="xxx" required pattern="\d{3}"
-							   inputmode="numeric">
+						<input type="text" id="cvv" name="cvv" maxlength="3" placeholder="xxx" required pattern="\d{3}" inputmode="numeric">
 					</div>
 					<div class="form-group">
 						<label>信用卡有效月年：</label>
 						<div class="expiry-date">
 							<select id="expiryMonth" name="expiryMonth">
 								<option value="">月</option>
-							</select> <select id="expiryYear" name="expiryYear">
-							<option value="">年</option>
-						</select>
+							</select>
+							<select id="expiryYear" name="expiryYear">
+								<option value="">年</option>
+							</select>
 						</div>
 					</div>
 				</div>

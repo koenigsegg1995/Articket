@@ -125,13 +125,17 @@ public class CartController {
 	}
 
 	@GetMapping("/checkout")
-	public String showCheckoutPage(Model model) {
-		Integer memberID = 1; // 假設當前登錄的會員 ID
-		Cart cart = cartService.getCartByMemberId(memberID);
-		GeneralMember member = memberService.getById(memberID);
+	public String showCheckoutPage(Model model,
+								   HttpSession session) {
+		//確認是否登入，未登入重導至會員登入頁面
+		if(session.getAttribute("memberID") == null) {
+			return "redirect:/generalmember/login";
+		}
+		Integer memberId = (Integer) session.getAttribute("memberID");
+
+		Cart cart = cartService.getCartByMemberId(memberId);
+		GeneralMember member = memberService.getById(memberId);
 		Orders order = new Orders();
-		// 添加日誌
-		System.out.println("Member info: " + member);
 
 		// 檢查購物車是否為空
 	    if (cart == null || cartItemService.findByCartId(cart.getCartId()).isEmpty()) {

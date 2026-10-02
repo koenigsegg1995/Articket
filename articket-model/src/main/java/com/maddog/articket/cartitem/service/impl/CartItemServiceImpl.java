@@ -1,6 +1,7 @@
 package com.maddog.articket.cartitem.service.impl;
 
 import com.maddog.articket.cartitem.dao.CartItemDao;
+import com.maddog.articket.cartitem.dto.CartItemForView;
 import com.maddog.articket.cartitem.entity.CartItem;
 import com.maddog.articket.cartitem.service.pri.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,29 @@ public class CartItemServiceImpl implements CartItemService {
     private CartItemDao cartItemDao;
 
     /**
-     * 依購物車ID查詢
+     * 依購物車 ID 查詢
      *
      * @param cartId
-     *          購物車ID
+     *          購物車 ID
      * @return 購物車明細清單
      */
     @Override
     @Transactional(readOnly = true)
     public List<CartItem> findByCartId(Integer cartId) {
         return cartItemDao.findByCartId(cartId);
+    }
+
+    /**
+     * 依會員 ID 查詢
+     *
+     * @param memberId
+     *          會員 ID
+     * @return 購物車明細清單
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<CartItemForView> findByMemberId(Integer memberId){
+        return cartItemDao.findByMemberId(memberId);
     }
 
 }

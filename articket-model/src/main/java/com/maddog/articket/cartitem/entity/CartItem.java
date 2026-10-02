@@ -17,17 +17,17 @@ public class CartItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 購物車明細ID
+	 * 購物車明細 ID
 	 */
 	private Integer cartItemId;
 
 	/**
-	 * 購物車ID
+	 * 購物車 ID
 	 */
 	private Integer cartId;
 
 	/**
-	 * 商品ID
+	 * 商品 ID
 	 */
 	private Integer commodityId;
 
