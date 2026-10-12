@@ -9,10 +9,18 @@
 
 <!-- resultMap-->
     <resultMap id="resultMapForSelect"
-                type="com.maddog.articket.cartitem.entity.CartItem">
+               type="com.maddog.articket.cartitem.entity.CartItem">
         <id column="cart_item_id" property="cartItemId" />
         <result column="cart_id" property="cartId" />
         <result column="commodity_id" property="commodityId" />
+        <result column="checked_quantity" property="checkedQuantity" />
+    </resultMap>
+
+    <resultMap id="resultMapForView"
+               type="com.maddog.articket.cartitem.dto.CartItemForView">
+        <result column="commodity_id" property="commodityId" />
+        <result column="commodity_name" property="commodityName" />
+        <result column="commodity_price" property="commodityPrice" />
         <result column="checked_quantity" property="checkedQuantity" />
     </resultMap>
 <!-- resultMap-->
@@ -101,7 +109,7 @@
 
     <select id="findByMemberId"
             parameterType="java.lang.Integer"
-            resultMap="">
+            resultMap="resultMapForView">
         SELECT
             ci.commodity_id,
             c.commodity_name,
@@ -113,8 +121,12 @@
             commodity c
             ON
             ci.commodity_id = c.commodity_id
+        JOIN
+            cart ct
+            ON
+            ct.cart_id = ci.cart_id
         WHERE
-            member_id = #{memberId}
+            ct.member_id = #{memberId}
     </select>
 <!-- method-->
 

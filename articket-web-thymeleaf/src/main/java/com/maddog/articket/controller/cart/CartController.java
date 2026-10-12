@@ -2,6 +2,7 @@ package com.maddog.articket.controller.cart;
 
 import com.maddog.articket.cart.entity.Cart;
 import com.maddog.articket.cart.service.pri.CartService;
+import com.maddog.articket.cartitem.dto.CartItemForView;
 import com.maddog.articket.cartitem.service.pri.CartItemService;
 import com.maddog.articket.generalmember.entity.GeneralMember;
 import com.maddog.articket.generalmember.service.pri.GeneralMemberService;
@@ -15,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -133,17 +136,17 @@ public class CartController {
 		}
 		Integer memberId = (Integer) session.getAttribute("memberID");
 
-		Cart cart = cartService.getCartByMemberId(memberId);
+		List<CartItemForView> cartItemList = cartItemService.findByMemberId(memberId);
 		GeneralMember member = memberService.getById(memberId);
 		Orders order = new Orders();
 
 		// 檢查購物車是否為空
-	    if (cart == null || cartItemService.findByCartId(cart.getCartId()).isEmpty()) {
+	    if (cartItemList == null || cartItemList.isEmpty()) {
 	        model.addAttribute("errorMessage", "您的購物車是空的，請先添加商品。");
 			return "redirect:/commodity/mall_activity";
 	    }
 
-		model.addAttribute("cart", cart);
+		model.addAttribute("cartItemList", cartItemList);
 		model.addAttribute("member", member);
 		model.addAttribute("order", order);
 
